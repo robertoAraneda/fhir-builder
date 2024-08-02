@@ -1,39 +1,31 @@
-import { commonResources } from "../../commons/utils/resources";
-import { IElement } from "../interfaces/IElement";
-import { ValidatorType } from "./validator-definitions";
-
-export const resources = [
-  ...commonResources
-]
-
-export type Resource = (typeof resources)[number];
+import { IElement } from 'fhirtypes/dist/r4/base';
+import { ValidatorType } from './internal.validator';
+import { ResourceType } from 'fhirtypes/dist/r4';
 
 export type AttributeDefinition<T> = {
   name: keyof T;
   type: keyof ValidatorType;
   isRequired: boolean;
   isArray: boolean;
-  enumValues?: string[];
-  referenceValues?: Resource[] | 'all' | null;
-}
+  enumValues?: ReadonlyArray<string>;
+  referenceValues?: ResourceType[] | 'all' | null;
+};
 
 export function createDatatypeDefinition<T extends IElement>(
-  array: ReadonlyArray<AttributeDefinition<T>>
+  array: ReadonlyArray<AttributeDefinition<T>>,
 ): ReadonlyArray<AttributeDefinition<T>> {
-  return array.concat(
-    [
-      {
-        name: 'id',
-        type: 'string',
-        isRequired: false,
-        isArray: false,
-      },
-      {
-        name: 'extension',
-        type: 'Extension',
-        isRequired: false,
-        isArray: true,
-      }
-    ]
-  )
+  return array.concat([
+    {
+      name: 'id',
+      type: 'string',
+      isRequired: false,
+      isArray: false,
+    },
+    {
+      name: 'extension',
+      type: 'Extension',
+      isRequired: false,
+      isArray: true,
+    },
+  ]);
 }
