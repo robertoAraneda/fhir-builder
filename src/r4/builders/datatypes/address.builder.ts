@@ -1,16 +1,16 @@
 import { AddressTypeType, AddressUseType, IAddress, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { Address } from '../../models';
 import { ElementBuilder } from './element.builder';
-import { AddressBuilderInterface } from '../../interfaces/builders/datatypes/address-builder.interface';
+import { IAddressBuilder } from '../../interfaces';
+import { Address } from '../../models';
 
 type ParamExtensionType = 'use' | 'type' | 'text' | 'line' | 'city' | 'district' | 'state' | 'postalCode' | 'country';
 
-export class AddressBuilder extends ElementBuilder implements AddressBuilderInterface {
-  private readonly address: IAddress;
+export class AddressBuilder extends ElementBuilder implements IAddressBuilder {
+  private readonly address: Address;
 
   constructor() {
     super();
-    this.address = {} as IAddress;
+    this.address = new Address();
   }
 
   addParamExtension<T extends ParamExtensionType>(param: T, extension: T extends 'line' ? IElement[] : IElement): this {
@@ -82,6 +82,6 @@ export class AddressBuilder extends ElementBuilder implements AddressBuilderInte
 
   build(): Address {
     Object.assign(this.address, { ...super.entity() });
-    return new Address(this.address);
+    return this.address;
   }
 }

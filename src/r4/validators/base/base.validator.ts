@@ -3,11 +3,10 @@ import { RequiredException } from '../../../commons/exceptions/required.exceptio
 import { AttributeDefinition } from './definitions';
 import { InternalValidator, ValidatorType } from './internal.validator';
 import { PeriodValidator } from '../datatypes/period.validator';
-import { ReferenceValidator } from '../datatypes/reference.validator';
 import { IReference, ResourceType } from 'fhirtypes/dist/r4';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 import { ReferenceException } from '../../../commons/exceptions/reference.exception';
 import { resourceListUtil } from '../../../commons/utils/resource-list.util';
+import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 
 export const BaseValidator = <
   T extends {
@@ -53,7 +52,11 @@ export const BaseValidator = <
   }
 };
 
-const validateAdditionalFields = <T>(data: any, definitions: ReadonlyArray<AttributeDefinition<T>>, path: string) => {
+export const validateAdditionalFields = <T>(
+  data: any,
+  definitions: ReadonlyArray<AttributeDefinition<T>>,
+  path: string,
+) => {
   const properties = Object.keys(data);
   const additionalFields = properties.filter(
     (property) => !definitions.find((definition) => definition.name === property),
@@ -64,7 +67,7 @@ const validateAdditionalFields = <T>(data: any, definitions: ReadonlyArray<Attri
   }
 };
 
-const validateRequiredFieldByDefinition = <T>(
+export const validateRequiredFieldByDefinition = <T>(
   data: T,
   definitions: ReadonlyArray<AttributeDefinition<T>>,
   path: string,
@@ -76,7 +79,7 @@ const validateRequiredFieldByDefinition = <T>(
   }
 };
 
-const validateEnumValues = <T>(data: string, definition: AttributeDefinition<T>, path: string) => {
+export const validateEnumValues = <T>(data: string, definition: AttributeDefinition<T>, path: string) => {
   if (definition.enumValues && !definition.isArray) {
     if (!definition.enumValues.includes(data)) {
       throw new Error(
@@ -86,14 +89,14 @@ const validateEnumValues = <T>(data: string, definition: AttributeDefinition<T>,
   }
 };
 
-const validateArray = <T>(data: any, definition: AttributeDefinition<T>, path: string) => {
+export const validateArray = <T>(data: any, definition: AttributeDefinition<T>, path: string) => {
   // check if the field is an array
   if (definition.isArray && data && !Array.isArray(data)) {
     throw new Error(`Field ${String(definition.name)} must be an array in ${path}`);
   }
 };
 
-const validateObject = <T>(data: any, definition: AttributeDefinition<T>, path: string) => {
+export const validateObject = <T>(data: any, definition: AttributeDefinition<T>, path: string) => {
   if (!data) {
     return;
   }
@@ -107,7 +110,7 @@ const validateObject = <T>(data: any, definition: AttributeDefinition<T>, path: 
   }
 };
 
-const ValidateReferenceFormat = (
+export const ValidateReferenceFormat = (
   value: IReference,
   resources: ResourceType[] | 'all' | null = null,
   path?: string,
@@ -132,11 +135,11 @@ const ValidateReferenceFormat = (
   }
 };
 
-function hasValue(value: any): boolean {
+export function hasValue(value: any): boolean {
   return value !== null && value !== undefined && value !== '';
 }
 
-function parseValidator(name: keyof ValidatorType): (value: any, path: string) => void {
+export function parseValidator(name: keyof ValidatorType): (value: any, path: string) => void {
   switch (name) {
     // TODO check why this is not working
     case 'Period':

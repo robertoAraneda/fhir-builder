@@ -1,8 +1,9 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
 import { INarrative } from 'fhirtypes/dist/r4';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('Meta FHIR R4', () => {
-  const { Narrative, Validator } = fhirR4();
+  const { Narrative, Validator } = contextR4();
 
   it('should be able to create a new meta and validate with correct data [new Meta()]', async () => {
     const item = new Narrative({
@@ -21,7 +22,7 @@ describe('Meta FHIR R4', () => {
       status: 'generated',
     };
 
-    const { error } = Validator.Narrative(item);
+    const { error } = conformanceValidation(item, 'Narrative');
     expect(error).toBeNull();
   });
 
@@ -32,7 +33,7 @@ describe('Meta FHIR R4', () => {
       // not status attribute
     };
 
-    const { error } = Validator.Narrative(item);
+    const { error } = conformanceValidation(item, 'Narrative');
     expect(error).toBe("RequiredFieldException. Field: 'status'. Path: Narrative.status");
   });
 

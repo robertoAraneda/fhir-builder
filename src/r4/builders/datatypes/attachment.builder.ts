@@ -1,12 +1,10 @@
-import {
-  AttachmentBuilderInterface,
-  AttachmentParamExtensionType,
-} from '../../interfaces/builders/datatypes/attachment-builder.interface';
 import { ElementBuilder } from './element.builder';
 import { IAttachment, IElement } from 'fhirtypes/dist/r4';
-import { Attachment } from '../../models/datatypes/attachment.model';
+import { IAttachmentBuilder } from '../../interfaces';
+import { AttachmentParamExtensionType } from '../../types';
+import { Attachment } from '../../models';
 
-export class AttachmentBuilder extends ElementBuilder implements AttachmentBuilderInterface {
+export class AttachmentBuilder extends ElementBuilder implements IAttachmentBuilder {
   private readonly attachment: IAttachment;
 
   constructor() {
@@ -14,7 +12,7 @@ export class AttachmentBuilder extends ElementBuilder implements AttachmentBuild
     this.attachment = {} as IAttachment;
   }
 
-  addParamExtension<T extends AttachmentParamExtensionType>(param: T, extension: IElement): this {
+  addParamExtension(param: AttachmentParamExtensionType, extension: IElement): this {
     this.attachment[`_${param}`] = extension;
     return this;
   }

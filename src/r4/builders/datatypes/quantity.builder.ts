@@ -1,10 +1,8 @@
 import { ElementBuilder } from './element.builder';
-import {
-  IQuantityBuilder,
-  QuantityParamExtensionType,
-} from '../../interfaces/builders/datatypes/quantity-builder.interface';
+import { IQuantityBuilder } from '../../interfaces';
 import { IElement, IQuantity, QuantityComparatorType } from 'fhirtypes/dist/r4';
-import { Quantity } from '../../models/datatypes/quantity.model';
+import { QuantityParamExtensionType } from '../../types';
+import { Quantity } from '../../models';
 
 export class QuantityBuilder extends ElementBuilder implements IQuantityBuilder {
   private readonly quantity: IQuantity;

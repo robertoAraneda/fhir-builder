@@ -1,0 +1,13 @@
+export { Address } from './address.model';
+export { Attachment } from './attachment.model';
+export { CodeableConcept } from './codeable-concept.model';
+export { Coding } from './coding.model';
+export { ContactPoint } from './contact-point.model';
+export { Extension } from './extension.model';
+export { HumanName } from './human-name.model';
+export { Identifier } from './identifier.model';
+export { Meta } from './meta.model';
+export { Narrative } from './narrative.model';
+export { Period } from './period.model';
+export { Quantity } from './quantity.model';
+export { Reference } from './reference.model';

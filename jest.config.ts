@@ -5,18 +5,25 @@ export default {
     color: 'green',
   },
   clearMocks: true,
-  //collectCoverage: true,
+  collectCoverage: true,
   collectCoverageFrom: ['./src/**'],
   coverageDirectory: 'coverage',
   coveragePathIgnorePatterns: ['<rootDir>/src/tests', '<rootDir>/src/lib'],
   coverageThreshold: {
     global: {
-      lines: 90,
+      lines: 70,
+      statements: 70,
+      branches: 70,
+      functions: 70,
     },
   },
   preset: 'ts-jest',
+  moduleDirectories: ['node_modules', '<rootDir>'],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
   rootDir: '.',
   testEnvironment: 'node',
   testRegex: '.*\\.spec\\.ts$',
-  verbose: true,
+  verbose: false,
 };

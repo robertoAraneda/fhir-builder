@@ -1,8 +1,8 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
 import { IPatient } from 'fhirtypes/dist/r4';
 
 describe('Patient FHIR R4', () => {
-  const { Patient, Validator } = fhirR4();
+  const { Patient, Validator } = contextR4();
 
   it('should be able to create a new patient and validate with correct data [new Patient()]', async () => {
     const item = new Patient({
@@ -480,6 +480,37 @@ describe('Patient FHIR R4', () => {
       .setActive(true)
       .setGender('other')
       .setBirthDate('1974-12-25')
+      .addAddress({
+        use: 'home',
+        type: 'both',
+        text: '534 Erewhon St PeasantVille, Rainbow, Vic  3999',
+        line: ['534 Erewhon St'],
+        city: 'PleasantVille',
+        district: 'Rainbow',
+        state: 'Vic',
+        postalCode: '3999',
+        period: {
+          start: '1974-12-25',
+        },
+      })
+      .addName({
+        use: 'official',
+        family: 'Chalmers',
+        given: ['Peter', 'James'],
+      })
+      .addIdentifier({
+        use: 'usual',
+        type: {
+          coding: [
+            {
+              system: 'http://terminology.hl7.org/CodeSystem/v2-0203',
+              code: 'MR',
+            },
+          ],
+        },
+        system: 'urn:oid:',
+        value: '12345',
+      })
       .build();
 
     expect(item).toBeDefined();
@@ -490,10 +521,47 @@ describe('Patient FHIR R4', () => {
     expect(error).toBeNull();
     expect(item).toEqual({
       active: true,
+      address: [
+        {
+          city: 'PleasantVille',
+          district: 'Rainbow',
+          line: ['534 Erewhon St'],
+          period: {
+            start: '1974-12-25',
+          },
+          postalCode: '3999',
+          state: 'Vic',
+          text: '534 Erewhon St PeasantVille, Rainbow, Vic  3999',
+          type: 'both',
+          use: 'home',
+        },
+      ],
       birthDate: '1974-12-25',
       deceasedBoolean: false,
       gender: 'other',
       id: '123',
+      identifier: [
+        {
+          system: 'urn:oid:',
+          type: {
+            coding: [
+              {
+                code: 'MR',
+                system: 'http://terminology.hl7.org/CodeSystem/v2-0203',
+              },
+            ],
+          },
+          use: 'usual',
+          value: '12345',
+        },
+      ],
+      name: [
+        {
+          family: 'Chalmers',
+          given: ['Peter', 'James'],
+          use: 'official',
+        },
+      ],
       resourceType: 'Patient',
       text: {
         div: '<div xmlns="http://www.w3.org/1999/xhtml">Generated</div>',

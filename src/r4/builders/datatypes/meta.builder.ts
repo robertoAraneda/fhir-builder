@@ -1,7 +1,8 @@
 import { ElementBuilder } from './element.builder';
-import { IMetaBuilder, MetaParamsExtensionType } from '../../interfaces/builders/datatypes/meta-builder.interface';
+import { IMetaBuilder } from '../../interfaces';
 import { ICoding, IElement, IMeta } from 'fhirtypes/dist/r4';
-import { Meta } from '../../models/datatypes/meta.model';
+import { MetaParamsExtensionType } from '../../types';
+import { Meta } from '../../models';
 
 export class MetaBuilder extends ElementBuilder implements IMetaBuilder {
   private readonly meta: IMeta;

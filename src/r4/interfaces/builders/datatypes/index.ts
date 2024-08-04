@@ -1,0 +1,16 @@
+export { IAddressBuilder } from './address-builder.interface';
+export { IAttachmentBuilder } from './attachment-builder.interface';
+export { ICodeableConceptBuilder } from './codeable-concept-builder.interface';
+export { ICodingBuilder } from './coding-builder.interface';
+export { IContactPointBuilder } from './contact-point-builder.interface';
+export { IDomainResourceBuilder } from './domain-resource-builder.interface';
+export { IElementBuilder } from './element-builder.interface';
+export { IExtensionBuilder } from './extension-builder.interface';
+export { IHumanNameBuilder } from './human-name-builder.interface';
+export { IIdentifierBuilder } from './identifier-builder.interface';
+export { IMetaBuilder } from './meta-builder.interface';
+export { INarrativeBuilder } from './narrative-builder.interface';
+export { IPeriodBuilder } from './period-builder.interface';
+export { IQuantityBuilder } from './quantity-builder.interface';
+export { IReferenceBuilder } from './reference-builder.interface';
+export { IResourceBuilder } from './resource-builder.interface';

@@ -1,7 +1,8 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('Coding FHIR R4', () => {
-  const { Coding, Validator } = fhirR4();
+  const { Coding, Validator } = contextR4();
 
   it('should be able to create a new coding and validate with correct data [new Coding()]', async () => {
     const item = new Coding({
@@ -27,7 +28,7 @@ describe('Coding FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { error } = Validator.Coding(item);
+    const { error } = conformanceValidation(item, 'Coding');
 
     expect(error).toBe("InvalidFieldException. Field(s): 'test'. Path: Coding.");
   });

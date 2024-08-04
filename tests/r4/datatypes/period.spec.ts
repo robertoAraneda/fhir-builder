@@ -1,7 +1,8 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('Period FHIR R4', () => {
-  const { Period, Validator } = fhirR4();
+  const { Period, Validator } = contextR4();
 
   it('should be able to create a new period and validate with correct data [new Period()]', async () => {
     const item = new Period({
@@ -86,7 +87,7 @@ describe('Period FHIR R4', () => {
       notExist: 'not exist',
     };
 
-    const { error } = Validator.Period(item);
+    const { error } = conformanceValidation(item, 'Period');
     expect(error).toBe("InvalidFieldException. Field(s): 'notExist'. Path: Period.");
   });
 
@@ -96,7 +97,7 @@ describe('Period FHIR R4', () => {
       end: 'wrong date', // wrong date
     };
 
-    const { error } = Validator.Period(item);
+    const { error } = conformanceValidation(item, 'Period');
     expect(error).toBe('Invalid dateTime: wrong date at path: Period.end');
   });
 });

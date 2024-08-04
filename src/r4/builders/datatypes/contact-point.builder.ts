@@ -1,12 +1,10 @@
-import {
-  ContactPointBuilderInterface,
-  ContactPointParamExtensionType,
-} from '../../interfaces/builders/datatypes/contact-point-builder.interface';
-import { ElementBuilder } from './element.builder';
 import { ContactPointSystemType, ContactPointUseType, IContactPoint, IElement, IPeriod } from 'fhirtypes/dist/r4';
+import { ElementBuilder } from './element.builder';
+import { IContactPointBuilder } from '../../interfaces';
+import { ContactPointParamExtensionType } from '../../types';
 import { ContactPoint } from '../../models';
 
-export class ContactPointBuilder extends ElementBuilder implements ContactPointBuilderInterface {
+export class ContactPointBuilder extends ElementBuilder implements IContactPointBuilder {
   private readonly contactPoint: IContactPoint;
 
   constructor() {
@@ -21,7 +19,7 @@ export class ContactPointBuilder extends ElementBuilder implements ContactPointB
    * @param extension
    * @returns ContactPointBuilder The builder
    */
-  addParamExtension<T extends ContactPointParamExtensionType>(param: T, extension: IElement): this {
+  addParamExtension(param: ContactPointParamExtensionType, extension: IElement): this {
     this.contactPoint[`_${param}`] = extension;
 
     return this;

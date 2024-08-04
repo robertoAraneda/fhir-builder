@@ -1,16 +1,14 @@
-import { Coding } from '../../models';
-import {
-  CodingBuilderInterface,
-  ParamExtensionType,
-} from '../../interfaces/builders/datatypes/coding-builder.interface';
 import { ElementBuilder } from './element.builder';
 import { ICoding, IElement } from 'fhirtypes/dist/r4';
+import { ICodingBuilder } from '../../interfaces';
+import { CodingParamExtensionType } from '../../types';
+import { Coding } from '../../models';
 
 /**
  * @description Coding builder
  *
  */
-export class CodingBuilder extends ElementBuilder implements CodingBuilderInterface {
+export class CodingBuilder extends ElementBuilder implements ICodingBuilder {
   private readonly coding: ICoding;
 
   constructor() {
@@ -24,7 +22,7 @@ export class CodingBuilder extends ElementBuilder implements CodingBuilderInterf
    * @param param
    * @param extension
    */
-  addParamExtension(param: ParamExtensionType, extension: IElement): this {
+  addParamExtension(param: CodingParamExtensionType, extension: IElement): this {
     this.coding[`_${param}`] = extension;
     return this;
   }

@@ -1,8 +1,10 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
 import { IPatientLink } from 'fhirtypes/dist/r4';
+import { LinkTypeEnum } from 'fhirtypes/dist/r4/enums';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('PatientLink FHIR R4', () => {
-  const { PatientLink, Validator } = fhirR4();
+  const { PatientLink, Validator } = contextR4();
 
   it('should be able to validate a new patient_link [new PatientLink()]', async () => {
     const item = new PatientLink({
@@ -11,7 +13,7 @@ describe('PatientLink FHIR R4', () => {
         reference: 'Patient/123',
         type: 'Patient',
       },
-      type: 'replaced-by',
+      type: LinkTypeEnum.REPLACED_BY,
     });
 
     expect(item).toBeDefined();
@@ -30,7 +32,7 @@ describe('PatientLink FHIR R4', () => {
       type: 'replaced-by',
     };
 
-    const { error } = Validator.PatientLink(item);
+    const { error } = conformanceValidation(item, 'PatientLink');
     expect(error).toBeNull();
   });
 
@@ -84,7 +86,7 @@ describe('PatientLink FHIR R4', () => {
       wrongProperty: 'wrongProperty',
     };
 
-    const { error } = Validator.PatientLink(item);
+    const { error } = conformanceValidation(item, 'PatientLink');
     expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: PatientLink.");
   });
 });

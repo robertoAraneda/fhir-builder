@@ -1,12 +1,11 @@
-import { IBuildable } from '../base/buildable.interface';
-import { IElementBuilder } from './element-builder.interface';
 import { ContactPointSystemType, ContactPointUseType, IElement, IPeriod } from 'fhirtypes/dist/r4';
+import { IElementBuilder } from './element-builder.interface';
+import { ContactPointParamExtensionType } from '../../../types';
 import { ContactPoint } from '../../../models';
+import { IBuildable } from '../base';
 
-export type ContactPointParamExtensionType = 'system' | 'value' | 'use' | 'rank';
-
-export interface ContactPointBuilderInterface extends IBuildable<ContactPoint>, IElementBuilder {
-  addParamExtension<T extends ContactPointParamExtensionType>(param: T, extension: IElement): this;
+export interface IContactPointBuilder extends IBuildable<ContactPoint>, IElementBuilder {
+  addParamExtension(param: ContactPointParamExtensionType, extension: IElement): this;
   setSystem(value: ContactPointSystemType): this;
   setValue(value: string): this;
   setUse(value: ContactPointUseType): this;

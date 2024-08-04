@@ -1,9 +1,8 @@
-import { BackboneElement } from '../base/backbone-element.model';
 import { ICodeableConcept, IElement, IPatientCommunication } from 'fhirtypes/dist/r4';
-import { PatientCommunicationBuilder } from '../../builders/backbones/patient-communication.builder';
-import { IGenericObject } from '../../interfaces';
+import { BackboneElement } from '../base';
+import { conformanceValidation } from '../../validators/base/object.validator';
 import { ValReturnType } from '../../validators/base/datatype.validator';
-import { PatientCommunicationValidator } from '../../validators/backbones/patient-communication.validator';
+import { PatientCommunicationBuilder } from '../../builders';
 
 export class PatientCommunication extends BackboneElement implements IPatientCommunication {
   // PatientCommunication attributes
@@ -23,17 +22,8 @@ export class PatientCommunication extends BackboneElement implements IPatientCom
     return `PatientCommunication${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      PatientCommunicationValidator(args as IPatientCommunication | IPatientCommunication[]);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'PatientCommunication');
     return { error };
   }
 
@@ -41,7 +31,7 @@ export class PatientCommunication extends BackboneElement implements IPatientCom
     return new PatientCommunicationBuilder();
   }
 
-  constructor(args: IPatientCommunication) {
+  constructor(args?: IPatientCommunication) {
     super();
     Object.assign(this, args);
   }

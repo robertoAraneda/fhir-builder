@@ -61,7 +61,7 @@ export class Patient extends DomainResource implements IPatient {
   _deceasedDateTime?: IElement;
   _gender?: IElement;
 
-  toJson(): Patient {
+  toJson(): IGenericObject {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -89,6 +89,10 @@ export class Patient extends DomainResource implements IPatient {
 
   static builder(): PatientBuilder {
     return new PatientBuilder();
+  }
+
+  static builderFromJSON(json: IGenericObject | string): PatientBuilder {
+    return new PatientBuilder().fromJSON(json);
   }
 
   constructor(args: IPatient) {

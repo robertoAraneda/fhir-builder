@@ -1,9 +1,9 @@
-import { ReferenceBuilderInterface } from '../../interfaces/builders/datatypes/reference-builder.interface';
-import { ElementBuilder } from './element.builder';
 import { IIdentifier, IReference, ResourceType } from 'fhirtypes/dist/r4';
+import { ElementBuilder } from './element.builder';
+import { IReferenceBuilder } from '../../interfaces';
 import { Reference } from '../../models';
 
-export class ReferenceBuilder extends ElementBuilder implements ReferenceBuilderInterface {
+export class ReferenceBuilder extends ElementBuilder implements IReferenceBuilder {
   private readonly reference: IReference;
 
   constructor() {
@@ -18,7 +18,7 @@ export class ReferenceBuilder extends ElementBuilder implements ReferenceBuilder
     return this;
   }
 
-  setReference<T extends { resourceType: ResourceType; id: string | number } | string>(value: T): this {
+  setReference(value: { resourceType: ResourceType; id: string | number } | string): this {
     if (typeof value === 'string') {
       this.reference.reference = value;
     } else {

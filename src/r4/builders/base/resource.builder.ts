@@ -1,5 +1,5 @@
-import { IResourceBuilder } from '../../interfaces/builders/datatypes/resource-builder.interface';
 import { IResource } from 'fhirtypes/dist/r4';
+import { IResourceBuilder } from '../../interfaces';
 
 export class ResourceBuilder implements IResourceBuilder {
   private readonly resource: IResource;

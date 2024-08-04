@@ -1,9 +1,11 @@
-import { createBackboneDefinition } from '../base/definitions';
 import { IPatientLink } from 'fhirtypes/dist/r4';
 import assert from 'node:assert';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 import { BaseValidator } from '../base/base.validator';
-import { linkTypes } from '../../utils/link-types.util';
+import { LinkTypeEnum } from 'fhirtypes/dist/r4/enums';
+import { createBackboneDefinition } from '../base/definitions';
+import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
+
+const linkTypesValues = Object.values(LinkTypeEnum);
 
 export const modelFields = createBackboneDefinition<IPatientLink>([
   {
@@ -18,7 +20,7 @@ export const modelFields = createBackboneDefinition<IPatientLink>([
     type: 'code',
     isArray: false,
     isRequired: true,
-    enumValues: linkTypes,
+    enumValues: linkTypesValues,
   },
   {
     name: '_type',

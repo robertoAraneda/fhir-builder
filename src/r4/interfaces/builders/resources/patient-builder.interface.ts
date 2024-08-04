@@ -1,7 +1,3 @@
-import { IBuildable } from '../base/buildable.interface';
-import { Patient } from '../../../models/resources/patient.model';
-import { IDomainResourceBuilder } from '../datatypes/domain-resource-builder.interface';
-import { IResourceBuilder } from '../datatypes/resource-builder.interface';
 import {
   AdministrativeGenderType,
   IAddress,
@@ -16,20 +12,13 @@ import {
   IPatientLink,
   IReference,
 } from 'fhirtypes/dist/r4';
+import { IDomainResourceBuilder } from '../datatypes';
+import { Patient } from '../../../models';
+import { IBuildable } from '../base';
+import { PatientParamExtensionType } from '../../../types';
 
-export type PatientParamExtensionType =
-  | 'implicitRules'
-  | 'language'
-  | 'active'
-  | 'birthDate'
-  | 'gender'
-  | 'multipleBirthBoolean'
-  | 'multipleBirthInteger'
-  | 'deceasedBoolean'
-  | 'deceasedDateTime';
-
-export interface IPatientBuilder extends IBuildable<Patient>, IDomainResourceBuilder, IResourceBuilder {
-  addParamExtension<T extends PatientParamExtensionType>(param: T, extension: IElement): this;
+export interface IPatientBuilder extends IBuildable<Patient>, IDomainResourceBuilder {
+  addParamExtension(param: PatientParamExtensionType, extension: IElement): this;
   addIdentifier(identifier: IIdentifier): this;
   setMultipleIdentifier(identifiers: IIdentifier[]): this;
   setActive(active: boolean): this;
@@ -57,4 +46,5 @@ export interface IPatientBuilder extends IBuildable<Patient>, IDomainResourceBui
   setManagingOrganization(managingOrganization: IReference): this;
   addLink(link: IPatientLink): this;
   setMultipleLink(links: IPatientLink[]): this;
+  fromJSON(json: unknown | string): this;
 }

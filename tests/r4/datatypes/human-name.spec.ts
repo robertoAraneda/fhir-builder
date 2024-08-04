@@ -1,8 +1,9 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
 import { IHumanName } from 'fhirtypes/dist/r4';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('HumanName FHIR R4', () => {
-  const { HumanName, Validator } = fhirR4();
+  const { HumanName, Validator } = contextR4();
 
   it('should be able to create a new humanname and validate with correct data [new HumanName()]', async () => {
     const item = new HumanName({
@@ -48,7 +49,7 @@ describe('HumanName FHIR R4', () => {
       },
     };
 
-    const { error } = Validator.HumanName(item);
+    const { error } = conformanceValidation(item, 'HumanName');
     expect(error).toBeNull();
   });
 
@@ -71,7 +72,7 @@ describe('HumanName FHIR R4', () => {
       },
     };
 
-    const { error } = Validator.HumanName(item);
+    const { error } = conformanceValidation(item, 'HumanName');
     expect(error).toBe(
       'Field must be one of [usual, official, temp, nickname, anonymous, old, maiden] in HumanName.use',
     );

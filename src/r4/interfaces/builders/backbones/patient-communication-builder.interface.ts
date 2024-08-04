@@ -1,9 +1,7 @@
-import { PatientCommunicationBuilder } from '../../../builders/backbones/patient-communication.builder';
-import { IBuildable } from '../base/buildable.interface';
-import { PatientCommunication } from '../../../models/backbones/patient-communication.model';
-import { IBackboneElementBuilder } from '../base/backbone-element-builder.interface';
-import { IElementBuilder } from '../datatypes/element-builder.interface';
 import { ICodeableConcept, IElement } from 'fhirtypes/dist/r4';
+import { IBackboneElementBuilder, IBuildable } from '../base';
+import { IElementBuilder } from '../datatypes';
+import { PatientCommunication } from '../../../models';
 
 export interface IPatientCommunicationBuilder
   extends IBuildable<PatientCommunication>,

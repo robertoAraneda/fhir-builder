@@ -4,9 +4,10 @@ import { ConstraintException } from '../../../commons/exceptions/constraint.exce
 import { BaseValidator } from '../base/base.validator';
 import assert from 'node:assert';
 import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
+import { ContactPointSystemEnum, ContactPointUseEnum } from 'fhirtypes/dist/r4/enums';
 
-export const contactPointSystems = ['phone', 'fax', 'email', 'pager', 'url', 'sms', 'other'];
-export const contactPointUses = ['home', 'work', 'temp', 'old', 'mobile'];
+export const contactPointSystemValues: ReadonlyArray<string> = Object.values(ContactPointSystemEnum);
+export const contactPointUseValues: ReadonlyArray<string> = Object.values(ContactPointUseEnum);
 
 export const modelFields = createDatatypeDefinition<IContactPoint>([
   {
@@ -14,7 +15,7 @@ export const modelFields = createDatatypeDefinition<IContactPoint>([
     type: 'code',
     isRequired: false,
     isArray: false,
-    enumValues: contactPointSystems,
+    enumValues: contactPointSystemValues,
   },
   {
     name: 'value',
@@ -27,7 +28,7 @@ export const modelFields = createDatatypeDefinition<IContactPoint>([
     type: 'code',
     isRequired: false,
     isArray: false,
-    enumValues: contactPointUses,
+    enumValues: contactPointUseValues,
   },
   {
     name: 'rank',

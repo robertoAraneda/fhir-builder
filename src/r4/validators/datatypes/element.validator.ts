@@ -2,7 +2,6 @@ import { IElement } from 'fhirtypes/dist/r4';
 import { createDatatypeDefinition } from '../base/definitions';
 import { BaseValidator } from '../base/base.validator';
 import assert from 'node:assert';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 
 export const modelFields = createDatatypeDefinition<IElement>([]);
 

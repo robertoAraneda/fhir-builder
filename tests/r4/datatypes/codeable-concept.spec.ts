@@ -1,7 +1,8 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('CodeableConcept FHIR R4', () => {
-  const { CodeableConcept, Validator } = fhirR4();
+  const { CodeableConcept, Validator } = contextR4();
 
   it('should be able to create a new codeable_concept and validate with correct data [new CodeableConcept]', async () => {
     const item = new CodeableConcept({
@@ -41,7 +42,7 @@ describe('CodeableConcept FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { error } = Validator.CodeableConcept(item);
+    const { error } = conformanceValidation(item, 'CodeableConcept');
     expect(error).toBe("InvalidFieldException. Field(s): 'test'. Path: CodeableConcept.");
   });
 

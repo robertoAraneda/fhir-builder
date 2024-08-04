@@ -25,8 +25,8 @@ export const modelFields = createBackboneDefinition<IPatientCommunication>([
   },
 ]);
 
-export function PatientCommunicationValidator(
-  dataToValidate: IPatientCommunication | IPatientCommunication[],
+export function PatientCommunicationValidator<T extends {}>(
+  dataToValidate: T | T[],
   path: string = 'PatientCommunication',
 ): void {
   assert(

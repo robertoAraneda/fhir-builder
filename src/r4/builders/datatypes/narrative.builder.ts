@@ -1,7 +1,7 @@
-import { ElementBuilder } from './element.builder';
-import { INarrativeBuilder } from '../../interfaces/builders/datatypes/narrative-builder.interface';
 import { INarrative, NarrativeStatusType } from 'fhirtypes/dist/r4';
-import { Narrative } from '../../models/datatypes/narrative.model';
+import { ElementBuilder } from './element.builder';
+import { INarrativeBuilder } from '../../interfaces';
+import { Narrative } from '../../models';
 
 export class NarrativeBuilder extends ElementBuilder implements INarrativeBuilder {
   private readonly narrative: INarrative;

@@ -1,8 +1,9 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
 import { IPatientContact } from 'fhirtypes/dist/r4';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('PatientContact FHIR R4', () => {
-  const { PatientContact, Validator } = fhirR4();
+  const { PatientContact, Validator } = contextR4();
 
   it('should be able to validate a new patient_contact [new PatientContact()]', async () => {
     const item = new PatientContact({
@@ -44,7 +45,7 @@ describe('PatientContact FHIR R4', () => {
       },
     };
 
-    const { error } = Validator.PatientContact(item);
+    const { error } = conformanceValidation(item, 'PatientContact');
     expect(error).toBeNull();
   });
 
@@ -112,7 +113,7 @@ describe('PatientContact FHIR R4', () => {
       wrongProperty: 'wrongProperty',
     };
 
-    const { error } = Validator.PatientContact(item);
+    const { error } = conformanceValidation(item, 'PatientContact');
     expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: PatientContact.");
   });
 });

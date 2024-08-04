@@ -3,8 +3,9 @@ import { IHumanName } from 'fhirtypes/dist/r4';
 import { BaseValidator } from '../base/base.validator';
 import assert from 'node:assert';
 import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
+import { NameUseEnum } from 'fhirtypes/dist/r4/enums';
 
-export const humanNameUse = ['usual', 'official', 'temp', 'nickname', 'anonymous', 'old', 'maiden'];
+export const humanNameUseValues: ReadonlyArray<string> = Object.values(NameUseEnum);
 
 export const modelFields = createDatatypeDefinition<IHumanName>([
   {
@@ -12,7 +13,7 @@ export const modelFields = createDatatypeDefinition<IHumanName>([
     type: 'code',
     isRequired: false,
     isArray: false,
-    enumValues: humanNameUse,
+    enumValues: humanNameUseValues,
   },
   {
     name: 'text',

@@ -1,8 +1,9 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
 import { IMeta } from 'fhirtypes/dist/r4';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('Meta FHIR R4', () => {
-  const { Meta, Validator } = fhirR4();
+  const { Meta, Validator } = contextR4();
 
   it('should be able to create a new meta and validate with correct data [new Meta()]', async () => {
     const item = new Meta({
@@ -40,7 +41,7 @@ describe('Meta FHIR R4', () => {
       versionId: 'test',
     };
 
-    const { error } = Validator.Meta(item);
+    const { error } = conformanceValidation(item, 'Meta');
     expect(error).toBeNull();
   });
 
@@ -60,7 +61,7 @@ describe('Meta FHIR R4', () => {
       wrongProperty: 'test', // wrong property
     };
 
-    const { error } = Validator.Meta(item);
+    const { error } = conformanceValidation(item, 'Meta');
     expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: Meta.");
   });
 

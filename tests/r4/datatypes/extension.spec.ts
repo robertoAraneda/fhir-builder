@@ -1,8 +1,9 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
 import { IExtension } from 'fhirtypes/dist/r4';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('Extension FHIR R4', () => {
-  const { Validator, Extension } = fhirR4();
+  const { Validator, Extension } = contextR4();
 
   it('should be able to create a new extension and validate with correct data [new Extension()]', async () => {
     const item = new Extension({
@@ -22,7 +23,7 @@ describe('Extension FHIR R4', () => {
     };
 
     expect(item).toBeDefined();
-    const { error } = Validator.Extension(item);
+    const { error } = conformanceValidation(item, 'Extension');
     expect(error).toBeNull();
   });
 
@@ -34,7 +35,7 @@ describe('Extension FHIR R4', () => {
       extension: [], // extra property
     };
 
-    const { error } = Validator.Extension(item);
+    const { error } = conformanceValidation(item, 'Extension');
     expect(error).toBe('ConstraintException. Must have either extensions or value[x], not both.. Path: Extension');
   });
 
@@ -45,7 +46,7 @@ describe('Extension FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { error } = Validator.Extension(item);
+    const { error } = conformanceValidation(item, 'Extension');
     expect(error).toBe("InvalidFieldException. Field(s): 'test'. Path: Extension.");
   });
 
@@ -66,7 +67,7 @@ describe('Extension FHIR R4', () => {
 
     expect(item).toBeDefined();
 
-    const { error } = Validator.Extension(item);
+    const { error } = conformanceValidation(item, 'Extension');
     expect(error).toBeNull();
     expect(item).toBeInstanceOf(Extension);
 

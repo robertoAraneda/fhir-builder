@@ -1,8 +1,9 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
 import { IIdentifier } from 'fhirtypes/dist/r4';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('Identifier FHIR R4', () => {
-  const { Identifier, Period, Validator } = fhirR4();
+  const { Identifier, Period, Validator } = contextR4();
 
   it('should be able to create a new identifier and validate with correct data [new Identifier()]', async () => {
     const item = new Identifier({
@@ -40,7 +41,7 @@ describe('Identifier FHIR R4', () => {
       },
     };
 
-    const { error } = Validator.Identifier(item);
+    const { error } = conformanceValidation(item, 'Identifier');
     expect(error).toBe(
       "ReferenceException. Value: 'malformed reference'. ResourceType must be one of the following: 'Organization'. Path: Identifier.assigner.reference",
     );
@@ -61,7 +62,7 @@ describe('Identifier FHIR R4', () => {
       },
     };
 
-    const { error } = Validator.Identifier(item);
+    const { error } = conformanceValidation(item, 'Identifier');
     expect(error).toBe(
       "ReferenceException. Value: 'WrongResourceType'. ResourceType must be one of the following: 'Organization'. Path: Identifier.assigner.reference",
     );
@@ -83,7 +84,7 @@ describe('Identifier FHIR R4', () => {
       wrongProperty: 'wrongProperty', // wrong property
     };
 
-    const { error } = Validator.Identifier(item);
+    const { error } = conformanceValidation(item, 'Identifier');
     expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: Identifier.");
   });
 

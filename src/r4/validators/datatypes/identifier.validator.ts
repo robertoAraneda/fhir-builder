@@ -3,8 +3,9 @@ import { createDatatypeDefinition } from '../base/definitions';
 import { BaseValidator } from '../base/base.validator';
 import assert from 'node:assert';
 import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
+import { IdentifierUseEnum } from 'fhirtypes/dist/r4/enums';
 
-export const identifierUse: ReadonlyArray<string> = ['usual', 'official', 'temp', 'secondary', 'old'];
+export const identifierUseValues: ReadonlyArray<string> = Object.values(IdentifierUseEnum);
 
 export const modelFields = createDatatypeDefinition<IIdentifier>([
   {
@@ -12,7 +13,7 @@ export const modelFields = createDatatypeDefinition<IIdentifier>([
     type: 'code',
     isRequired: false,
     isArray: false,
-    enumValues: identifierUse,
+    enumValues: identifierUseValues,
   },
   {
     name: 'type',

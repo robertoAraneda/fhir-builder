@@ -1,5 +1,3 @@
-import { IPatientContactBuilder } from '../../interfaces/builders/backbones/patient-contact-builder.interface';
-import { BackboneElementBuilder } from '../base/backbone-element.builder';
 import {
   AdministrativeGenderType,
   ICodeableConcept,
@@ -10,7 +8,9 @@ import {
   IPeriod,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { PatientContact } from '../../models/backbones/patient-contact.model';
+import { BackboneElementBuilder } from '../base';
+import { IPatientContactBuilder } from '../../interfaces';
+import { PatientContact } from '../../models';
 
 export class PatientContactBuilder extends BackboneElementBuilder implements IPatientContactBuilder {
   private readonly patientContact: IPatientContact;

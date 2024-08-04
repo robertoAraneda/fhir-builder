@@ -1,9 +1,9 @@
-import { CodeableConceptBuilderInterface } from '../../interfaces/builders/datatypes/codeable-concept-builder.interface';
 import { ElementBuilder } from './element.builder';
 import { ICodeableConcept, ICoding, IElement } from 'fhirtypes/dist/r4';
+import { ICodeableConceptBuilder } from '../../interfaces';
 import { CodeableConcept } from '../../models';
 
-export class CodeableConceptBuilder extends ElementBuilder implements CodeableConceptBuilderInterface {
+export class CodeableConceptBuilder extends ElementBuilder implements ICodeableConceptBuilder {
   private readonly codeableConcept: ICodeableConcept;
 
   constructor() {
@@ -35,7 +35,7 @@ export class CodeableConceptBuilder extends ElementBuilder implements CodeableCo
     return this;
   }
 
-  setText(text: string): CodeableConceptBuilder {
+  setText(text: string): this {
     this.codeableConcept.text = text;
     return this;
   }

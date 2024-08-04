@@ -1,11 +1,12 @@
-import { IAddress, IElement } from 'fhirtypes/dist/r4';
+import { IAddress } from 'fhirtypes/dist/r4';
 import { createDatatypeDefinition } from '../base/definitions';
 import { BaseValidator } from '../base/base.validator';
 import assert from 'node:assert';
+import { AddressTypeEnum, AddressUseEnum } from 'fhirtypes/dist/r4/enums';
 import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 
-export const addressType: string[] = ['postal', 'physical', 'both'];
-export const addressUse: string[] = ['home', 'work', 'temp', 'old', 'billing'];
+const addressTypeValues: ReadonlyArray<string> = Object.values(AddressTypeEnum);
+const addressUseValues: ReadonlyArray<string> = Object.values(AddressUseEnum);
 
 export const modelFields = createDatatypeDefinition<IAddress>([
   {
@@ -13,14 +14,14 @@ export const modelFields = createDatatypeDefinition<IAddress>([
     type: 'code',
     isRequired: false,
     isArray: false,
-    enumValues: addressUse,
+    enumValues: addressUseValues,
   },
   {
     name: 'type',
     type: 'code',
     isRequired: false,
     isArray: false,
-    enumValues: addressType,
+    enumValues: addressTypeValues,
   },
   {
     name: 'text',
@@ -141,20 +142,4 @@ export const AddressValidator = (dataToValidate: IAddress | IAddress[], path: st
   }
 
   BaseValidator(cleanObject, modelFields, path);
-};
-
-interface IValInput<T> {
-  dataToValidate: T | T[];
-  path: string;
-}
-
-export const Val = <T extends IElement>(options: IValInput<T>): void => {
-  if (Array.isArray(options.dataToValidate)) {
-    options.dataToValidate.forEach((item, index) => {
-      Val({ dataToValidate: item, path: `${options.path}[${index}]` });
-    });
-    return;
-  }
-
-  BaseValidator(options.dataToValidate, modelFields, options.path);
 };

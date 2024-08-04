@@ -1,7 +1,7 @@
-import { BackboneElementBuilder } from '../base/backbone-element.builder';
-import { IPatientCommunicationBuilder } from '../../interfaces/builders/backbones/patient-communication-builder.interface';
 import { ICodeableConcept, IElement, IPatientCommunication } from 'fhirtypes/dist/r4';
-import { PatientCommunication } from '../../models/backbones/patient-communication.model';
+import { BackboneElementBuilder } from '../base';
+import { IPatientCommunicationBuilder } from '../../interfaces';
+import { PatientCommunication } from '../../models';
 
 export class PatientCommunicationBuilder extends BackboneElementBuilder implements IPatientCommunicationBuilder {
   private readonly patientCommunication: IPatientCommunication;

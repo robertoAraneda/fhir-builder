@@ -4,8 +4,9 @@ import assert from 'node:assert';
 import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 import { BaseValidator } from '../base/base.validator';
 import { ResourceException } from '../../../commons/exceptions/resource.exception';
+import { AdministrativeGenderEnum } from 'fhirtypes/dist/r4/enums';
 
-import { administrativeGenders } from '../../utils/administrative-genders.util';
+const administrativeGenderValues: ReadonlyArray<string> = Object.values(AdministrativeGenderEnum);
 
 export const modelFields = createResourceDefinition<IPatient>([
   {
@@ -37,7 +38,7 @@ export const modelFields = createResourceDefinition<IPatient>([
     type: 'code',
     isArray: false,
     isRequired: false,
-    enumValues: administrativeGenders,
+    enumValues: administrativeGenderValues,
   },
   {
     name: 'birthDate',

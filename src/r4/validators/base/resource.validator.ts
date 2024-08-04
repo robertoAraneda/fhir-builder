@@ -23,6 +23,6 @@ export type ResourceValidatorType = {
   Patient: (args: IGenericObject) => ValReturnType;
 };
 
-export const ResourceValidator: ResourceValidatorType = {
+export const ResourceValidator = {
   Patient: PatientVal,
 };

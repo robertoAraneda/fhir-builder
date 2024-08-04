@@ -1,8 +1,9 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
 import { IAttachment } from 'fhirtypes/dist/r4';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('Attachment FHIR R4', () => {
-  const { Attachment, Validator } = fhirR4();
+  const { Attachment, Validator } = contextR4();
 
   it('should be able to validate a new attachment [new Attachment()]', async () => {
     const item = new Attachment({
@@ -66,7 +67,7 @@ describe('Attachment FHIR R4', () => {
       },
     };
 
-    const { error } = Validator.Attachment(item);
+    const { error } = conformanceValidation(item, 'Attachment');
     expect(error).toBeNull();
   });
 
@@ -110,7 +111,7 @@ describe('Attachment FHIR R4', () => {
 
     const attachments = [item1, item2, item3];
 
-    const { error } = Validator.Attachment(attachments);
+    const { error } = conformanceValidation(attachments, 'Attachment');
     expect(error).toBeNull();
   });
 
@@ -155,7 +156,7 @@ describe('Attachment FHIR R4', () => {
       wrongProperty: 'wrong',
     };
 
-    const { error } = Validator.Attachment(item);
+    const { error } = conformanceValidation(item, 'Attachment');
     expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: Attachment.");
   });
 
@@ -178,7 +179,7 @@ describe('Attachment FHIR R4', () => {
       },
     };
 
-    const { error } = Validator.Attachment(item);
+    const { error } = conformanceValidation(item, 'Attachment');
     expect(error).toBe(
       'ConstraintException. If the Attachment has data, it SHALL have a contentType (att-1). Path: Attachment',
     );

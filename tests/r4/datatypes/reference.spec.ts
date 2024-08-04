@@ -1,7 +1,8 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('Reference FHIR R4', () => {
-  const { Reference, Validator } = fhirR4();
+  const { Reference, Validator } = contextR4();
 
   it('should be able to create a new reference instance and validate with correct data [new Reference()]', async () => {
     const item = new Reference({
@@ -165,7 +166,7 @@ describe('Reference FHIR R4', () => {
       wrongProperty: 'wrongProperty', // wrong property
     };
 
-    const { error } = Validator.Reference(item);
+    const { error } = conformanceValidation(item, 'Reference');
 
     expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: Reference.");
   });

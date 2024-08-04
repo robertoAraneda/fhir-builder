@@ -1,9 +1,8 @@
-import { IBuildable } from '../base/buildable.interface';
-import { Meta } from '../../../models/datatypes/meta.model';
-import { IElementBuilder } from './element-builder.interface';
 import { ICoding, IElement } from 'fhirtypes/dist/r4';
-
-export type MetaParamsExtensionType = 'lastUpdated' | 'source' | 'versionId';
+import { IElementBuilder } from './element-builder.interface';
+import { IBuildable } from '../base';
+import { Meta } from '../../../models';
+import { MetaParamsExtensionType } from '../../../types';
 
 export interface IMetaBuilder extends IBuildable<Meta>, IElementBuilder {
   addParamExtension(param: MetaParamsExtensionType, extension: IElement): this;

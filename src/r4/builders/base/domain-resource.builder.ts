@@ -1,6 +1,6 @@
-import { IDomainResourceBuilder } from '../../interfaces/builders/datatypes/domain-resource-builder.interface';
 import { ResourceBuilder } from './resource.builder';
 import { IDomainResource, IExtension, INarrative } from 'fhirtypes/dist/r4';
+import { IDomainResourceBuilder } from '../../interfaces';
 
 export class DomainResourceBuilder extends ResourceBuilder implements IDomainResourceBuilder {
   private readonly domainResource: IDomainResource;

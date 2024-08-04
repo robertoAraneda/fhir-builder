@@ -1,13 +1,11 @@
 import { ElementBuilder } from './element.builder';
-import {
-  HumanNameMultipleParamType,
-  HumanNameParamType,
-  HumanNameBuilderInterface,
-} from '../../interfaces/builders/datatypes/human-name-builder.interface';
+import { IHumanNameBuilder } from '../../interfaces';
 import { IElement, IHumanName, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
-import { HumanName } from '../../models/datatypes/human-name.model';
+import { HumanName } from '../../models';
+import { HumanNameParamType } from '../../types';
+import { HumanNameArrayParamType } from '../../types';
 
-export class HumanNameBuilder extends ElementBuilder implements HumanNameBuilderInterface {
+export class HumanNameBuilder extends ElementBuilder implements IHumanNameBuilder {
   private readonly humanName: IHumanName;
 
   constructor() {
@@ -18,11 +16,11 @@ export class HumanNameBuilder extends ElementBuilder implements HumanNameBuilder
 
   addParamExtension<T extends HumanNameParamType>(
     param: T,
-    extension: T extends 'given' | 'prefix' | 'suffix' ? IElement[] : IElement,
+    extension: T extends HumanNameArrayParamType ? IElement[] : IElement,
   ): this {
     const includes = ['given', 'prefix', 'suffix'];
     if (includes.includes(param)) {
-      const localMultipleParam = param as HumanNameMultipleParamType;
+      const localMultipleParam = param as HumanNameArrayParamType;
       this.humanName[`_${localMultipleParam}`] = extension as IElement[];
     } else {
       const localParam = param as Exclude<HumanNameParamType, 'given' | 'prefix' | 'suffix'>;

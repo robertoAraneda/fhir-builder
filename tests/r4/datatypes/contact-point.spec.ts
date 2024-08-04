@@ -1,8 +1,9 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
 import { IContactPoint } from 'fhirtypes/dist/r4';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('ContactPoint FHIR R4', () => {
-  const { ContactPoint, Validator } = fhirR4();
+  const { ContactPoint, Validator } = contextR4();
 
   it('should be able to create a new contact point and validate with correct data [new ContactPoint()]', async () => {
     const item = new ContactPoint({
@@ -34,7 +35,7 @@ describe('ContactPoint FHIR R4', () => {
       use: 'home',
     };
 
-    const { error } = Validator.ContactPoint(item);
+    const { error } = conformanceValidation(item, 'ContactPoint');
     expect(error).toBeNull();
   });
 
@@ -48,7 +49,7 @@ describe('ContactPoint FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { error } = Validator.ContactPoint(item);
+    const { error } = conformanceValidation(item, 'ContactPoint');
     expect(error).toBe("InvalidFieldException. Field(s): 'test'. Path: ContactPoint.");
   });
 

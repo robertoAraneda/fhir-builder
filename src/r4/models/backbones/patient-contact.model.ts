@@ -9,8 +9,8 @@ import {
   IPeriod,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { BackboneElement } from '../base/backbone-element.model';
-import { PatientContactBuilder } from '../../builders/backbones/patient-contact.builder';
+import { BackboneElement } from '../base';
+import { PatientContactBuilder } from '../../builders';
 import { IGenericObject } from '../../interfaces';
 import { ValReturnType } from '../../validators/base/datatype.validator';
 import { PatientContactValidator } from '../../validators/backbones/patient-contact.validator';

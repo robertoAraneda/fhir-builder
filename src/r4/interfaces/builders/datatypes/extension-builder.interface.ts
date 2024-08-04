@@ -1,6 +1,3 @@
-import { IBuildable } from '../base/buildable.interface';
-import { Extension } from '../../../models/datatypes/extension.model';
-import { IElementBuilder } from './element-builder.interface';
 import {
   IAddress,
   IAttachment,
@@ -15,60 +12,41 @@ import {
   IQuantity,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { ExtensionBuilder } from '../../../builders/datatypes/extension.builder';
-
-export type Build = { build: () => Extension };
-
-export type ExtensionParamType =
-  | 'valueId'
-  | 'valueBoolean'
-  | 'valueCanonical'
-  | 'valueCode'
-  | 'valueDate'
-  | 'valueDateTime'
-  | 'valueDecimal'
-  | 'valueInstant'
-  | 'valueInteger'
-  | 'valueMarkdown'
-  | 'valueOid'
-  | 'valuePositiveInt'
-  | 'valueString'
-  | 'valueTime'
-  | 'valueUnsignedInt'
-  | 'valueUri'
-  | 'valueUrl'
-  | 'valueUuid';
+import { Extension } from '../../../models';
+import { IBuildable } from '../base';
+import { IElementBuilder } from './element-builder.interface';
+import { BuildType, ExtensionParamType } from '../../../types';
 
 export interface IExtensionBuilder extends IBuildable<Extension>, IElementBuilder {
-  addParamExtension<T extends ExtensionParamType>(param: T, extension: IElement): Build;
-  setUrl(url: string): ExtensionBuilder;
-  setValueId(valueId: string): Build;
-  setValueAddress(valueAddress: IAddress): Build;
-  setValueAttachment(valueAttachment: IAttachment): Build;
-  setValueBoolean(valueBoolean: boolean): Build;
-  setValueCanonical(valueCanonical: string): Build;
-  setValueCode(valueCode: string): Build;
-  setValueCodeableConcept(valueCodeableConcept: ICodeableConcept): Build;
-  setValueCoding(valueCoding: ICoding): Build;
-  setValueContactPoint(valueContactPoint: IContactPoint): Build;
-  setValueDate(valueDate: string): Build;
-  setValueDateTime(valueDateTime: string): Build;
-  setValueDecimal(valueDecimal: number): Build;
-  setValueIdentifier(valueIdentifier: IIdentifier): Build;
-  setValueInstant(valueInstant: string): Build;
-  setValueInteger(valueInteger: number): Build;
-  setValueMarkdown(valueMarkdown: string): Build;
-  setValueString(valueString: string): Build;
-  setValueTime(valueTime: string): Build;
-  setValueUnsignedInt(valueUnsignedInt: number): Build;
-  setValueUri(valueUri: string): Build;
-  setValueUrl(valueUrl: string): Build;
-  setValueUuid(valueUuid: string): Build;
-  setValueOid(valueOid: string): Build;
-  setValuePeriod(valuePeriod: IPeriod): Build;
-  setValuePositiveInt(valuePositiveInt: number): Build;
-  setValueQuantity(valueQuantity: IQuantity): Build;
-  setValueReference(valueReference: IReference): Build;
-  setValueMeta(valueMeta: IMeta): Build;
-  setValueHumanName(valueHumanName: IHumanName): Build;
+  addParamExtension(param: ExtensionParamType, extension: IElement): BuildType;
+  setUrl(url: string): this;
+  setValueId(valueId: string): BuildType;
+  setValueAddress(valueAddress: IAddress): BuildType;
+  setValueAttachment(valueAttachment: IAttachment): BuildType;
+  setValueBoolean(valueBoolean: boolean): BuildType;
+  setValueCanonical(valueCanonical: string): BuildType;
+  setValueCode(valueCode: string): BuildType;
+  setValueCodeableConcept(valueCodeableConcept: ICodeableConcept): BuildType;
+  setValueCoding(valueCoding: ICoding): BuildType;
+  setValueContactPoint(valueContactPoint: IContactPoint): BuildType;
+  setValueDate(valueDate: string): BuildType;
+  setValueDateTime(valueDateTime: string): BuildType;
+  setValueDecimal(valueDecimal: number): BuildType;
+  setValueIdentifier(valueIdentifier: IIdentifier): BuildType;
+  setValueInstant(valueInstant: string): BuildType;
+  setValueInteger(valueInteger: number): BuildType;
+  setValueMarkdown(valueMarkdown: string): BuildType;
+  setValueString(valueString: string): BuildType;
+  setValueTime(valueTime: string): BuildType;
+  setValueUnsignedInt(valueUnsignedInt: number): BuildType;
+  setValueUri(valueUri: string): BuildType;
+  setValueUrl(valueUrl: string): BuildType;
+  setValueUuid(valueUuid: string): BuildType;
+  setValueOid(valueOid: string): BuildType;
+  setValuePeriod(valuePeriod: IPeriod): BuildType;
+  setValuePositiveInt(valuePositiveInt: number): BuildType;
+  setValueQuantity(valueQuantity: IQuantity): BuildType;
+  setValueReference(valueReference: IReference): BuildType;
+  setValueMeta(valueMeta: IMeta): BuildType;
+  setValueHumanName(valueHumanName: IHumanName): BuildType;
 }

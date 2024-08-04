@@ -4,16 +4,21 @@
   "compilerOptions": {
     "lib": ["es2022", "DOM"],
     "target": "ES2022",
-    "module": "commonjs",
+    "module": "CommonJS",
     "declaration": true,
     "outDir": "./lib",
     "strict": true,
+    "types": ["@types/jest", "@types/node"],
     "strictPropertyInitialization": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+    }
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "lib"]
 }

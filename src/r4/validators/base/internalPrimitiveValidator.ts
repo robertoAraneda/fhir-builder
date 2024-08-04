@@ -118,9 +118,10 @@ export const OidValidator = (value: string, path: string) => {
   }
 };
 
-export const StringValidator = (value: string, path: string) => {
+export const StringValidator = (value: any, path: string) => {
   // regex for ^[ \\r\\n\\t\\S]+$
   const regex = /^[ \r\n\t\S]+$/;
+
   if (!regex.test(value)) {
     throw new Error(`Invalid string: ${value} at path: ${path}`);
   }
@@ -232,7 +233,4 @@ export const InternalPrimitiveValidator: InternalPrimitiveValidatorType = {
   url: UrlValidator,
   uuid: UuidValidator,
 };
-
-export const primitiveValidatorAttributes = Object.keys(InternalPrimitiveValidator);
-
 // const XhtmlValidator = (value: string, path: string) => {};

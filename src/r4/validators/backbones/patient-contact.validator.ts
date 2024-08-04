@@ -1,10 +1,11 @@
-import { createBackboneDefinition } from '../base/definitions';
-import { IPatientContact } from 'fhirtypes/dist/r4';
 import assert from 'node:assert';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
+import { IPatientContact } from 'fhirtypes/dist/r4';
+import { AdministrativeGenderEnum } from 'fhirtypes/dist/r4/enums';
 import { BaseValidator } from '../base/base.validator';
+import { createBackboneDefinition } from '../base/definitions';
+import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 
-import { administrativeGenders } from '../../utils/administrative-genders.util';
+const administrativeGendersValues = Object.values(AdministrativeGenderEnum);
 
 export const modelFields = createBackboneDefinition<IPatientContact>([
   {
@@ -36,7 +37,7 @@ export const modelFields = createBackboneDefinition<IPatientContact>([
     type: 'code',
     isArray: false,
     isRequired: false,
-    enumValues: administrativeGenders,
+    enumValues: administrativeGendersValues,
   },
   {
     name: 'organization',

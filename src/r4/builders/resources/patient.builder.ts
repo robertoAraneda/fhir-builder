@@ -1,8 +1,3 @@
-import { DomainResourceBuilder } from '../base/domain-resource.builder';
-import {
-  IPatientBuilder,
-  PatientParamExtensionType,
-} from '../../interfaces/builders/resources/patient-builder.interface';
 import {
   AdministrativeGenderType,
   IAddress,
@@ -18,17 +13,29 @@ import {
   IPatientLink,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { Patient } from '../../models/resources/patient.model';
+import { DomainResourceBuilder } from '../base';
+import { IPatientBuilder } from '../../interfaces';
+import { PatientParamExtensionType } from '../../types';
+import { Patient } from '../../models';
 
 export class PatientBuilder extends DomainResourceBuilder implements IPatientBuilder {
-  private readonly patient: IPatient;
+  private patient: IPatient;
 
   constructor() {
     super();
     this.patient = {} as IPatient;
   }
 
-  addParamExtension<T extends PatientParamExtensionType>(param: T, extension: IElement): this {
+  fromJSON<T extends IPatient>(json: T | string): this {
+    if (typeof json === 'string') {
+      this.patient = JSON.parse(json);
+    } else {
+      this.patient = json;
+    }
+    return this;
+  }
+
+  addParamExtension(param: PatientParamExtensionType, extension: IElement): this {
     this.patient[`_${param}`] = extension;
 
     return this;

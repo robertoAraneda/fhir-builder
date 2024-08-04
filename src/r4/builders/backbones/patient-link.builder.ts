@@ -1,7 +1,7 @@
-import { BackboneElementBuilder } from '../base/backbone-element.builder';
-import { IPatientLinkBuilder } from '../../interfaces/builders/backbones/patient-link-builder.interface';
 import { IElement, IPatientLink, IReference, LinkTypeType } from 'fhirtypes/dist/r4';
-import { PatientLink } from '../../models/backbones/patient-link.model';
+import { BackboneElementBuilder } from '../base';
+import { IPatientLinkBuilder } from '../../interfaces';
+import { PatientLink } from '../../models';
 
 export class PatientLinkBuilder extends BackboneElementBuilder implements IPatientLinkBuilder {
   private readonly patientLink: IPatientLink;

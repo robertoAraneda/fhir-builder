@@ -1,5 +1,5 @@
 import { IElement, IExtension } from 'fhirtypes/dist/r4';
-import { IElementBuilder } from '../../interfaces/builders/datatypes/element-builder.interface';
+import { IElementBuilder } from '../../interfaces';
 
 export class ElementBuilder implements IElementBuilder {
   private readonly element: IElement;

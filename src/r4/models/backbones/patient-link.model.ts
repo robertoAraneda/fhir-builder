@@ -1,6 +1,6 @@
 import { IElement, IPatientLink, IReference, LinkTypeType } from 'fhirtypes/dist/r4';
-import { BackboneElement } from '../base/backbone-element.model';
-import { PatientLinkBuilder } from '../../builders/backbones/patient-link.builder';
+import { BackboneElement } from '../base';
+import { PatientLinkBuilder } from '../../builders';
 import { IGenericObject } from '../../interfaces';
 import { ValReturnType } from '../../validators/base/datatype.validator';
 import { PatientLinkValidator } from '../../validators/backbones/patient-link.validator';
@@ -41,7 +41,7 @@ export class PatientLink extends BackboneElement implements IPatientLink {
     return new PatientLinkBuilder();
   }
 
-  constructor(args: IPatientLink) {
+  constructor(args?: IPatientLink) {
     super();
     Object.assign(this, args);
   }

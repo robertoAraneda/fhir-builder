@@ -1,9 +1,9 @@
-import { IdentifierBuilderInterface } from '../../interfaces/builders/datatypes/identifier-builder.interface';
-import { ElementBuilder } from './element.builder';
 import { ICodeableConcept, IdentifierUseType, IElement, IIdentifier, IPeriod, IReference } from 'fhirtypes/dist/r4';
+import { ElementBuilder } from './element.builder';
+import { IIdentifierBuilder } from '../../interfaces';
 import { Identifier } from '../../models';
 
-export class IdentifierBuilder extends ElementBuilder implements IdentifierBuilderInterface {
+export class IdentifierBuilder extends ElementBuilder implements IIdentifierBuilder {
   private readonly identifier: IIdentifier;
 
   constructor() {

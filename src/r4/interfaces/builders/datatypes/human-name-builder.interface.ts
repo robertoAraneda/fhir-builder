@@ -1,14 +1,11 @@
-import { HumanNameBuilder } from '../../../builders/datatypes/human-name.builder';
-import { IBuildable } from '../base/buildable.interface';
-import { IElement, IHumanName, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
+import { IElement, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
+import { IBuildable } from '../base';
 import { IElementBuilder } from './element-builder.interface';
-import { HumanName } from '../../../models/datatypes/human-name.model';
+import { HumanName } from '../../../models';
+import { HumanNameParamType as Type, HumanNameArrayParamType as ArrayType } from '../../../types';
 
-export type HumanNameParamType = 'use' | 'text' | 'family' | 'given' | 'prefix' | 'suffix';
-export type HumanNameMultipleParamType = 'given' | 'prefix' | 'suffix';
-
-export interface HumanNameBuilderInterface extends IBuildable<HumanName>, IElementBuilder {
-  addParamExtension(param: HumanNameParamType, extension: IElement | IElement[]): this;
+export interface IHumanNameBuilder extends IBuildable<HumanName>, IElementBuilder {
+  addParamExtension<T extends Type>(param: T, extension: T extends ArrayType ? IElement[] : IElement): this;
   setUse(value: NameUseType): this;
   setText(value: string): this;
   setFamily(value: string): this;

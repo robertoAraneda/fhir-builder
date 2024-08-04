@@ -1,7 +1,7 @@
 import { AddressTypeType, AddressUseType, IAddress, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { AddressBuilder } from '../../builders';
+import { AddressBuilder } from '@/r4/builders/datatypes/address.builder';
 import { Element } from '../base/element.model';
-import { DatatypeValidator, ValReturnType } from '../../validators/base/datatype.validator';
+import { ValReturnType } from '../../validators/base/datatype.validator';
 import { IGenericObject } from '../../interfaces';
 import { AddressValidator } from '../../validators/datatypes/address.validator';
 
@@ -11,7 +11,7 @@ export class Address extends Element implements IAddress {
     Object.assign(this, args);
   }
 
-  toJson(): Address {
+  toJson(): { [key: string]: any } {
     return JSON.parse(JSON.stringify(this));
   }
 

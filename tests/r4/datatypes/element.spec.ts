@@ -1,8 +1,9 @@
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
 import { IElement } from 'fhirtypes/dist/r4';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('Attachment FHIR R4', () => {
-  const { Validator } = fhirR4();
+  const { Validator } = contextR4();
 
   it('should be able to validate a new attachment [IAttachment]', async () => {
     const item: IElement = {
@@ -15,7 +16,7 @@ describe('Attachment FHIR R4', () => {
       ],
     };
 
-    const { error } = Validator.Element(item);
+    const { error } = conformanceValidation(item, 'Element');
     expect(error).toBeNull();
   });
 
@@ -25,7 +26,7 @@ describe('Attachment FHIR R4', () => {
       wrongProperty: 'wrong',
     };
 
-    const { error } = Validator.Element(item);
+    const { error } = conformanceValidation(item, 'Element');
     expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: Element.");
   });
 
@@ -40,7 +41,7 @@ describe('Attachment FHIR R4', () => {
       ],
     };
 
-    const { error } = Validator.Element(item);
+    const { error } = conformanceValidation(item, 'Element');
     expect(error).toBe("RequiredFieldException. Field: 'url'. Path: Element.extension[0].url");
   });
 });

@@ -1,8 +1,9 @@
 import { IAddress } from 'fhirtypes/dist/r4';
-import { fhirR4 } from '../../../src';
+import { contextR4 } from '../../../src';
+import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
 
 describe('Address FHIR R4', () => {
-  const { Address, Validator } = fhirR4();
+  const { Address, Validator } = contextR4();
 
   it('should be able create a new address [new Address()]', async () => {
     const item = new Address({
@@ -51,7 +52,7 @@ describe('Address FHIR R4', () => {
     const adresses = [item1, item2];
 
     expect(adresses).toBeDefined();
-    const { error } = Validator.Address(adresses);
+    const { error } = conformanceValidation(adresses, 'Address');
     expect(error).toBeNull();
   });
 
@@ -61,7 +62,7 @@ describe('Address FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { error } = Validator.Address(item);
+    const { error } = conformanceValidation(item, 'Address');
     expect(error).toBe("InvalidFieldException. Field(s): 'test'. Path: Address.");
   });
 
@@ -71,7 +72,7 @@ describe('Address FHIR R4', () => {
       line: 'not an array', // wrong property
     };
 
-    const { error } = Validator.Address(item);
+    const { error } = conformanceValidation(item, 'Address');
     expect(error).toBe('Field line must be an array in Address');
   });
 
@@ -81,7 +82,7 @@ describe('Address FHIR R4', () => {
       use: 'invalid code',
     };
 
-    const { error } = Validator.Address(item);
+    const { error } = conformanceValidation(item, 'Address');
     expect(error).toBe('Field must be one of [home, work, temp, old, billing] in Address.use');
   });
 
@@ -91,7 +92,7 @@ describe('Address FHIR R4', () => {
       type: 'invalid code',
     };
 
-    const { error } = Validator.Address(item);
+    const { error } = conformanceValidation(item, 'Address');
     expect(error).toBe('Field must be one of [postal, physical, both] in Address.type');
   });
 
@@ -157,7 +158,7 @@ describe('Address FHIR R4', () => {
       },
     };
 
-    const { error } = Validator.Address(item);
+    const { error } = conformanceValidation(item, 'Address');
     expect(error).toBe('Invalid dateTime: wrong date at path: Address._use.extension[2].valueDateTime');
   });
 });
