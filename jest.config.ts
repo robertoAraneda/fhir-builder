@@ -18,10 +18,6 @@ export default {
     },
   },
   preset: 'ts-jest',
-  moduleDirectories: ['node_modules', '<rootDir>'],
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-  },
   rootDir: '.',
   testEnvironment: 'node',
   testRegex: '.*\\.spec\\.ts$',
