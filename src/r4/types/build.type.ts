@@ -1,3 +1,3 @@
-import { Extension } from '@/r4/models/datatypes';
+import { Extension } from '../models';
 
 export type BuildType = { build: () => Extension };
