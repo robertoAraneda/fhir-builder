@@ -1,8 +1,8 @@
-import { CreateContext } from '../../../src';
+import { fhirR4 } from '../../../src';
 import { IContactPoint } from 'fhirtypes/dist/r4';
 
 describe('ContactPoint FHIR R4', () => {
-  const { ContactPoint, Validator } = new CreateContext().forR4();
+  const { ContactPoint, Validator } = fhirR4();
 
   it('should be able to create a new contact point and validate with correct data [new ContactPoint()]', async () => {
     const item = new ContactPoint({
@@ -21,7 +21,7 @@ describe('ContactPoint FHIR R4', () => {
 
     expect(item).toBeDefined();
 
-    const { error } = item.isValid();
+    const { error } = item.validate();
     expect(error).toBeNull();
   });
 
@@ -49,7 +49,7 @@ describe('ContactPoint FHIR R4', () => {
     };
 
     const { error } = Validator.ContactPoint(item);
-    expect(error).toBe('InvalidFieldException: Fields [test] are not allowed in ContactPoint.');
+    expect(error).toBe("InvalidFieldException. Field(s): 'test'. Path: ContactPoint.");
   });
 
   it('should be able to create a new contact point using builder methods', async () => {
@@ -64,7 +64,7 @@ describe('ContactPoint FHIR R4', () => {
 
     expect(item).toBeDefined();
 
-    const { error } = item.isValid();
+    const { error } = item.validate();
     expect(error).toBeNull();
 
     expect(item).toEqual({

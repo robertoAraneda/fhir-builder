@@ -1,6 +1,7 @@
 import { ContactPointSystemType, ContactPointUseType, IContactPoint, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
 import { ContactPointBuilder } from '../../builders/datatypes/contact-point.builder';
+import { ValReturnType, DatatypeValidator } from '../../validators/base/datatype.validator';
 import { IGenericObject } from '../../interfaces';
 import { CodingValidator } from '../../validators/datatypes/coding.validator';
 import { ContactPointValidator } from '../../validators/datatypes/contact-point.validator';
@@ -81,20 +82,7 @@ export class ContactPoint extends Element implements IContactPoint {
     return `ContactPoint${JSON.stringify(this.toJson())}`;
   }
 
-  isValid(): { error: string | null } {
-    try {
-      ContactPointValidator(this);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
-  static builder(): ContactPointBuilder {
-    return new ContactPointBuilder();
-  }
-
-  static validate(args: IGenericObject): { error: string | null } {
+  private isValid(args: IGenericObject): ValReturnType {
     try {
       ContactPointValidator(args);
       return { error: null };
@@ -103,7 +91,16 @@ export class ContactPoint extends Element implements IContactPoint {
     }
   }
 
-  constructor(args: IContactPoint) {
+  validate(): ValReturnType {
+    const { error } = this.isValid(this);
+    return { error };
+  }
+
+  static builder(): ContactPointBuilder {
+    return new ContactPointBuilder();
+  }
+
+  constructor(args?: IContactPoint) {
     super();
     Object.assign(this, args);
   }

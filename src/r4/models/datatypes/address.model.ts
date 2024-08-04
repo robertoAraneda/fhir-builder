@@ -1,7 +1,9 @@
 import { AddressTypeType, AddressUseType, IAddress, IElement, IPeriod } from 'fhirtypes/dist/r4';
 import { AddressBuilder } from '../../builders';
-import { Element } from './element.model';
-import { DatatypeValidator as Validator } from '../../utils/datatype.validator';
+import { Element } from '../base/element.model';
+import { DatatypeValidator, ValReturnType } from '../../validators/base/datatype.validator';
+import { IGenericObject } from '../../interfaces';
+import { AddressValidator } from '../../validators/datatypes/address.validator';
 
 export class Address extends Element implements IAddress {
   constructor(args?: IAddress) {
@@ -21,8 +23,17 @@ export class Address extends Element implements IAddress {
     return `Address${JSON.stringify(this.toJson())}`;
   }
 
-  isValid(): { error: string | null } {
-    const { error } = Validator.Address(this);
+  private isValid(args: IGenericObject): ValReturnType {
+    try {
+      AddressValidator(args);
+      return { error: null };
+    } catch (e: any) {
+      return { error: e.message };
+    }
+  }
+
+  validate(): ValReturnType {
+    const { error } = this.isValid(this);
     return { error };
   }
 

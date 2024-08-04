@@ -1,11 +1,9 @@
 import { ICodeableConcept, IdentifierUseType, IElement, IIdentifier, IPeriod, IReference } from 'fhirtypes/dist/r4';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
 import { IdentifierBuilder } from '../../builders/datatypes/identifier.builder';
-import { IdentifierValidator } from '../../validators/datatypes/identifier.validator';
-import { PeriodValidator } from '../../validators/datatypes/period.validator';
+import { ValReturnType } from '../../validators/base/datatype.validator';
 import { IGenericObject } from '../../interfaces';
-import { CodeableConceptValidator } from '../../validators/datatypes/codeable-concept.validator';
-import { HumanNameValidator } from '../../validators/datatypes/human-name.validator';
+import { IdentifierValidator } from '../../validators/datatypes/identifier.validator';
 
 /**
  * @description An identifier intended for computation
@@ -81,20 +79,7 @@ export class Identifier extends Element implements IIdentifier {
     return `Identifier${JSON.stringify(this.toJson())}`;
   }
 
-  isValid(): { error: string | null } {
-    try {
-      IdentifierValidator(this);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
-  static builder(): IdentifierBuilder {
-    return new IdentifierBuilder();
-  }
-
-  static validate(args: IGenericObject): { error: string | null } {
+  private isValid(args: IGenericObject): ValReturnType {
     try {
       IdentifierValidator(args);
       return { error: null };
@@ -103,7 +88,16 @@ export class Identifier extends Element implements IIdentifier {
     }
   }
 
-  constructor(args: IIdentifier) {
+  validate(): ValReturnType {
+    const { error } = this.isValid(this);
+    return { error };
+  }
+
+  static builder(): IdentifierBuilder {
+    return new IdentifierBuilder();
+  }
+
+  constructor(args?: IIdentifier) {
     super();
     Object.assign(this, args);
   }

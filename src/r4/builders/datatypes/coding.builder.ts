@@ -1,5 +1,8 @@
 import { Coding } from '../../models';
-import { CodingBuilderInterface, ParamExtensionType } from '../../interfaces/coding-builder.interface';
+import {
+  CodingBuilderInterface,
+  ParamExtensionType,
+} from '../../interfaces/builders/datatypes/coding-builder.interface';
 import { ElementBuilder } from './element.builder';
 import { ICoding, IElement } from 'fhirtypes/dist/r4';
 

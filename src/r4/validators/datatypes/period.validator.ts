@@ -1,6 +1,7 @@
 import { IPeriod } from 'fhirtypes/dist/r4';
-import { createDatatypeDefinition } from '../../utils/resources';
-import { baseValidator } from '../../utils/base.validator';
+import { createDatatypeDefinition } from '../base/definitions';
+import { BaseValidator } from '../base/base.validator';
+import assert from 'node:assert';
 
 export const modelFields = createDatatypeDefinition<IPeriod>([
   {
@@ -29,7 +30,20 @@ export const modelFields = createDatatypeDefinition<IPeriod>([
   },
 ]);
 
+const ValidateStartEnd = (data: IPeriod, path: string) => {
+  if (data.start && data.end) {
+    if (new Date(data.start) > new Date(data.end)) {
+      throw new Error(`The start date ${data.start} is after the end date ${data.end}`);
+    }
+  }
+};
+
 export const PeriodValidator = (dataToValidate: IPeriod | IPeriod[], path: string = 'Period'): void => {
+  assert(
+    typeof dataToValidate === 'object',
+    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
+  );
+
   if (Array.isArray(dataToValidate)) {
     dataToValidate.forEach((item, index) => {
       PeriodValidator(item, `${path}[${index}]`);
@@ -37,5 +51,6 @@ export const PeriodValidator = (dataToValidate: IPeriod | IPeriod[], path: strin
     return;
   }
 
-  baseValidator(dataToValidate, modelFields, path);
+  ValidateStartEnd(dataToValidate, path);
+  BaseValidator(dataToValidate, modelFields, path);
 };

@@ -1,7 +1,7 @@
 import {
   AttachmentBuilderInterface,
   AttachmentParamExtensionType,
-} from '../../interfaces/attachment-builder.interface';
+} from '../../interfaces/builders/datatypes/attachment-builder.interface';
 import { ElementBuilder } from './element.builder';
 import { IAttachment, IElement } from 'fhirtypes/dist/r4';
 import { Attachment } from '../../models/datatypes/attachment.model';

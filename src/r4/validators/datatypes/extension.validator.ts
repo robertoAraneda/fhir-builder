@@ -1,7 +1,9 @@
 import { IExtension } from 'fhirtypes/dist/r4';
 import { ConstraintException } from '../../../commons/exceptions/constraint.exception';
-import { createDatatypeDefinition } from '../../utils/resources';
-import { baseValidator } from '../../utils/base.validator';
+import { createDatatypeDefinition } from '../base/definitions';
+import { BaseValidator } from '../base/base.validator';
+import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
+import assert from 'node:assert';
 
 export const extensionAttributes: string[] = [
   'id',
@@ -88,6 +90,18 @@ export const modelFields = createDatatypeDefinition<IExtension>([
   {
     name: 'valueCode',
     type: 'code',
+    isRequired: false,
+    isArray: false,
+  },
+  {
+    name: 'valueCoding',
+    type: 'Coding',
+    isRequired: false,
+    isArray: false,
+  },
+  {
+    name: 'valueQuantity',
+    type: 'Quantity',
     isRequired: false,
     isArray: false,
   },
@@ -303,8 +317,9 @@ export const modelFields = createDatatypeDefinition<IExtension>([
   },
 ]);
 
-const validateConstraints = (args: IExtension, path: string): void => {
+const ValidateConstraints = (args: IExtension, path: string): void => {
   // + Rule: Must have either extensions or value[x], not both
+  // remove undefined keys
 
   const keys = Object.keys(args) as (keyof IExtension)[];
   const included = ['id', 'url'] as (keyof IExtension)[];
@@ -316,18 +331,25 @@ const validateConstraints = (args: IExtension, path: string): void => {
   });
 
   if (keys.length > 1 && keys.includes('extension')) {
-    throw new ConstraintException('Extension', `must have either extensions or value[x], not both for ${path}`);
+    throw new ConstraintException(path, `Must have either extensions or value[x], not both.`);
   }
 };
 
 export const ExtensionValidator = (dataToValidate: IExtension | IExtension[], path: string = 'Extension'): void => {
-  if (Array.isArray(dataToValidate)) {
-    dataToValidate.forEach((item, index) => {
+  assert(
+    typeof dataToValidate === 'object',
+    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
+  );
+
+  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
+
+  if (Array.isArray(cleanObject)) {
+    cleanObject.forEach((item, index) => {
       ExtensionValidator(item, `${path}[${index}]`);
     });
     return;
   }
 
-  validateConstraints(dataToValidate, path);
-  baseValidator(dataToValidate, modelFields, path);
+  ValidateConstraints(cleanObject, path);
+  BaseValidator(cleanObject, modelFields, path);
 };

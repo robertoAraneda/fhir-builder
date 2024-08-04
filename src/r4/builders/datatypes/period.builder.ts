@@ -1,7 +1,7 @@
 import { IElement, IPeriod } from 'fhirtypes/dist/r4';
 import { ElementBuilder } from './element.builder';
 import { Period } from '../../models/datatypes/period.model';
-import { PeriodBuilderInterface } from '../../interfaces/period-builder.interface';
+import { PeriodBuilderInterface } from '../../interfaces/builders/datatypes/period-builder.interface';
 
 export class PeriodBuilder extends ElementBuilder implements PeriodBuilderInterface {
   private readonly period: IPeriod;

@@ -1,8 +1,9 @@
-import { createDatatypeDefinition } from '../../utils/resources';
+import { createDatatypeDefinition } from '../base/definitions';
 import { IAttachment } from 'fhirtypes/dist/r4';
 import { ConstraintException } from '../../../commons/exceptions/constraint.exception';
 import assert from 'node:assert';
-import { baseValidator } from '../../utils/base.validator';
+import { BaseValidator } from '../base/base.validator';
+import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 
 export const modelKeys = createDatatypeDefinition<IAttachment>([
   {
@@ -112,13 +113,14 @@ function ValidateConstraint(payload: IAttachment): void {
 
 export const AttachmentValidator = (payload: IAttachment | IAttachment[], path: string = 'Attachment'): void => {
   assert(typeof payload === 'object', `Expected Attachment to be of type object, received ${typeof payload}`);
-  if (Array.isArray(payload)) {
-    payload.forEach((p, index) => {
+  const cleanObject = RemoveUndefinedAttributes(payload);
+  if (Array.isArray(cleanObject)) {
+    cleanObject.forEach((p, index) => {
       AttachmentValidator(p, `${path}[${index}]`);
     });
     return;
   }
 
-  baseValidator(payload, modelKeys, path);
-  ValidateConstraint(payload);
+  BaseValidator(cleanObject, modelKeys, path);
+  ValidateConstraint(cleanObject);
 };

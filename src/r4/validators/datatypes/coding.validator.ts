@@ -1,6 +1,8 @@
-import { createDatatypeDefinition } from '../../utils/resources';
+import { createDatatypeDefinition } from '../base/definitions';
 import { ICoding } from 'fhirtypes/dist/r4';
-import { baseValidator } from '../../utils/base.validator';
+import { BaseValidator } from '../base/base.validator';
+import assert from 'node:assert';
+import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 
 export const modelFields = createDatatypeDefinition<ICoding>([
   {
@@ -66,12 +68,18 @@ export const modelFields = createDatatypeDefinition<ICoding>([
 ]);
 
 export const CodingValidator = (dataToValidate: ICoding | ICoding[], path: string = 'Coding'): void => {
-  if (Array.isArray(dataToValidate)) {
-    dataToValidate.forEach((item, index) => {
+  assert(
+    typeof dataToValidate === 'object',
+    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
+  );
+  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
+
+  if (Array.isArray(cleanObject)) {
+    cleanObject.forEach((item, index) => {
       CodingValidator(item, `${path}[${index}]`);
     });
     return;
   }
 
-  baseValidator(dataToValidate, modelFields, path);
+  BaseValidator(cleanObject, modelFields, path);
 };

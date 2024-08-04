@@ -1,8 +1,10 @@
-import { createDatatypeDefinition } from '../../utils/resources';
+import { createDatatypeDefinition } from '../base/definitions';
 import { IReference, ResourceType } from 'fhirtypes/dist/r4';
-import { baseValidator } from '../../utils/base.validator';
+import { BaseValidator } from '../base/base.validator';
 import { ReferenceException } from '../../../commons/exceptions/reference.exception';
 import { resourceListUtil } from '../../../commons/utils/resource-list.util';
+import assert from 'node:assert';
+import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 
 export const modelFields = createDatatypeDefinition<IReference>([
   {
@@ -49,11 +51,7 @@ export const modelFields = createDatatypeDefinition<IReference>([
   },
 ]);
 
-export const ValidateReferenceFormat = (
-  value: string,
-  resources: ResourceType[] | 'all' | null = null,
-  path?: string,
-): void => {
+export const ValidateReferenceFormat = (value: string, path?: string): void => {
   if (value.startsWith('#')) return;
   if (value.startsWith('urn:')) return;
   if (value.startsWith('urn:')) return;
@@ -66,42 +64,22 @@ export const ValidateReferenceFormat = (
   if (!regex.test(value)) {
     throw new ReferenceException(value, null, path);
   }
-
-  if (!resources) return;
-
-  let internalResources = [];
-  if (resources === 'all') {
-    internalResources = resourceListUtil as ResourceType[];
-  } else {
-    internalResources = resources;
-  }
-
-  const [resourceType] = value.split('/');
-
-  const resourceTypeForCheck = resourceType as ResourceType;
-
-  if (!internalResources.includes(resourceTypeForCheck)) {
-    throw new ReferenceException(resourceType, resources, path);
-  }
 };
 
-const ValidateConstraint = (payload: IReference, resources: any, path: string): void => {
-  // validate reference string format
-  if (payload.reference) ValidateReferenceFormat(payload.reference, resources, `${path}.reference`);
-};
+export const ReferenceValidator = (dataToValidate: IReference | IReference[], path: string = 'Reference'): void => {
+  assert(
+    typeof dataToValidate === 'object',
+    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
+  );
+  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
 
-export const ReferenceValidator = (
-  args: IReference | IReference[],
-  resources: ResourceType[] | 'all' | null = 'all',
-  path: string = 'Reference',
-): void => {
-  if (Array.isArray(args)) {
-    args.forEach((reference, index) => {
-      ReferenceValidator(reference, resources, `${path}[${index}]`);
+  if (Array.isArray(cleanObject)) {
+    cleanObject.forEach((item, index) => {
+      ReferenceValidator(item, `${path}[${index}]`);
     });
     return;
   }
 
-  ValidateConstraint(args, resources, path);
-  baseValidator(args, modelFields, path);
+  if (cleanObject.reference) ValidateReferenceFormat(cleanObject.reference, `${path}.reference`);
+  BaseValidator(cleanObject, modelFields, path);
 };

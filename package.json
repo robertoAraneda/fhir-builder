@@ -42,7 +42,7 @@
     "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^5.4.5",
-    "fhirtypes": "^1.0.25"
+    "fhirtypes": "^1.0.26"
   },
   "files": [
     "lib/**/*",

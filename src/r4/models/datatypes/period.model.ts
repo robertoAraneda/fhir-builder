@@ -1,11 +1,10 @@
 import { IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { PeriodValidator } from '../../validators/datatypes/period.validator';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
 import { PeriodBuilder } from '../../builders';
+import { DatatypeValidator, ValReturnType } from '../../validators/base/datatype.validator';
 import { IGenericObject } from '../../interfaces';
-import { AddressValidator } from '../../validators/datatypes/address.validator';
-import { CodeableConceptValidator } from '../../validators/datatypes/codeable-concept.validator';
 import { IdentifierValidator } from '../../validators/datatypes/identifier.validator';
+import { PeriodValidator } from '../../validators/datatypes/period.validator';
 
 /**
  * @description Time range defined by start and end date/time.
@@ -57,20 +56,7 @@ export class Period extends Element implements IPeriod {
     return `Period${JSON.stringify(this.toJson())}`;
   }
 
-  isValid(): { error: string | null } {
-    try {
-      PeriodValidator(this);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
-  static builder(): PeriodBuilder {
-    return new PeriodBuilder();
-  }
-
-  static validate(args: IGenericObject): { error: string | null } {
+  private isValid(args: IGenericObject): ValReturnType {
     try {
       PeriodValidator(args);
       return { error: null };
@@ -79,7 +65,16 @@ export class Period extends Element implements IPeriod {
     }
   }
 
-  constructor(args: IPeriod) {
+  validate(): ValReturnType {
+    const { error } = this.isValid(this);
+    return { error };
+  }
+
+  static builder(): PeriodBuilder {
+    return new PeriodBuilder();
+  }
+
+  constructor(args?: IPeriod) {
     super();
     Object.assign(this, args);
   }

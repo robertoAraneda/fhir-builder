@@ -1,5 +1,7 @@
 import { IResource } from 'fhirtypes/dist/r4';
-import { baseValidator } from '../../utils/base.validator';
+import { BaseValidator } from '../base/base.validator';
+import assert from 'node:assert';
+import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 
 export const modelFields: ReadonlyArray<any> = [
   {
@@ -45,25 +47,20 @@ export const modelFields: ReadonlyArray<any> = [
     type: 'code',
   },
 ];
-export const resourceAttributes: readonly string[] = [
-  'id',
-  'language',
-  'implicitRules',
-  '_implicitRules',
-  '_language',
-  'meta',
-  'resourceType',
-];
-export const ResourceValidator = (payload: IResource | IResource[], path: string = 'Resource'): void => {
-  if (Array.isArray(payload)) {
-    payload.forEach((p, index) => {
-      ResourceValidator(p, `${path}[${index}]`);
+
+export const ResourceValidator = (dataToValidate: IResource | IResource[], path: string = 'Resource'): void => {
+  assert(
+    typeof dataToValidate === 'object',
+    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
+  );
+  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
+
+  if (Array.isArray(cleanObject)) {
+    cleanObject.forEach((item, index) => {
+      ResourceValidator(item, `${path}[${index}]`);
     });
     return;
   }
-  if (!payload) {
-    throw new Error(`${path} cannot be null or undefined`);
-  }
 
-  baseValidator(payload, modelFields, path);
+  BaseValidator(cleanObject, modelFields, path);
 };

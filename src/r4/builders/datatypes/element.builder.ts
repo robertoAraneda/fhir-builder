@@ -1,7 +1,7 @@
 import { IElement, IExtension } from 'fhirtypes/dist/r4';
-import { ElementBuilderInterface } from '../../interfaces/element-builder.interface';
+import { IElementBuilder } from '../../interfaces/builders/datatypes/element-builder.interface';
 
-export class ElementBuilder implements ElementBuilderInterface {
+export class ElementBuilder implements IElementBuilder {
   private readonly element: IElement;
 
   constructor() {

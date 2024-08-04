@@ -1,7 +1,7 @@
 import { AddressTypeType, AddressUseType, IAddress, IElement, IPeriod } from 'fhirtypes/dist/r4';
 import { Address } from '../../models';
 import { ElementBuilder } from './element.builder';
-import { AddressBuilderInterface } from '../../interfaces/address-builder.interface';
+import { AddressBuilderInterface } from '../../interfaces/builders/datatypes/address-builder.interface';
 
 type ParamExtensionType = 'use' | 'type' | 'text' | 'line' | 'city' | 'district' | 'state' | 'postalCode' | 'country';
 

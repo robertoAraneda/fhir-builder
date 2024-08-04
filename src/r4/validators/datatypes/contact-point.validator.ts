@@ -1,7 +1,9 @@
-import { createDatatypeDefinition } from '../../utils/resources';
+import { createDatatypeDefinition } from '../base/definitions';
 import { IContactPoint } from 'fhirtypes/dist/r4';
 import { ConstraintException } from '../../../commons/exceptions/constraint.exception';
-import { baseValidator } from '../../utils/base.validator';
+import { BaseValidator } from '../base/base.validator';
+import assert from 'node:assert';
+import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 
 export const contactPointSystems = ['phone', 'fax', 'email', 'pager', 'url', 'sms', 'other'];
 export const contactPointUses = ['home', 'work', 'temp', 'old', 'mobile'];
@@ -78,13 +80,19 @@ export const ContactPointValidator = (
   dataToValidate: IContactPoint | IContactPoint[],
   path: string = 'ContactPoint',
 ): void => {
-  if (dataToValidate instanceof Array) {
-    dataToValidate.forEach((item) => {
+  assert(
+    typeof dataToValidate === 'object',
+    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
+  );
+  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
+
+  if (cleanObject instanceof Array) {
+    cleanObject.forEach((item) => {
       ContactPointValidator(item);
     });
     return;
   }
 
-  baseValidator(dataToValidate, modelFields, path);
-  validateConstraint(dataToValidate, path);
+  BaseValidator(cleanObject, modelFields, path);
+  validateConstraint(cleanObject, path);
 };

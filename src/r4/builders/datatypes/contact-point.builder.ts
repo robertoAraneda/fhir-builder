@@ -1,7 +1,7 @@
 import {
   ContactPointBuilderInterface,
   ContactPointParamExtensionType,
-} from '../../interfaces/contact-point-builder.interface';
+} from '../../interfaces/builders/datatypes/contact-point-builder.interface';
 import { ElementBuilder } from './element.builder';
 import { ContactPointSystemType, ContactPointUseType, IContactPoint, IElement, IPeriod } from 'fhirtypes/dist/r4';
 import { ContactPoint } from '../../models';

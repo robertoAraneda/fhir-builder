@@ -1,9 +1,10 @@
 import { IElement, IIdentifier, IReference } from 'fhirtypes/dist/r4';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
 import { ReferenceBuilder } from '../../builders/datatypes/reference.builder';
-import { ReferenceValidator } from '../../validators/datatypes/reference.validator';
+import { DatatypeValidator, ValReturnType } from '../../validators/base/datatype.validator';
 import { IGenericObject } from '../../interfaces';
-import { CodeableConceptValidator } from '../../validators/datatypes/codeable-concept.validator';
+import { PeriodValidator } from '../../validators/datatypes/period.validator';
+import { ReferenceValidator } from '../../validators/datatypes/reference.validator';
 
 export class Reference extends Element implements IReference {
   // Reference attributes
@@ -29,20 +30,7 @@ export class Reference extends Element implements IReference {
     return `Reference${JSON.stringify(this.toJson())}`;
   }
 
-  isValid(): { error?: string } {
-    try {
-      ReferenceValidator(this);
-      return { error: undefined };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
-  static builder(): ReferenceBuilder {
-    return new ReferenceBuilder();
-  }
-
-  static validate(args: IGenericObject): { error: string | null } {
+  private isValid(args: IGenericObject): ValReturnType {
     try {
       ReferenceValidator(args);
       return { error: null };
@@ -51,7 +39,16 @@ export class Reference extends Element implements IReference {
     }
   }
 
-  constructor(args: IReference) {
+  validate(): ValReturnType {
+    const { error } = this.isValid(this);
+    return { error };
+  }
+
+  static builder(): ReferenceBuilder {
+    return new ReferenceBuilder();
+  }
+
+  constructor(args?: IReference) {
     super();
     Object.assign(this, args);
   }

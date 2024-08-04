@@ -1,9 +1,10 @@
 import { ICoding, IElement } from 'fhirtypes/dist/r4';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
 import { CodingBuilder } from '../../builders/datatypes/coding.builder';
-import { CodingValidator } from '../../validators/datatypes/coding.validator';
+import { ValReturnType, DatatypeValidator } from '../../validators/base/datatype.validator';
 import { IGenericObject } from '../../interfaces';
 import { CodeableConceptValidator } from '../../validators/datatypes/codeable-concept.validator';
+import { CodingValidator } from '../../validators/datatypes/coding.validator';
 
 /**
  * @description A reference to a code defined by a terminology system.
@@ -85,20 +86,7 @@ export class Coding extends Element implements ICoding {
     return `Coding${JSON.stringify(this.toJson())}`;
   }
 
-  isValid(): { error: string | null } {
-    try {
-      CodingValidator(this);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
-  static builder(): CodingBuilder {
-    return new CodingBuilder();
-  }
-
-  static validate(args: IGenericObject): { error: string | null } {
+  private isValid(args: IGenericObject): ValReturnType {
     try {
       CodingValidator(args);
       return { error: null };
@@ -107,7 +95,16 @@ export class Coding extends Element implements ICoding {
     }
   }
 
-  constructor(args: ICoding) {
+  validate(): ValReturnType {
+    const { error } = this.isValid(this);
+    return { error };
+  }
+
+  static builder(): CodingBuilder {
+    return new CodingBuilder();
+  }
+
+  constructor(args?: ICoding) {
     super();
     Object.assign(this, args);
   }

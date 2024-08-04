@@ -1,4 +1,4 @@
-import { CodeableConceptBuilderInterface } from '../../interfaces/codeable-concept-builder.interface';
+import { CodeableConceptBuilderInterface } from '../../interfaces/builders/datatypes/codeable-concept-builder.interface';
 import { ElementBuilder } from './element.builder';
 import { ICodeableConcept, ICoding, IElement } from 'fhirtypes/dist/r4';
 import { CodeableConcept } from '../../models';

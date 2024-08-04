@@ -1,9 +1,10 @@
 import { ICodeableConcept, ICoding, IElement } from 'fhirtypes/dist/r4';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
 import { CodeableConceptBuilder } from '../../builders/datatypes/codeable-concept.builder';
-import { CodeableConceptValidator } from '../../validators/datatypes/codeable-concept.validator';
+import { DatatypeValidator, ValReturnType } from '../../validators/base/datatype.validator';
 import { IGenericObject } from '../../interfaces';
-import { AddressValidator } from '../../validators/datatypes/address.validator';
+import { AttachmentValidator } from '../../validators/datatypes/attachment.validator';
+import { CodeableConceptValidator } from '../../validators/datatypes/codeable-concept.validator';
 
 /**
  * @description Concept - reference to a terminology or just text.
@@ -42,20 +43,7 @@ export class CodeableConcept extends Element implements ICodeableConcept {
     return `CodeableConcept${JSON.stringify(this.toJson())}`;
   }
 
-  isValid(): { error: string | null } {
-    try {
-      CodeableConceptValidator(this);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
-  static builder(): CodeableConceptBuilder {
-    return new CodeableConceptBuilder();
-  }
-
-  static validate(args: IGenericObject): { error: string | null } {
+  private isValid(args: IGenericObject): ValReturnType {
     try {
       CodeableConceptValidator(args);
       return { error: null };
@@ -64,7 +52,16 @@ export class CodeableConcept extends Element implements ICodeableConcept {
     }
   }
 
-  constructor(args: ICodeableConcept) {
+  validate(): ValReturnType {
+    const { error } = this.isValid(this);
+    return { error };
+  }
+
+  static builder(): CodeableConceptBuilder {
+    return new CodeableConceptBuilder();
+  }
+
+  constructor(args?: ICodeableConcept) {
     super();
     Object.assign(this, args);
   }

@@ -3,7 +3,7 @@ import {
   HumanNameMultipleParamType,
   HumanNameParamType,
   HumanNameBuilderInterface,
-} from '../../interfaces/human-name-builder.interface';
+} from '../../interfaces/builders/datatypes/human-name-builder.interface';
 import { IElement, IHumanName, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
 import { HumanName } from '../../models/datatypes/human-name.model';
 

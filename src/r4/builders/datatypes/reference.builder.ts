@@ -1,4 +1,4 @@
-import { ReferenceBuilderInterface } from '../../interfaces/reference-builder.interface';
+import { ReferenceBuilderInterface } from '../../interfaces/builders/datatypes/reference-builder.interface';
 import { ElementBuilder } from './element.builder';
 import { IIdentifier, IReference, ResourceType } from 'fhirtypes/dist/r4';
 import { Reference } from '../../models';

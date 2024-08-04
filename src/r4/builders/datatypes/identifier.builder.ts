@@ -1,4 +1,4 @@
-import { IdentifierBuilderInterface } from '../../interfaces/identifier-builder.interface';
+import { IdentifierBuilderInterface } from '../../interfaces/builders/datatypes/identifier-builder.interface';
 import { ElementBuilder } from './element.builder';
 import { ICodeableConcept, IdentifierUseType, IElement, IIdentifier, IPeriod, IReference } from 'fhirtypes/dist/r4';
 import { Identifier } from '../../models';

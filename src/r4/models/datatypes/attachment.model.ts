@@ -1,9 +1,10 @@
 import { IAttachment, IElement } from 'fhirtypes/dist/r4';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
 import { AttachmentBuilder } from '../../builders/datatypes/attachment.builder';
-import { CodingValidator } from '../../validators/datatypes/coding.validator';
-import { AttachmentValidator } from '../../validators/datatypes/attachment.validator';
+import { DatatypeValidator, ValReturnType } from '../../validators/base/datatype.validator';
 import { IGenericObject } from '../../interfaces';
+import { AddressValidator } from '../../validators/datatypes/address.validator';
+import { AttachmentValidator } from '../../validators/datatypes/attachment.validator';
 
 export class Attachment extends Element implements IAttachment {
   contentType?: string;
@@ -35,20 +36,7 @@ export class Attachment extends Element implements IAttachment {
     return `Attachment${JSON.stringify(this.toJson())}`;
   }
 
-  isValid(): { error: string | null } {
-    try {
-      AttachmentValidator(this);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
-  static builder(): AttachmentBuilder {
-    return new AttachmentBuilder();
-  }
-
-  static validate(args: IGenericObject): { error: string | null } {
+  private isValid(args: IGenericObject): ValReturnType {
     try {
       AttachmentValidator(args);
       return { error: null };
@@ -57,7 +45,16 @@ export class Attachment extends Element implements IAttachment {
     }
   }
 
-  constructor(args: IAttachment) {
+  validate(): ValReturnType {
+    const { error } = this.isValid(this);
+    return { error };
+  }
+
+  static builder(): AttachmentBuilder {
+    return new AttachmentBuilder();
+  }
+
+  constructor(args?: IAttachment) {
     super();
     Object.assign(this, args);
   }

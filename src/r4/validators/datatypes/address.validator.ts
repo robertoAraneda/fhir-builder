@@ -1,6 +1,8 @@
-import { IAddress } from 'fhirtypes/dist/r4';
-import { createDatatypeDefinition } from '../../utils/resources';
-import { baseValidator } from '../../utils/base.validator';
+import { IAddress, IElement } from 'fhirtypes/dist/r4';
+import { createDatatypeDefinition } from '../base/definitions';
+import { BaseValidator } from '../base/base.validator';
+import assert from 'node:assert';
+import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 
 export const addressType: string[] = ['postal', 'physical', 'both'];
 export const addressUse: string[] = ['home', 'work', 'temp', 'old', 'billing'];
@@ -125,12 +127,34 @@ export const modelFields = createDatatypeDefinition<IAddress>([
 ]);
 
 export const AddressValidator = (dataToValidate: IAddress | IAddress[], path: string = 'Address'): void => {
-  if (Array.isArray(dataToValidate)) {
-    dataToValidate.forEach((item, index) => {
+  assert(
+    typeof dataToValidate === 'object',
+    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
+  );
+  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
+
+  if (Array.isArray(cleanObject)) {
+    cleanObject.forEach((item, index) => {
       AddressValidator(item, `${path}[${index}]`);
     });
     return;
   }
 
-  baseValidator(dataToValidate, modelFields, path);
+  BaseValidator(cleanObject, modelFields, path);
+};
+
+interface IValInput<T> {
+  dataToValidate: T | T[];
+  path: string;
+}
+
+export const Val = <T extends IElement>(options: IValInput<T>): void => {
+  if (Array.isArray(options.dataToValidate)) {
+    options.dataToValidate.forEach((item, index) => {
+      Val({ dataToValidate: item, path: `${options.path}[${index}]` });
+    });
+    return;
+  }
+
+  BaseValidator(options.dataToValidate, modelFields, options.path);
 };
