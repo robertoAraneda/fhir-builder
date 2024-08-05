@@ -1,6 +1,7 @@
 import { contextR4 } from '../../../src';
 import { IMeta } from 'fhirtypes/dist/r4';
-import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
+
+import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
 
 describe('Meta FHIR R4', () => {
   const { Meta, Validator } = contextR4();
@@ -41,7 +42,7 @@ describe('Meta FHIR R4', () => {
       versionId: 'test',
     };
 
-    const { error } = conformanceValidation(item, 'Meta');
+    const { error } = ConformanceValidator(item, 'Meta');
     expect(error).toBeNull();
   });
 
@@ -61,7 +62,7 @@ describe('Meta FHIR R4', () => {
       wrongProperty: 'test', // wrong property
     };
 
-    const { error } = conformanceValidation(item, 'Meta');
+    const { error } = ConformanceValidator(item, 'Meta');
     expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: Meta.");
   });
 

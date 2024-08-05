@@ -1,1 +1,0 @@
-export { IPatientBuilder } from './patient-builder.interface';

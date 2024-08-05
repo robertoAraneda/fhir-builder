@@ -1,4 +1,4 @@
-import { BackboneElementBuilder } from '../../../src/r4';
+import { BackboneElementBuilder } from '../../../src/core/r4/builders/base';
 
 describe('BackboneElement FHIR R4', () => {
   test('should be able to validate a new backbone_element with builder', async () => {

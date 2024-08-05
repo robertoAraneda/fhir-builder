@@ -1,7 +1,15 @@
-import { ElementBuilder } from '../base/element.builder';
-import { ICodeableConcept, ICoding, IElement } from 'fhirtypes/dist/r4';
-import { ICodeableConceptBuilder } from '../../interfaces';
+import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
+import { ICoding, IElement } from 'fhirtypes/dist/r4';
 import { CodeableConcept } from '../../models';
+import { IBuildable } from '../../../core/r4/interfaces';
+import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
+
+interface ICodeableConceptBuilder extends IBuildable<CodeableConcept>, IElementBuilder {
+  addCodeableConceptParamExtension(param: 'text', extension: IElement): this;
+  addCoding(coding: ICoding): this;
+  setMultipleCoding(coding: ICoding[]): this;
+  setText(text: string): this;
+}
 
 export class CodeableConceptBuilder extends ElementBuilder implements ICodeableConceptBuilder {
   private readonly codeableConcept: CodeableConcept;

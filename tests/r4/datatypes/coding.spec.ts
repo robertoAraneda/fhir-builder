@@ -1,5 +1,5 @@
 import { contextR4 } from '../../../src';
-import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
+import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
 
 describe('Coding FHIR R4', () => {
   const { Coding, Validator } = contextR4();
@@ -28,7 +28,7 @@ describe('Coding FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { error } = conformanceValidation(item, 'Coding');
+    const { error } = ConformanceValidator(item, 'Coding');
 
     expect(error).toBe("InvalidFieldException. Field(s): 'test'. Path: Coding.");
   });

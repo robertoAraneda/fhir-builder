@@ -1,6 +1,7 @@
 import { contextR4 } from '../../../src';
 import { IContactPoint } from 'fhirtypes/dist/r4';
-import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
+
+import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
 
 describe('ContactPoint FHIR R4', () => {
   const { ContactPoint, Validator } = contextR4();
@@ -35,7 +36,7 @@ describe('ContactPoint FHIR R4', () => {
       use: 'home',
     };
 
-    const { error } = conformanceValidation(item, 'ContactPoint');
+    const { error } = ConformanceValidator(item, 'ContactPoint');
     expect(error).toBeNull();
   });
 
@@ -49,7 +50,7 @@ describe('ContactPoint FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { error } = conformanceValidation(item, 'ContactPoint');
+    const { error } = ConformanceValidator(item, 'ContactPoint');
     expect(error).toBe("InvalidFieldException. Field(s): 'test'. Path: ContactPoint.");
   });
 

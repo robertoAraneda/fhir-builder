@@ -1,8 +1,9 @@
 import { IElement, IIdentifier, IReference } from 'fhirtypes/dist/r4';
-import { Element } from '../base';
+import { Element } from '../../../core/r4/models/base';
 import { ReferenceBuilder } from '../../builders';
-import { ValReturnType } from '../../validators/base/datatype.validator';
-import { conformanceValidation } from '../../validators/base/object.validator';
+import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
+
+import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
 
 export class Reference extends Element implements IReference {
   // Reference attributes
@@ -29,7 +30,7 @@ export class Reference extends Element implements IReference {
   }
 
   validate(): ValReturnType {
-    const { error } = conformanceValidation(this, 'Reference');
+    const { error } = ConformanceValidator(this, 'Reference');
     return { error };
   }
 

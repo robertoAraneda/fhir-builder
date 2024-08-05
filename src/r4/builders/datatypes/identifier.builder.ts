@@ -1,7 +1,18 @@
-import { ICodeableConcept, IdentifierUseType, IElement, IIdentifier, IPeriod, IReference } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from '../base/element.builder';
-import { IIdentifierBuilder } from '../../interfaces';
+import { ICodeableConcept, IdentifierUseType, IElement, IPeriod, IReference } from 'fhirtypes/dist/r4';
+import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
 import { Identifier } from '../../models';
+import { IBuildable } from '../../../core/r4/interfaces';
+import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
+
+interface IIdentifierBuilder extends IBuildable<Identifier>, IElementBuilder {
+  addParamExtension(param: 'use' | 'system' | 'value', extension: IElement): this;
+  setType(value: ICodeableConcept): this;
+  setUse(value: IdentifierUseType): this;
+  setSystem(value: string): this;
+  setValue(value: string): this;
+  setPeriod(value: IPeriod): this;
+  setAssigner(value: IReference): this;
+}
 
 export class IdentifierBuilder extends ElementBuilder implements IIdentifierBuilder {
   private readonly identifier: Identifier;

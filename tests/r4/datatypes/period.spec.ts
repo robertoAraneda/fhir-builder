@@ -1,5 +1,6 @@
 import { contextR4 } from '../../../src';
-import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
+
+import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
 
 describe('Period FHIR R4', () => {
   const { Period, Validator } = contextR4();
@@ -87,7 +88,7 @@ describe('Period FHIR R4', () => {
       notExist: 'not exist',
     };
 
-    const { error } = conformanceValidation(item, 'Period');
+    const { error } = ConformanceValidator(item, 'Period');
     expect(error).toBe("InvalidFieldException. Field(s): 'notExist'. Path: Period.");
   });
 
@@ -97,7 +98,7 @@ describe('Period FHIR R4', () => {
       end: 'wrong date', // wrong date
     };
 
-    const { error } = conformanceValidation(item, 'Period');
+    const { error } = ConformanceValidator(item, 'Period');
     expect(error).toBe('Invalid dateTime: wrong date at path: Period.end');
   });
 });

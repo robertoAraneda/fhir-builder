@@ -1,9 +1,26 @@
-import { ElementBuilder } from '../base/element.builder';
-import { IHumanNameBuilder } from '../../interfaces';
+import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
 import { IElement, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
 import { HumanName } from '../../models';
-import { HumanNameParamType } from '../../types';
-import { HumanNameArrayParamType } from '../../types';
+import { HumanNameParamType, HumanNameArrayParamType } from '../../../core/r4/types';
+import { IBuildable } from '../../../core/r4/interfaces';
+import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
+
+interface IHumanNameBuilder extends IBuildable<HumanName>, IElementBuilder {
+  addParamExtension<T extends HumanNameParamType>(
+    param: T,
+    extension: T extends HumanNameArrayParamType ? IElement[] : IElement,
+  ): this;
+  setUse(value: NameUseType): this;
+  setText(value: string): this;
+  setFamily(value: string): this;
+  addGiven(value: string): this;
+  setMultipleGiven(value: string[]): this;
+  addPrefix(value: string): this;
+  setMultiplePrefix(value: string[]): this;
+  addSuffix(value: string): this;
+  setMultipleSuffix(value: string[]): this;
+  setPeriod(value: IPeriod): this;
+}
 
 export class HumanNameBuilder extends ElementBuilder implements IHumanNameBuilder {
   private readonly humanName: HumanName;

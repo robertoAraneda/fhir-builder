@@ -1,8 +1,9 @@
 import { ContactPointSystemType, ContactPointUseType, IContactPoint, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { Element } from '../base';
+import { Element } from '../../../core/r4/models/base';
 import { ContactPointBuilder } from '../../builders';
-import { ValReturnType } from '../../validators/base/datatype.validator';
-import { conformanceValidation } from '../../validators/base/object.validator';
+import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
+
+import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
 
 /**
  * @description Details for all kinds of technology-mediated contact points for a person or organization, including telephone, email, etc.
@@ -81,7 +82,7 @@ export class ContactPoint extends Element implements IContactPoint {
   }
 
   validate(): ValReturnType {
-    const { error } = conformanceValidation(this, 'ContactPoint');
+    const { error } = ConformanceValidator(this, 'ContactPoint');
     return { error };
   }
 

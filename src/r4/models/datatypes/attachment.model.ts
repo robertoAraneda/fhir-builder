@@ -1,8 +1,9 @@
 import { IAttachment, IElement } from 'fhirtypes/dist/r4';
-import { Element } from '../base';
+import { Element } from '../../../core/r4/models/base';
 import { AttachmentBuilder } from '../../builders';
-import { ValReturnType } from '../../validators/base/datatype.validator';
-import { conformanceValidation } from '../../validators/base/object.validator';
+import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
+
+import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
 
 export class Attachment extends Element implements IAttachment {
   contentType?: string;
@@ -35,7 +36,7 @@ export class Attachment extends Element implements IAttachment {
   }
 
   validate(): ValReturnType {
-    const { error } = conformanceValidation(this, 'Attachment');
+    const { error } = ConformanceValidator(this, 'Attachment');
     return { error };
   }
 

@@ -1,8 +1,21 @@
-import { ElementBuilder } from '../base/element.builder';
-import { IAttachment, IElement } from 'fhirtypes/dist/r4';
-import { IAttachmentBuilder } from '../../interfaces';
-import { AttachmentParamExtensionType } from '../../types';
+import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
+import { IElement } from 'fhirtypes/dist/r4';
+import { AttachmentParamExtensionType } from '../../../core/r4/types';
 import { Attachment } from '../../models';
+import { IBuildable } from '../../../core/r4/interfaces';
+import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
+
+interface IAttachmentBuilder extends IBuildable<Attachment>, IElementBuilder {
+  addParamExtension(param: AttachmentParamExtensionType, extension: IElement): this;
+  setContentType(contentType: string): this;
+  setLanguage(language: string): this;
+  setData(data: string): this;
+  setUrl(url: string): this;
+  setTitle(title: string): this;
+  setCreation(creation: string): this;
+  setHash(hash: string): this;
+  setSize(size: number): this;
+}
 
 export class AttachmentBuilder extends ElementBuilder implements IAttachmentBuilder {
   private readonly attachment: Attachment;

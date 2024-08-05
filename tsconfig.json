@@ -7,14 +7,14 @@
     "module": "CommonJS",
     "declaration": true,
     "outDir": "./lib",
+    "declarationDir": "./types",
     "strict": true,
-    "types": ["@types/jest", "@types/node"],
     "strictPropertyInitialization": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "lib"]
+  "include": ["src"],
+  "exclude": ["node_modules", "lib", "types", "src/core/**/*.ts"]
 }

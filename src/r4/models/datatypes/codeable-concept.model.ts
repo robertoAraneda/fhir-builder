@@ -1,8 +1,9 @@
 import { ICodeableConcept, ICoding, IElement } from 'fhirtypes/dist/r4';
-import { Element } from '../base';
+import { Element } from '../../../core/r4/models/base';
 import { CodeableConceptBuilder } from '../../builders';
-import { ValReturnType } from '../../validators/base/datatype.validator';
-import { conformanceValidation } from '../../validators/base/object.validator';
+import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
+
+import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
 
 /**
  * @description Concept - reference to a terminology or just text.
@@ -42,7 +43,7 @@ export class CodeableConcept extends Element implements ICodeableConcept {
   }
 
   validate(): ValReturnType {
-    const { error } = conformanceValidation(this, 'CodeableConcept');
+    const { error } = ConformanceValidator(this, 'CodeableConcept');
     return { error };
   }
 

@@ -1,7 +1,14 @@
 import { IElement } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from '../base/element.builder';
-import { IPeriodBuilder } from '../../interfaces';
+import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
 import { Period } from '../../models';
+import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
+import { IBuildable } from '../../../core/r4/interfaces';
+
+interface IPeriodBuilder extends IBuildable<Period>, IElementBuilder {
+  addParamExtension(param: 'start' | 'end', extension: IElement): this;
+  setStart(value: string): this;
+  setEnd(value: string): this;
+}
 
 /**
  * @description Class to build a Period instance with the builder pattern

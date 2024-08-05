@@ -1,8 +1,9 @@
 import { IElement, IPatientLink, IReference, LinkTypeType } from 'fhirtypes/dist/r4';
-import { BackboneElement } from '../base';
+import { BackboneElement } from '../../../core/r4/models/base';
 import { PatientLinkBuilder } from '../../builders';
-import { ValReturnType } from '../../validators/base/datatype.validator';
-import { conformanceValidation } from '../../validators/base/object.validator';
+import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
+
+import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
 
 export class PatientLink extends BackboneElement implements IPatientLink {
   // PatientLink attributes
@@ -23,7 +24,7 @@ export class PatientLink extends BackboneElement implements IPatientLink {
   }
 
   validate(): ValReturnType {
-    const { error } = conformanceValidation(this, 'PatientLink');
+    const { error } = ConformanceValidator(this, 'PatientLink');
     return { error };
   }
 

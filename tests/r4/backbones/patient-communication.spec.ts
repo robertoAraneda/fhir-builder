@@ -1,6 +1,7 @@
 import { contextR4 } from '../../../src';
 import { IPatientCommunication } from 'fhirtypes/dist/r4';
-import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
+
+import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
 
 describe('PatientCommunication FHIR R4', () => {
   const { PatientCommunication, Validator } = contextR4();
@@ -38,7 +39,7 @@ describe('PatientCommunication FHIR R4', () => {
       },
     };
 
-    const { error } = conformanceValidation(item, 'PatientCommunication');
+    const { error } = ConformanceValidator(item, 'PatientCommunication');
     expect(error).toBeNull();
   });
 
@@ -106,7 +107,7 @@ describe('PatientCommunication FHIR R4', () => {
       wrongProperty: 'wrongProperty',
     };
 
-    const { error } = conformanceValidation(item, 'PatientCommunication');
+    const { error } = ConformanceValidator(item, 'PatientCommunication');
     expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: PatientCommunication.");
   });
 });

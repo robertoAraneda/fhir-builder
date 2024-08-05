@@ -1,6 +1,7 @@
 import { contextR4 } from '../../../src';
 import { IPatientContact } from 'fhirtypes/dist/r4';
-import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
+
+import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
 
 describe('PatientContact FHIR R4', () => {
   const { PatientContact, Validator } = contextR4();
@@ -45,7 +46,7 @@ describe('PatientContact FHIR R4', () => {
       },
     };
 
-    const { error } = conformanceValidation(item, 'PatientContact');
+    const { error } = ConformanceValidator(item, 'PatientContact');
     expect(error).toBeNull();
   });
 
@@ -113,7 +114,7 @@ describe('PatientContact FHIR R4', () => {
       wrongProperty: 'wrongProperty',
     };
 
-    const { error } = conformanceValidation(item, 'PatientContact');
+    const { error } = ConformanceValidator(item, 'PatientContact');
     expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: PatientContact.");
   });
 });

@@ -1,8 +1,18 @@
-import { ElementBuilder } from '../base/element.builder';
-import { IQuantityBuilder } from '../../interfaces';
-import { IElement, IQuantity, QuantityComparatorType } from 'fhirtypes/dist/r4';
-import { QuantityParamExtensionType } from '../../types';
+import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
+import { IElement, QuantityComparatorType } from 'fhirtypes/dist/r4';
+import { QuantityParamExtensionType } from '../../../core/r4/types';
 import { Quantity } from '../../models';
+import { IBuildable } from '../../../core/r4/interfaces';
+import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
+
+interface IQuantityBuilder extends IBuildable<Quantity>, IElementBuilder {
+  addParamExtension(param: QuantityParamExtensionType, extension: IElement): this;
+  setCode(value: string): this;
+  setSystem(value: string): this;
+  setUnit(value: string): this;
+  setValue(value: number): this;
+  setComparator(value: QuantityComparatorType): this;
+}
 
 export class QuantityBuilder extends ElementBuilder implements IQuantityBuilder {
   private readonly quantity: Quantity;

@@ -1,8 +1,18 @@
-import { ElementBuilder } from '../base/element.builder';
-import { ICoding, IElement } from 'fhirtypes/dist/r4';
-import { ICodingBuilder } from '../../interfaces';
-import { CodingParamExtensionType } from '../../types';
+import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
+import { IElement } from 'fhirtypes/dist/r4';
+import { CodingParamExtensionType } from '../../../core/r4/types';
 import { Coding } from '../../models';
+import { IBuildable } from '../../../core/r4/interfaces';
+import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
+
+interface ICodingBuilder extends IBuildable<Coding>, IElementBuilder {
+  addParamExtension(param: CodingParamExtensionType, extension: IElement): this;
+  setSystem(value: string): this;
+  setVersion(value: string): this;
+  setCode(value: string): this;
+  setDisplay(value: string): this;
+  setUserSelected(value: boolean): this;
+}
 
 /**
  * @description Coding builder

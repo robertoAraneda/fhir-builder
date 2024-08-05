@@ -1,6 +1,7 @@
 import { IAddress } from 'fhirtypes/dist/r4';
 import { contextR4 } from '../../../src';
-import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
+
+import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
 
 describe('Address FHIR R4', () => {
   const { Address, Validator } = contextR4();
@@ -40,7 +41,7 @@ describe('Address FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { error } = conformanceValidation(item, 'Address');
+    const { error } = ConformanceValidator(item, 'Address');
     expect(error).toBe("InvalidFieldException. Field(s): 'test'. Path: Address.");
   });
 
@@ -50,7 +51,7 @@ describe('Address FHIR R4', () => {
       line: 'not an array', // wrong property
     };
 
-    const { error } = conformanceValidation(item, 'Address');
+    const { error } = ConformanceValidator(item, 'Address');
     expect(error).toBe('Field line must be an array in Address');
   });
 
@@ -60,7 +61,7 @@ describe('Address FHIR R4', () => {
       use: 'invalid code',
     };
 
-    const { error } = conformanceValidation(item, 'Address');
+    const { error } = ConformanceValidator(item, 'Address');
     expect(error).toBe('Field must be one of [home, work, temp, old, billing] in Address.use');
   });
 
@@ -70,7 +71,7 @@ describe('Address FHIR R4', () => {
       type: 'invalid code',
     };
 
-    const { error } = conformanceValidation(item, 'Address');
+    const { error } = ConformanceValidator(item, 'Address');
     expect(error).toBe('Field must be one of [postal, physical, both] in Address.type');
   });
 
@@ -136,7 +137,7 @@ describe('Address FHIR R4', () => {
       },
     };
 
-    const { error } = conformanceValidation(item, 'Address');
+    const { error } = ConformanceValidator(item, 'Address');
     expect(error).toBe('Invalid dateTime: wrong date at path: Address._use.extension[2].valueDateTime');
   });
 });

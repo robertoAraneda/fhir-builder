@@ -1,5 +1,6 @@
 import { contextR4 } from '../../../src';
-import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
+
+import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
 
 describe('CodeableConcept FHIR R4', () => {
   const { CodeableConcept, Validator } = contextR4();
@@ -42,7 +43,7 @@ describe('CodeableConcept FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { error } = conformanceValidation(item, 'CodeableConcept');
+    const { error } = ConformanceValidator(item, 'CodeableConcept');
     expect(error).toBe("InvalidFieldException. Field(s): 'test'. Path: CodeableConcept.");
   });
 

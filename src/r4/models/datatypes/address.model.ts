@@ -1,8 +1,9 @@
 import { AddressTypeType, AddressUseType, IAddress, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { Element } from '../base';
-import { ValReturnType } from '../../validators/base/datatype.validator';
+import { Element } from '../../../core/r4/models/base';
+import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
 import { AddressBuilder } from '../../builders';
-import { conformanceValidation } from '../../validators/base/object.validator';
+
+import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
 
 export class Address extends Element implements IAddress {
   constructor(args?: IAddress) {
@@ -23,7 +24,7 @@ export class Address extends Element implements IAddress {
   }
 
   validate(): ValReturnType {
-    const { error } = conformanceValidation(this, 'Address');
+    const { error } = ConformanceValidator(this, 'Address');
     return { error };
   }
 

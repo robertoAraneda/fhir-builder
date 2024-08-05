@@ -9,10 +9,11 @@ import {
   IPeriod,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { BackboneElement } from '../base';
+import { BackboneElement } from '../../../core/r4/models/base';
 import { PatientContactBuilder } from '../../builders';
-import { ValReturnType } from '../../validators/base/datatype.validator';
-import { conformanceValidation } from '../../validators/base/object.validator';
+import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
+
+import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
 
 export class PatientContact extends BackboneElement implements IPatientContact {
   // PatientContact attributes
@@ -38,7 +39,7 @@ export class PatientContact extends BackboneElement implements IPatientContact {
   }
 
   validate(): ValReturnType {
-    const { error } = conformanceValidation(this, 'PatientContact');
+    const { error } = ConformanceValidator(this, 'PatientContact');
     return { error };
   }
 

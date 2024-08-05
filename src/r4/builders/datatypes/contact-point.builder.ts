@@ -1,8 +1,18 @@
-import { ContactPointSystemType, ContactPointUseType, IContactPoint, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from '../base/element.builder';
-import { IContactPointBuilder } from '../../interfaces';
-import { ContactPointParamExtensionType } from '../../types';
+import { ContactPointSystemType, ContactPointUseType, IElement, IPeriod } from 'fhirtypes/dist/r4';
+import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
+import { ContactPointParamExtensionType } from '../../../core/r4/types';
 import { ContactPoint } from '../../models';
+import { IBuildable } from '../../../core/r4/interfaces';
+import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
+
+interface IContactPointBuilder extends IBuildable<ContactPoint>, IElementBuilder {
+  addParamExtension(param: ContactPointParamExtensionType, extension: IElement): this;
+  setSystem(value: ContactPointSystemType): this;
+  setValue(value: string): this;
+  setUse(value: ContactPointUseType): this;
+  setRank(value: number): this;
+  setPeriod(value: IPeriod): this;
+}
 
 export class ContactPointBuilder extends ElementBuilder implements IContactPointBuilder {
   private readonly contactPoint: ContactPoint;

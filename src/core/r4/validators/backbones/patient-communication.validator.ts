@@ -1,0 +1,35 @@
+import { IPatientCommunication } from 'fhirtypes/dist/r4';
+import { createBackboneDefinition } from '../base/definitions';
+import { ModelValidator } from '../base';
+
+const modelDefinition = createBackboneDefinition<IPatientCommunication>([
+  {
+    name: 'language',
+    type: 'CodeableConcept',
+    isArray: false,
+    isRequired: true,
+  },
+  {
+    name: 'preferred',
+    type: 'boolean',
+    isArray: false,
+    isRequired: false,
+  },
+  {
+    name: '_preferred',
+    type: 'Element',
+    isArray: false,
+    isRequired: false,
+  },
+]);
+
+export function PatientCommunicationValidator(
+  dataToValidate: IPatientCommunication,
+  path: string = 'PatientCommunication',
+): void {
+  ModelValidator<IPatientCommunication>({
+    path,
+    dataToValidate,
+    modelDefinition,
+  });
+}

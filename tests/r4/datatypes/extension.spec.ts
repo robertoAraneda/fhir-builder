@@ -1,6 +1,7 @@
 import { contextR4 } from '../../../src';
 import { IExtension } from 'fhirtypes/dist/r4';
-import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
+
+import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
 
 describe('Extension FHIR R4', () => {
   const { Validator, Extension } = contextR4();
@@ -23,7 +24,7 @@ describe('Extension FHIR R4', () => {
     };
 
     expect(item).toBeDefined();
-    const { error } = conformanceValidation(item, 'Extension');
+    const { error } = ConformanceValidator(item, 'Extension');
     expect(error).toBeNull();
   });
 
@@ -35,7 +36,7 @@ describe('Extension FHIR R4', () => {
       extension: [], // extra property
     };
 
-    const { error } = conformanceValidation(item, 'Extension');
+    const { error } = ConformanceValidator(item, 'Extension');
     expect(error).toBe('ConstraintException. Must have either extensions or value[x], not both.. Path: Extension');
   });
 
@@ -46,7 +47,7 @@ describe('Extension FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { error } = conformanceValidation(item, 'Extension');
+    const { error } = ConformanceValidator(item, 'Extension');
     expect(error).toBe("InvalidFieldException. Field(s): 'test'. Path: Extension.");
   });
 
@@ -55,7 +56,7 @@ describe('Extension FHIR R4', () => {
     const item = Extension.builder()
       .setId('123')
       .setUrl('url')
-      .addParamExtension('valueUrl', {
+      .addParamExtension('url', {
         extension: [
           {
             url: 'url',
@@ -71,12 +72,12 @@ describe('Extension FHIR R4', () => {
 
     expect(item).toBeDefined();
 
-    const { error } = conformanceValidation(item, 'Extension');
+    const { error } = ConformanceValidator(item, 'Extension');
     expect(error).toBeNull();
     expect(item).toBeInstanceOf(Extension);
 
     expect(item).toEqual({
-      _valueUrl: {
+      _url: {
         extension: [
           {
             url: 'url',

@@ -1,1 +1,0 @@
-export { IGenericObject } from './generic-object.interface';

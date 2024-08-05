@@ -1,4 +1,4 @@
-import { DomainResource } from '../base';
+import { DomainResource } from '../../../core/r4/models/base';
 import {
   EpisodeOfCareStatusType,
   ICodeableConcept,

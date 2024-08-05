@@ -1,0 +1,1 @@
+export { PatientValidator } from './patient.validator';

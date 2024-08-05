@@ -1,6 +1,7 @@
 import { contextR4 } from '../../../src';
 import { INarrative } from 'fhirtypes/dist/r4';
-import { conformanceValidation } from '../../../src/r4/validators/base/object.validator';
+
+import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
 
 describe('Meta FHIR R4', () => {
   const { Narrative, Validator } = contextR4();
@@ -22,7 +23,7 @@ describe('Meta FHIR R4', () => {
       status: 'generated',
     };
 
-    const { error } = conformanceValidation(item, 'Narrative');
+    const { error } = ConformanceValidator(item, 'Narrative');
     expect(error).toBeNull();
   });
 
@@ -33,7 +34,7 @@ describe('Meta FHIR R4', () => {
       // not status attribute
     };
 
-    const { error } = conformanceValidation(item, 'Narrative');
+    const { error } = ConformanceValidator(item, 'Narrative');
     expect(error).toBe("RequiredFieldException. Field: 'status'. Path: Narrative.status");
   });
 

@@ -1,8 +1,8 @@
 import { ICodeableConcept, IElement, IPatientCommunication } from 'fhirtypes/dist/r4';
-import { BackboneElement } from '../base';
-import { conformanceValidation } from '../../validators/base/object.validator';
-import { ValReturnType } from '../../validators/base/datatype.validator';
+import { BackboneElement } from '../../../core/r4/models/base';
+import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
 import { PatientCommunicationBuilder } from '../../builders';
+import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
 
 export class PatientCommunication extends BackboneElement implements IPatientCommunication {
   // PatientCommunication attributes
@@ -23,7 +23,7 @@ export class PatientCommunication extends BackboneElement implements IPatientCom
   }
 
   validate(): ValReturnType {
-    const { error } = conformanceValidation(this, 'PatientCommunication');
+    const { error } = ConformanceValidator(this, 'PatientCommunication');
     return { error };
   }
 

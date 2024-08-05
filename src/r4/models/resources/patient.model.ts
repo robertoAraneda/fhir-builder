@@ -1,4 +1,4 @@
-import { DomainResource } from '../base';
+import { DomainResource } from '../../../core/r4/models/base';
 import {
   AdministrativeGenderType,
   IAddress,
@@ -15,8 +15,9 @@ import {
   IReference,
 } from 'fhirtypes/dist/r4';
 import { PatientBuilder } from '../../builders';
-import { ValReturnType } from '../../validators/base/datatype.validator';
-import { conformanceValidation } from '../../validators/base/object.validator';
+import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
+
+import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
 
 /**
  * @description FHIR R4
@@ -73,7 +74,7 @@ export class Patient extends DomainResource implements IPatient {
   }
 
   validate(): ValReturnType {
-    const { error } = conformanceValidation(this, 'Patient');
+    const { error } = ConformanceValidator(this, 'Patient');
     return { error };
   }
 

@@ -1,8 +1,9 @@
-import { Element } from '../base';
+import { Element } from '../../../core/r4/models/base';
 import { IElement, IQuantity, QuantityComparatorType } from 'fhirtypes/dist/r4';
 import { QuantityBuilder } from '../../builders';
-import { ValReturnType } from '../../validators/base/datatype.validator';
-import { conformanceValidation } from '../../validators/base/object.validator';
+import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
+
+import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
 
 export class Quantity extends Element implements IQuantity {
   // Quantity Properties
@@ -32,7 +33,7 @@ export class Quantity extends Element implements IQuantity {
   }
 
   validate(): ValReturnType {
-    const { error } = conformanceValidation(this, 'Quantity');
+    const { error } = ConformanceValidator(this, 'Quantity');
     return { error };
   }
 

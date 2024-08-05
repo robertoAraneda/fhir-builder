@@ -1,9 +1,25 @@
-import { AddressTypeType, AddressUseType, IAddress, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from '../base/element.builder';
-import { IAddressBuilder } from '../../interfaces';
+import { AddressTypeType, AddressUseType, IElement, IPeriod } from 'fhirtypes/dist/r4';
+import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
 import { Address } from '../../models';
+import { IBuildable } from '../../../core/r4/interfaces';
+import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
 
 type ParamExtensionType = 'use' | 'type' | 'text' | 'line' | 'city' | 'district' | 'state' | 'postalCode' | 'country';
+
+interface IAddressBuilder extends IBuildable<Address>, IElementBuilder {
+  addParamExtension<T extends ParamExtensionType>(param: T, extension: T extends 'line' ? IElement[] : IElement): this;
+  setUse(value: AddressUseType): this;
+  setType(value: AddressTypeType): this;
+  setText(value: string): this;
+  addLine(value: string): this;
+  setMultipleLines(value: string[]): this;
+  setCity(value: string): this;
+  setDistrict(value: string): this;
+  setState(value: string): this;
+  setPostalCode(value: string): this;
+  setCountry(value: string): this;
+  setPeriod(value: IPeriod): this;
+}
 
 export class AddressBuilder extends ElementBuilder implements IAddressBuilder {
   private readonly address: Address;

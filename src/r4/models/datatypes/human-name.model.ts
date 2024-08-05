@@ -1,8 +1,9 @@
-import { Element } from '../base';
+import { Element } from '../../../core/r4/models/base';
 import { IElement, IHumanName, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
 import { HumanNameBuilder } from '../../builders';
-import { ValReturnType } from '../../validators/base/datatype.validator';
-import { conformanceValidation } from '../../validators/base/object.validator';
+import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
+
+import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
 
 /**
  * @description Name of a human or other living entity - parts and usage
@@ -106,7 +107,7 @@ export class HumanName extends Element implements IHumanName {
   }
 
   validate(): ValReturnType {
-    const { error } = conformanceValidation(this, 'HumanName');
+    const { error } = ConformanceValidator(this, 'HumanName');
     return { error };
   }
 

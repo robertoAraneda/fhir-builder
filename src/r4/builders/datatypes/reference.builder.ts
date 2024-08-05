@@ -1,7 +1,16 @@
 import { IIdentifier, IReference, ResourceType } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from '../base/element.builder';
-import { IReferenceBuilder } from '../../interfaces';
+import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
 import { Reference } from '../../models';
+import { IBuildable } from '../../../core/r4/interfaces';
+import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
+
+interface IReferenceBuilder extends IBuildable<Reference>, IElementBuilder {
+  addParamExtension(param: 'display' | 'type' | 'reference', extension: Element): this;
+  setReference(value: { resourceType: ResourceType; id: string | number } | string): this;
+  setDisplay(value: string): this;
+  setIdentifier(value: IIdentifier): this;
+  setType(value: string): this;
+}
 
 export class ReferenceBuilder extends ElementBuilder implements IReferenceBuilder {
   private readonly reference: IReference;

@@ -1,8 +1,9 @@
 import { ICoding, IElement, IMeta } from 'fhirtypes/dist/r4';
-import { Element } from '../base';
+import { Element } from '../../../core/r4/models/base';
 import { MetaBuilder } from '../../builders';
-import { ValReturnType } from '../../validators/base/datatype.validator';
-import { conformanceValidation } from '../../validators/base/object.validator';
+import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
+
+import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
 
 export class Meta extends Element implements IMeta {
   // Meta Properties
@@ -32,7 +33,7 @@ export class Meta extends Element implements IMeta {
   }
 
   validate(): ValReturnType {
-    const { error } = conformanceValidation(this, 'Meta');
+    const { error } = ConformanceValidator(this, 'Meta');
     return { error };
   }
 

@@ -16,10 +16,11 @@ import {
   IReference,
   ISignature,
 } from 'fhirtypes/dist/r4';
-import { Element } from '../base';
+import { Element } from '../../../core/r4/models/base';
 import { ExtensionBuilder } from '../../builders';
-import { ValReturnType } from '../../validators/base/datatype.validator';
-import { conformanceValidation } from '../../validators/base/object.validator';
+import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
+
+import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
 
 export class Extension extends Element implements IExtension {
   url: string;
@@ -60,25 +61,6 @@ export class Extension extends Element implements IExtension {
 
   // Extensions for url
   _url?: IElement;
-  _valueBase64Binary?: IElement;
-  _valueBoolean?: IElement;
-  _valueCanonical?: IElement;
-  _valueCode?: IElement;
-  _valueDate?: IElement;
-  _valueDateTime?: IElement;
-  _valueDecimal?: IElement;
-  _valueId?: IElement;
-  _valueInstant?: IElement;
-  _valueInteger?: IElement;
-  _valueMarkdown?: IElement;
-  _valueOid?: IElement;
-  _valuePositiveInt?: IElement;
-  _valueString?: IElement;
-  _valueTime?: IElement;
-  _valueUnsignedInt?: IElement;
-  _valueUri?: IElement;
-  _valueUrl?: IElement;
-  _valueUuid?: IElement;
 
   toJson(): Extension {
     return JSON.parse(JSON.stringify(this));
@@ -93,7 +75,7 @@ export class Extension extends Element implements IExtension {
   }
 
   validate(): ValReturnType {
-    const { error } = conformanceValidation(this, 'Extension');
+    const { error } = ConformanceValidator(this, 'Extension');
     return { error };
   }
 

@@ -1,8 +1,22 @@
-import { ElementBuilder } from '../base/element.builder';
-import { IMetaBuilder } from '../../interfaces';
+import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
 import { ICoding, IElement } from 'fhirtypes/dist/r4';
-import { MetaParamsExtensionType } from '../../types';
+import { MetaParamsExtensionType } from '../../../core/r4/types';
 import { Meta } from '../../models';
+import { IBuildable } from '../../../core/r4/interfaces';
+import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
+
+interface IMetaBuilder extends IBuildable<Meta>, IElementBuilder {
+  addParamExtension(param: MetaParamsExtensionType, extension: IElement): this;
+  setSource(source: string): this;
+  setVersionId(versionId: string | number): this;
+  setLastUpdated(lastUpdated: string): this;
+  addTag(tag: ICoding): this;
+  addProfile(profile: string): this;
+  addSecurity(security: ICoding): this;
+  setMultipleTag(tag: ICoding[]): this;
+  setMultipleProfile(profile: string[]): this;
+  setMultipleSecurity(security: ICoding[]): this;
+}
 
 export class MetaBuilder extends ElementBuilder implements IMetaBuilder {
   private readonly meta: Meta;

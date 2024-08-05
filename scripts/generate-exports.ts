@@ -1,5 +1,28 @@
 import { readdirSync, writeFileSync } from 'fs';
 import { join, basename } from 'path';
+// validators
+const validatorFolders = ['backbones', 'base', 'resources', 'datatypes'];
+
+for (const folder of validatorFolders) {
+  const files = readdirSync(join(__dirname, `../src/core/r4/validators/${folder}`));
+  const exports = files
+    .filter((file) => file !== 'index.ts')
+    .map((file) => {
+      const moduleName = basename(file, '.ts');
+
+      const camelCaseName = moduleName.replace(/[-.](.)/g, (_, g1) => g1.toUpperCase());
+      const PascalCaseName = camelCaseName.charAt(0).toUpperCase() + camelCaseName.slice(1);
+      console.log('Generated: ', PascalCaseName);
+
+      return `export { ${PascalCaseName} } from './${moduleName}';`;
+    })
+    .join('\n');
+
+  const indexPath = join(__dirname, `../src/core/r4/validators/${folder}/index.ts`);
+  writeFileSync(indexPath, exports);
+}
+
+/*
 
 // builders
 const builderFolders = ['backbones', 'base', 'resources', 'datatypes'];
@@ -83,3 +106,4 @@ const _exports = files
 
 const indexPath = join(__dirname, `../src/r4/types/index.ts`);
 writeFileSync(indexPath, _exports);
+*/
