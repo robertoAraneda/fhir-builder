@@ -1,4 +1,4 @@
-import { ElementBuilder } from './element.builder';
+import { ElementBuilder } from '../base/element.builder';
 import { ICoding, IElement } from 'fhirtypes/dist/r4';
 import { ICodingBuilder } from '../../interfaces';
 import { CodingParamExtensionType } from '../../types';
@@ -9,12 +9,12 @@ import { Coding } from '../../models';
  *
  */
 export class CodingBuilder extends ElementBuilder implements ICodingBuilder {
-  private readonly coding: ICoding;
+  private readonly coding: Coding;
 
   constructor() {
     super();
 
-    this.coding = {} as ICoding;
+    this.coding = new Coding();
   }
 
   /**
@@ -83,6 +83,6 @@ export class CodingBuilder extends ElementBuilder implements ICodingBuilder {
    */
   build(): Coding {
     Object.assign(this.coding, { ...super.entity() });
-    return new Coding(this.coding);
+    return this.coding;
   }
 }

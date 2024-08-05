@@ -1,10 +1,8 @@
 import { IAttachment, IElement } from 'fhirtypes/dist/r4';
-import { Element } from '../base/element.model';
-import { AttachmentBuilder } from '../../builders/datatypes/attachment.builder';
-import { DatatypeValidator, ValReturnType } from '../../validators/base/datatype.validator';
-import { IGenericObject } from '../../interfaces';
-import { AddressValidator } from '../../validators/datatypes/address.validator';
-import { AttachmentValidator } from '../../validators/datatypes/attachment.validator';
+import { Element } from '../base';
+import { AttachmentBuilder } from '../../builders';
+import { ValReturnType } from '../../validators/base/datatype.validator';
+import { conformanceValidation } from '../../validators/base/object.validator';
 
 export class Attachment extends Element implements IAttachment {
   contentType?: string;
@@ -36,17 +34,8 @@ export class Attachment extends Element implements IAttachment {
     return `Attachment${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      AttachmentValidator(args);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'Attachment');
     return { error };
   }
 

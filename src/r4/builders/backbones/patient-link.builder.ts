@@ -4,11 +4,11 @@ import { IPatientLinkBuilder } from '../../interfaces';
 import { PatientLink } from '../../models';
 
 export class PatientLinkBuilder extends BackboneElementBuilder implements IPatientLinkBuilder {
-  private readonly patientLink: IPatientLink;
+  private readonly patientLink: PatientLink;
 
   constructor() {
     super();
-    this.patientLink = {} as IPatientLink;
+    this.patientLink = new PatientLink();
   }
 
   addParamExtension(param: 'type', extension: IElement): this {
@@ -28,6 +28,6 @@ export class PatientLinkBuilder extends BackboneElementBuilder implements IPatie
 
   build(): PatientLink {
     Object.assign(this.patientLink, { ...super.entity() });
-    return new PatientLink(this.patientLink);
+    return this.patientLink;
   }
 }

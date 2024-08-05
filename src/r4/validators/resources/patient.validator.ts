@@ -1,14 +1,12 @@
 import { createResourceDefinition } from '../base/definitions';
 import { IPatient } from 'fhirtypes/dist/r4';
-import assert from 'node:assert';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
-import { BaseValidator } from '../base/base.validator';
 import { ResourceException } from '../../../commons/exceptions/resource.exception';
 import { AdministrativeGenderEnum } from 'fhirtypes/dist/r4/enums';
+import { validator } from '../base/object.validator';
 
 const administrativeGenderValues: ReadonlyArray<string> = Object.values(AdministrativeGenderEnum);
 
-export const modelFields = createResourceDefinition<IPatient>([
+const modelFields = createResourceDefinition<IPatient>([
   {
     name: 'identifier',
     type: 'Identifier',
@@ -165,14 +163,12 @@ export const modelFields = createResourceDefinition<IPatient>([
 ]);
 
 export function PatientValidator(dataToValidate: IPatient, path: string = 'Patient'): void {
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
-  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
-
-  BaseValidator(cleanObject, modelFields, path);
-  ConstraintValidator(cleanObject, path);
+  validator<IPatient>({
+    path,
+    dataToValidate,
+    modelDefinition: modelFields,
+    additionalValidation: [ConstraintValidator],
+  });
 }
 
 function ConstraintValidator(payload: IPatient, path: string) {

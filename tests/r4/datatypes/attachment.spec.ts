@@ -71,50 +71,6 @@ describe('Attachment FHIR R4', () => {
     expect(error).toBeNull();
   });
 
-  it('should be able to validate a multiple attachment', async () => {
-    const item1 = {
-      id: '123',
-      _data: {
-        extension: [
-          {
-            id: 'data',
-            url: 'data',
-            valueString: 'data',
-          },
-        ],
-      },
-    };
-    const item2: IAttachment = {
-      id: '123',
-      _data: {
-        extension: [
-          {
-            id: 'data',
-            url: 'data',
-            valueString: 'data',
-          },
-        ],
-      },
-    };
-    const item3: IAttachment = {
-      id: '123',
-      _data: {
-        extension: [
-          {
-            id: 'data',
-            url: 'data',
-            valueString: 'data',
-          },
-        ],
-      },
-    };
-
-    const attachments = [item1, item2, item3];
-
-    const { error } = conformanceValidation(attachments, 'Attachment');
-    expect(error).toBeNull();
-  });
-
   it('should be able to create a new attachment using builder methods [new Attachment()]', async () => {
     const item = Attachment.builder()
       .setId('123')

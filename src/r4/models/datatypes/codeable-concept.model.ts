@@ -1,10 +1,8 @@
 import { ICodeableConcept, ICoding, IElement } from 'fhirtypes/dist/r4';
-import { Element } from '../base/element.model';
-import { CodeableConceptBuilder } from '../../builders/datatypes/codeable-concept.builder';
-import { DatatypeValidator, ValReturnType } from '../../validators/base/datatype.validator';
-import { IGenericObject } from '../../interfaces';
-import { AttachmentValidator } from '../../validators/datatypes/attachment.validator';
-import { CodeableConceptValidator } from '../../validators/datatypes/codeable-concept.validator';
+import { Element } from '../base';
+import { CodeableConceptBuilder } from '../../builders';
+import { ValReturnType } from '../../validators/base/datatype.validator';
+import { conformanceValidation } from '../../validators/base/object.validator';
 
 /**
  * @description Concept - reference to a terminology or just text.
@@ -43,17 +41,8 @@ export class CodeableConcept extends Element implements ICodeableConcept {
     return `CodeableConcept${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      CodeableConceptValidator(args);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'CodeableConcept');
     return { error };
   }
 

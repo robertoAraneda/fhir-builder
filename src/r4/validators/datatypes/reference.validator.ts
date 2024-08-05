@@ -1,12 +1,9 @@
 import { createDatatypeDefinition } from '../base/definitions';
-import { IReference, ResourceType } from 'fhirtypes/dist/r4';
-import { BaseValidator } from '../base/base.validator';
+import { IReference } from 'fhirtypes/dist/r4';
 import { ReferenceException } from '../../../commons/exceptions/reference.exception';
-import { resourceListUtil } from '../../../commons/utils/resource-list.util';
-import assert from 'node:assert';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
+import { validator } from '../base/object.validator';
 
-export const modelFields = createDatatypeDefinition<IReference>([
+const modelFields = createDatatypeDefinition<IReference>([
   {
     name: 'reference',
     type: 'string',
@@ -51,35 +48,29 @@ export const modelFields = createDatatypeDefinition<IReference>([
   },
 ]);
 
-export const ValidateReferenceFormat = (value: string, path?: string): void => {
-  if (value.startsWith('#')) return;
-  if (value.startsWith('urn:')) return;
-  if (value.startsWith('urn:')) return;
-  if (value.startsWith('http://') || value.startsWith('https://')) return;
+export const ValidateReferenceFormat = (value: IReference, path?: string): void => {
+  const { reference } = value;
+  if (!reference) return;
+
+  if (reference.startsWith('#')) return;
+  if (reference.startsWith('urn:')) return;
+  if (reference.startsWith('urn:')) return;
+  if (reference.startsWith('http://') || reference.startsWith('https://')) return;
 
   // regex for resourceType/id
   const regex = /^[a-zA-Z]+\/[a-zA-Z0-9\-\.]+$/;
 
   // match with regex
-  if (!regex.test(value)) {
-    throw new ReferenceException(value, null, path);
+  if (!regex.test(reference)) {
+    throw new ReferenceException(reference, null, `${path}.reference`);
   }
 };
 
-export const ReferenceValidator = (dataToValidate: IReference | IReference[], path: string = 'Reference'): void => {
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
-  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
-
-  if (Array.isArray(cleanObject)) {
-    cleanObject.forEach((item, index) => {
-      ReferenceValidator(item, `${path}[${index}]`);
-    });
-    return;
-  }
-
-  if (cleanObject.reference) ValidateReferenceFormat(cleanObject.reference, `${path}.reference`);
-  BaseValidator(cleanObject, modelFields, path);
+export const ReferenceValidator = (dataToValidate: IReference, path: string = 'Reference'): void => {
+  validator<IReference>({
+    dataToValidate,
+    path,
+    modelDefinition: modelFields,
+    additionalValidation: [ValidateReferenceFormat],
+  });
 };

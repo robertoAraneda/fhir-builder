@@ -1,9 +1,8 @@
-import { Element } from '../base/element.model';
+import { Element } from '../base';
 import { INarrative, NarrativeStatusType } from 'fhirtypes/dist/r4';
-import { IGenericObject } from '../../interfaces';
 import { ValReturnType } from '../../validators/base/datatype.validator';
-import { NarrativeValidator } from '../../validators/datatypes/narrative.validator';
-import { NarrativeBuilder } from '../../builders/datatypes/narrative.builder';
+import { NarrativeBuilder } from '../../builders';
+import { conformanceValidation } from '../../validators/base/object.validator';
 
 export class Narrative extends Element implements INarrative {
   status: NarrativeStatusType;
@@ -21,17 +20,8 @@ export class Narrative extends Element implements INarrative {
     return `Narrative${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      NarrativeValidator(args as INarrative | INarrative[]);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'Narrative');
     return { error };
   }
 

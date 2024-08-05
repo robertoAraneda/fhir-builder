@@ -1,22 +1,13 @@
 import { IElement } from 'fhirtypes/dist/r4';
 import { createDatatypeDefinition } from '../base/definitions';
-import { BaseValidator } from '../base/base.validator';
-import assert from 'node:assert';
+import { validator } from '../base/object.validator';
 
-export const modelFields = createDatatypeDefinition<IElement>([]);
+const modelFields = createDatatypeDefinition<IElement>([]);
 
-export const ElementValidator = (dataToValidate: IElement | IElement[], path: string = 'Element'): void => {
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
-
-  if (Array.isArray(dataToValidate)) {
-    dataToValidate.forEach((item, index) => {
-      ElementValidator(item, `${path}[${index}]`);
-    });
-    return;
-  }
-
-  BaseValidator(dataToValidate, modelFields, path);
+export const ElementValidator = (dataToValidate: IElement, path: string = 'Element'): void => {
+  validator<IElement>({
+    path,
+    dataToValidate,
+    modelDefinition: modelFields,
+  });
 };

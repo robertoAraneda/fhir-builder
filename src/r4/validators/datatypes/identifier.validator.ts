@@ -1,13 +1,11 @@
 import { IIdentifier } from 'fhirtypes/dist/r4';
 import { createDatatypeDefinition } from '../base/definitions';
-import { BaseValidator } from '../base/base.validator';
-import assert from 'node:assert';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 import { IdentifierUseEnum } from 'fhirtypes/dist/r4/enums';
+import { validator } from '../base/object.validator';
 
-export const identifierUseValues: ReadonlyArray<string> = Object.values(IdentifierUseEnum);
+const identifierUseValues: ReadonlyArray<string> = Object.values(IdentifierUseEnum);
 
-export const modelFields = createDatatypeDefinition<IIdentifier>([
+const modelFields = createDatatypeDefinition<IIdentifier>([
   {
     name: 'use',
     type: 'code',
@@ -66,19 +64,10 @@ export const modelFields = createDatatypeDefinition<IIdentifier>([
   },
 ]);
 
-export const IdentifierValidator = (dataToValidate: IIdentifier | IIdentifier[], path: string = 'Identifier'): void => {
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
-  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
-
-  if (Array.isArray(cleanObject)) {
-    cleanObject.forEach((item, index) => {
-      IdentifierValidator(item, `${path}[${index}]`);
-    });
-    return;
-  }
-
-  BaseValidator(cleanObject, modelFields, path);
+export const IdentifierValidator = (dataToValidate: IIdentifier, path: string = 'Identifier'): void => {
+  validator<IIdentifier>({
+    path,
+    dataToValidate,
+    modelDefinition: modelFields,
+  });
 };

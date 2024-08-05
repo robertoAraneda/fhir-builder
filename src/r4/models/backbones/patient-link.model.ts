@@ -1,9 +1,8 @@
 import { IElement, IPatientLink, IReference, LinkTypeType } from 'fhirtypes/dist/r4';
 import { BackboneElement } from '../base';
 import { PatientLinkBuilder } from '../../builders';
-import { IGenericObject } from '../../interfaces';
 import { ValReturnType } from '../../validators/base/datatype.validator';
-import { PatientLinkValidator } from '../../validators/backbones/patient-link.validator';
+import { conformanceValidation } from '../../validators/base/object.validator';
 
 export class PatientLink extends BackboneElement implements IPatientLink {
   // PatientLink attributes
@@ -23,17 +22,8 @@ export class PatientLink extends BackboneElement implements IPatientLink {
     return `PatientLink${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      PatientLinkValidator(args as IPatientLink | IPatientLink[]);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'PatientLink');
     return { error };
   }
 

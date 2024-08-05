@@ -1,10 +1,8 @@
 import { IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { Element } from '../base/element.model';
+import { Element } from '../base';
 import { PeriodBuilder } from '../../builders';
-import { DatatypeValidator, ValReturnType } from '../../validators/base/datatype.validator';
-import { IGenericObject } from '../../interfaces';
-import { IdentifierValidator } from '../../validators/datatypes/identifier.validator';
-import { PeriodValidator } from '../../validators/datatypes/period.validator';
+import { ValReturnType } from '../../validators/base/datatype.validator';
+import { conformanceValidation } from '../../validators/base/object.validator';
 
 /**
  * @description Time range defined by start and end date/time.
@@ -56,17 +54,8 @@ export class Period extends Element implements IPeriod {
     return `Period${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      PeriodValidator(args);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'Period');
     return { error };
   }
 

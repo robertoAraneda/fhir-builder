@@ -1,15 +1,15 @@
 import { ICodeableConcept, IdentifierUseType, IElement, IIdentifier, IPeriod, IReference } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from './element.builder';
+import { ElementBuilder } from '../base/element.builder';
 import { IIdentifierBuilder } from '../../interfaces';
 import { Identifier } from '../../models';
 
 export class IdentifierBuilder extends ElementBuilder implements IIdentifierBuilder {
-  private readonly identifier: IIdentifier;
+  private readonly identifier: Identifier;
 
   constructor() {
     super();
 
-    this.identifier = {} as IIdentifier;
+    this.identifier = new Identifier();
   }
 
   addParamExtension(param: 'use' | 'system' | 'value', extension: IElement): this {
@@ -62,6 +62,6 @@ export class IdentifierBuilder extends ElementBuilder implements IIdentifierBuil
 
   build(): Identifier {
     Object.assign(this.identifier, { ...super.entity() });
-    return new Identifier(this.identifier);
+    return this.identifier;
   }
 }

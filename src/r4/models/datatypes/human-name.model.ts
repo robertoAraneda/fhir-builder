@@ -1,10 +1,8 @@
-import { Element } from '../base/element.model';
+import { Element } from '../base';
 import { IElement, IHumanName, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
-import { HumanNameBuilder } from '../../builders/datatypes/human-name.builder';
-import { DatatypeValidator, ValReturnType } from '../../validators/base/datatype.validator';
-import { IGenericObject } from '../../interfaces';
-import { ContactPointValidator } from '../../validators/datatypes/contact-point.validator';
-import { HumanNameValidator } from '../../validators/datatypes/human-name.validator';
+import { HumanNameBuilder } from '../../builders';
+import { ValReturnType } from '../../validators/base/datatype.validator';
+import { conformanceValidation } from '../../validators/base/object.validator';
 
 /**
  * @description Name of a human or other living entity - parts and usage
@@ -107,17 +105,8 @@ export class HumanName extends Element implements IHumanName {
     return `HumanName${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      HumanNameValidator(args);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'HumanName');
     return { error };
   }
 
@@ -125,7 +114,7 @@ export class HumanName extends Element implements IHumanName {
     return new HumanNameBuilder();
   }
 
-  constructor(args: IHumanName) {
+  constructor(args?: IHumanName) {
     super();
     Object.assign(this, args);
   }

@@ -1,5 +1,5 @@
 import { IIdentifier, IReference, ResourceType } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from './element.builder';
+import { ElementBuilder } from '../base/element.builder';
 import { IReferenceBuilder } from '../../interfaces';
 import { Reference } from '../../models';
 
@@ -48,7 +48,7 @@ export class ReferenceBuilder extends ElementBuilder implements IReferenceBuilde
   }
 }
 
-export const transformReference = <T extends { resourceType: ResourceType; id: string | number }>(item: T): string => {
+const transformReference = <T extends { resourceType: ResourceType; id: string | number }>(item: T): string => {
   if (!item.resourceType) throw new Error('Reference must have a resourceType');
   if (!item.id) throw new Error('Reference must have an id');
 

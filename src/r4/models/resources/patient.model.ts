@@ -1,4 +1,4 @@
-import { DomainResource } from '../base/domain-resource.model';
+import { DomainResource } from '../base';
 import {
   AdministrativeGenderType,
   IAddress,
@@ -14,10 +14,9 @@ import {
   IPatientLink,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { PatientBuilder } from '../../builders/resources/patient.builder';
-import { IGenericObject } from '../../interfaces';
+import { PatientBuilder } from '../../builders';
 import { ValReturnType } from '../../validators/base/datatype.validator';
-import { PatientValidator } from '../../validators/resources/patient.validator';
+import { conformanceValidation } from '../../validators/base/object.validator';
 
 /**
  * @description FHIR R4
@@ -61,7 +60,7 @@ export class Patient extends DomainResource implements IPatient {
   _deceasedDateTime?: IElement;
   _gender?: IElement;
 
-  toJson(): IGenericObject {
+  toJson(): unknown {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -73,17 +72,8 @@ export class Patient extends DomainResource implements IPatient {
     return `Patient${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      PatientValidator(args);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'Patient');
     return { error };
   }
 
@@ -91,11 +81,11 @@ export class Patient extends DomainResource implements IPatient {
     return new PatientBuilder();
   }
 
-  static builderFromJSON(json: IGenericObject | string): PatientBuilder {
+  static builderFromJSON(json: {} | string): PatientBuilder {
     return new PatientBuilder().fromJSON(json);
   }
 
-  constructor(args: IPatient) {
+  constructor(args?: IPatient) {
     super();
     Object.assign(this, args);
     this.resourceType = 'Patient';

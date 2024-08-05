@@ -13,17 +13,17 @@ import {
   IQuantity,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from './element.builder';
+import { ElementBuilder } from '../base/element.builder';
 import { IExtensionBuilder } from '../../interfaces';
 import { BuildType, ExtensionParamType } from '../../types';
 import { Extension } from '../../models';
 
 export class ExtensionBuilder extends ElementBuilder implements IExtensionBuilder {
-  private readonly extension: IExtension;
+  private readonly extension: Extension;
 
   constructor() {
     super();
-    this.extension = {} as IExtension;
+    this.extension = new Extension();
   }
 
   addParamExtension<T extends ExtensionParamType>(param: T, extension: IElement): BuildType {
@@ -243,6 +243,6 @@ export class ExtensionBuilder extends ElementBuilder implements IExtensionBuilde
 
   build(): Extension {
     Object.assign(this.extension, { ...super.entity() });
-    return new Extension(this.extension);
+    return this.extension;
   }
 }

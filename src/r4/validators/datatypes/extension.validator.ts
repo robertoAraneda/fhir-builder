@@ -1,11 +1,9 @@
 import { IExtension } from 'fhirtypes/dist/r4';
 import { ConstraintException } from '../../../commons/exceptions/constraint.exception';
 import { createDatatypeDefinition } from '../base/definitions';
-import { BaseValidator } from '../base/base.validator';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
-import assert from 'node:assert';
+import { validator } from '../base/object.validator';
 
-export const extensionAttributes: string[] = [
+const extensionAttributes: string[] = [
   'id',
   'extension',
   'url',
@@ -62,7 +60,7 @@ export const extensionAttributes: string[] = [
   '_valueUuid',
 ];
 
-export const modelFields = createDatatypeDefinition<IExtension>([
+const modelFields = createDatatypeDefinition<IExtension>([
   {
     name: 'url',
     type: 'uri',
@@ -335,21 +333,11 @@ const ValidateConstraints = (args: IExtension, path: string): void => {
   }
 };
 
-export const ExtensionValidator = (dataToValidate: IExtension | IExtension[], path: string = 'Extension'): void => {
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
-
-  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
-
-  if (Array.isArray(cleanObject)) {
-    cleanObject.forEach((item, index) => {
-      ExtensionValidator(item, `${path}[${index}]`);
-    });
-    return;
-  }
-
-  ValidateConstraints(cleanObject, path);
-  BaseValidator(cleanObject, modelFields, path);
+export const ExtensionValidator = (dataToValidate: IExtension, path: string = 'Extension'): void => {
+  validator<IExtension>({
+    path,
+    dataToValidate,
+    modelDefinition: modelFields,
+    additionalValidation: [ValidateConstraints],
+  });
 };

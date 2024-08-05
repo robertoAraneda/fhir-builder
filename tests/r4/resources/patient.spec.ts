@@ -1,5 +1,6 @@
 import { contextR4 } from '../../../src';
 import { IPatient } from 'fhirtypes/dist/r4';
+import { AdministrativeGenderEnum } from 'fhirtypes/dist/r4/enums';
 
 describe('Patient FHIR R4', () => {
   const { Patient, Validator } = contextR4();
@@ -392,6 +393,34 @@ describe('Patient FHIR R4', () => {
 
     const { error } = Validator.Patient(item);
     expect(error).toBeNull();
+  });
+
+  it('should throw an error if patient resource not contain at least a contact details or a reference to an organization', async () => {
+    const item = new Patient({
+      id: 'pat1',
+      active: true,
+      gender: AdministrativeGenderEnum.UNKNOWN,
+      contact: [
+        {
+          relationship: [
+            {
+              coding: [
+                {
+                  system: 'http://terminology.hl7.org/CodeSystem/v2-0131',
+                  code: 'N',
+                },
+              ],
+            },
+          ],
+          // no contact details
+        },
+      ],
+    });
+
+    const { error } = item.validate();
+    expect(error).toBe(
+      "Invalid Resource: Patient: SHALL at least contain a contact's details or a reference to an organization (pat-1)",
+    );
   });
 
   it('should be able to validate a new patient and validate with wrong data', async () => {

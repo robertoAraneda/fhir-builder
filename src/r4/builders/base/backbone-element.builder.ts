@@ -1,6 +1,6 @@
 import { ElementBuilder } from '../datatypes';
 import { IBackboneElement, IExtension } from 'fhirtypes/dist/r4';
-import { IBackboneElementBuilder } from '../../interfaces';
+import { IBackboneElementBuilder } from '../../interfaces/builders/base';
 
 export class BackboneElementBuilder extends ElementBuilder implements IBackboneElementBuilder {
   private readonly backboneElement: IBackboneElement;

@@ -16,12 +16,10 @@ import {
   IReference,
   ISignature,
 } from 'fhirtypes/dist/r4';
-import { Element } from '../base/element.model';
-import { ExtensionBuilder } from '../../builders/datatypes/extension.builder';
-import { IGenericObject } from '../../interfaces';
+import { Element } from '../base';
+import { ExtensionBuilder } from '../../builders';
 import { ValReturnType } from '../../validators/base/datatype.validator';
-import { HumanNameValidator } from '../../validators/datatypes/human-name.validator';
-import { ExtensionValidator } from '../../validators/datatypes/extension.validator';
+import { conformanceValidation } from '../../validators/base/object.validator';
 
 export class Extension extends Element implements IExtension {
   url: string;
@@ -94,17 +92,8 @@ export class Extension extends Element implements IExtension {
     return `Extension${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      ExtensionValidator(args as IExtension | IExtension[]);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'Extension');
     return { error };
   }
 
@@ -112,7 +101,7 @@ export class Extension extends Element implements IExtension {
     return new ExtensionBuilder();
   }
 
-  constructor(args: IExtension) {
+  constructor(args?: IExtension) {
     super();
     Object.assign(this, args);
   }

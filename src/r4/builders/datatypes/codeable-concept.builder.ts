@@ -1,15 +1,15 @@
-import { ElementBuilder } from './element.builder';
+import { ElementBuilder } from '../base/element.builder';
 import { ICodeableConcept, ICoding, IElement } from 'fhirtypes/dist/r4';
 import { ICodeableConceptBuilder } from '../../interfaces';
 import { CodeableConcept } from '../../models';
 
 export class CodeableConceptBuilder extends ElementBuilder implements ICodeableConceptBuilder {
-  private readonly codeableConcept: ICodeableConcept;
+  private readonly codeableConcept: CodeableConcept;
 
   constructor() {
     super();
 
-    this.codeableConcept = {} as ICodeableConcept;
+    this.codeableConcept = new CodeableConcept();
   }
   /**
    * @description Add a param extension to the codeable concept
@@ -42,6 +42,6 @@ export class CodeableConceptBuilder extends ElementBuilder implements ICodeableC
 
   build(): CodeableConcept {
     Object.assign(this.codeableConcept, { ...super.entity() });
-    return new CodeableConcept(this.codeableConcept);
+    return this.codeableConcept;
   }
 }

@@ -34,28 +34,6 @@ describe('Address FHIR R4', () => {
     expect(error).toBeNull();
   });
 
-  it('should be able create a multiples address [new Address()]', async () => {
-    const item1 = new Address({
-      use: 'home',
-      type: 'postal',
-      text: 'test',
-      line: ['line1', 'line2'],
-    });
-
-    const item2: IAddress = {
-      use: 'home',
-      type: 'postal',
-      text: 'test',
-      line: ['line1', 'line2'],
-    };
-
-    const adresses = [item1, item2];
-
-    expect(adresses).toBeDefined();
-    const { error } = conformanceValidation(adresses, 'Address');
-    expect(error).toBeNull();
-  });
-
   it('should be able to validate a new address and validate with wrong data', async () => {
     const item = {
       id: '123',

@@ -1,12 +1,12 @@
 import { createDatatypeDefinition } from '../base/definitions';
 import { IQuantity } from 'fhirtypes/dist/r4';
-import { quantityComparators } from '../../utils/quantity-comparators.util';
 import { ConstraintException } from '../../../commons/exceptions/constraint.exception';
-import assert from 'node:assert';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
-import { BaseValidator } from '../base/base.validator';
+import { validator } from '../base/object.validator';
+import { QuantityComparatorEnum } from 'fhirtypes/dist/r4/enums';
 
-export const modelFields = createDatatypeDefinition<IQuantity>([
+const quantityComparatorValues: ReadonlyArray<string> = Object.values(QuantityComparatorEnum);
+
+const modelFields = createDatatypeDefinition<IQuantity>([
   {
     name: 'value',
     type: 'decimal',
@@ -18,7 +18,7 @@ export const modelFields = createDatatypeDefinition<IQuantity>([
     type: 'code',
     isRequired: false,
     isArray: false,
-    enumValues: quantityComparators,
+    enumValues: quantityComparatorValues,
   },
   {
     name: 'unit',
@@ -77,20 +77,11 @@ function ValidateConstraint(payload: IQuantity, path: string): void {
   }
 }
 
-export function QuantityValidator(dataToValidate: IQuantity | IQuantity[], path: string = 'Quantity'): void {
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
-  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
-
-  if (Array.isArray(cleanObject)) {
-    cleanObject.forEach((item, index) => {
-      QuantityValidator(item, `${path}[${index}]`);
-    });
-    return;
-  }
-
-  BaseValidator(cleanObject, modelFields, path);
-  ValidateConstraint(cleanObject, path);
+export function QuantityValidator(dataToValidate: IQuantity, path: string = 'Quantity'): void {
+  validator<IQuantity>({
+    dataToValidate,
+    path,
+    modelDefinition: modelFields,
+    additionalValidation: [ValidateConstraint],
+  });
 }

@@ -1,14 +1,14 @@
-import { ICodeableConcept, IElement, IPatientCommunication } from 'fhirtypes/dist/r4';
+import { ICodeableConcept, IElement } from 'fhirtypes/dist/r4';
 import { BackboneElementBuilder } from '../base';
 import { IPatientCommunicationBuilder } from '../../interfaces';
 import { PatientCommunication } from '../../models';
 
 export class PatientCommunicationBuilder extends BackboneElementBuilder implements IPatientCommunicationBuilder {
-  private readonly patientCommunication: IPatientCommunication;
+  private readonly patientCommunication: PatientCommunication;
 
   constructor() {
     super();
-    this.patientCommunication = {} as IPatientCommunication;
+    this.patientCommunication = new PatientCommunication();
   }
 
   addParamExtension(param: 'preferred', extension: IElement): this {
@@ -28,6 +28,6 @@ export class PatientCommunicationBuilder extends BackboneElementBuilder implemen
 
   build(): PatientCommunication {
     Object.assign(this.patientCommunication, { ...super.entity() });
-    return new PatientCommunication(this.patientCommunication);
+    return this.patientCommunication;
   }
 }

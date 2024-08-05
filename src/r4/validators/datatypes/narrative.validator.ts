@@ -1,10 +1,8 @@
 import { createDatatypeDefinition } from '../base/definitions';
 import { INarrative } from 'fhirtypes/dist/r4';
-import assert from 'node:assert';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
-import { BaseValidator } from '../base/base.validator';
+import { validator } from '../base/object.validator';
 
-export const modelFields = createDatatypeDefinition<INarrative>([
+const modelFields = createDatatypeDefinition<INarrative>([
   {
     name: 'status',
     type: 'code',
@@ -20,18 +18,10 @@ export const modelFields = createDatatypeDefinition<INarrative>([
   },
 ]);
 
-export function NarrativeValidator(dataToValidate: INarrative | INarrative[], path: string = 'Narrative') {
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
-
-  if (Array.isArray(dataToValidate)) {
-    dataToValidate.forEach((item, index) => {
-      NarrativeValidator(item, `${path}[${index}]`);
-    });
-    return;
-  }
-
-  BaseValidator(dataToValidate, modelFields, path);
+export function NarrativeValidator(dataToValidate: INarrative, path: string = 'Narrative') {
+  validator<INarrative>({
+    dataToValidate,
+    path,
+    modelDefinition: modelFields,
+  });
 }

@@ -13,7 +13,7 @@ export const BaseValidator = <
     [key: string]: any;
   },
 >(
-  data: T,
+  data: T | T[],
   definitions: ReadonlyArray<AttributeDefinition<T>>,
   path: string,
 ): void => {
@@ -79,16 +79,28 @@ export const validateRequiredFieldByDefinition = <T>(
   }
 };
 
+/**
+ * Validates if the data contains valid enum values according to the definition.
+ * @param data - The data to be validated.
+ * @param definition - The attribute definition to validate against.
+ * @param path - The path to the data being validated (used for error messages).
+ * @throws Error if the data does not match the allowed enum values.
+ */
 export const validateEnumValues = <T>(data: string, definition: AttributeDefinition<T>, path: string) => {
-  if (definition.enumValues && !definition.isArray) {
-    if (!definition.enumValues.includes(data)) {
-      throw new Error(
-        `Field must be one of [${definition.enumValues.join(', ')}] in ${path}.${String(definition.name)}`,
-      );
-    }
+  if (!definition.enumValues || definition.isArray) return;
+
+  if (!definition.enumValues.includes(data)) {
+    throw new Error(`Field must be one of [${definition.enumValues.join(', ')}] in ${path}.${String(definition.name)}`);
   }
 };
 
+/**
+ * Validates if the data is an array when the definition requires it to be an array.
+ * @param data - The data to be validated.
+ * @param definition - The attribute definition to validate against.
+ * @param path - The path to the data being validated (used for error messages).
+ * @throws Error if the data is not an array when it should be.
+ */
 export const validateArray = <T>(data: any, definition: AttributeDefinition<T>, path: string) => {
   // check if the field is an array
   if (definition.isArray && data && !Array.isArray(data)) {
@@ -96,47 +108,66 @@ export const validateArray = <T>(data: any, definition: AttributeDefinition<T>, 
   }
 };
 
-export const validateObject = <T>(data: any, definition: AttributeDefinition<T>, path: string) => {
+export const validateObject = <T>(data: T | T[], definition: AttributeDefinition<T>, path: string) => {
   if (!data) {
     return;
   }
 
   const validator = parseValidator(definition.type);
 
-  if (validator) {
-    validator(data, `${path}.${String(definition.name)}`);
-  } else {
+  if (!validator) {
     throw new Error(`No validator found for ${String(definition.type)}`);
   }
+
+  if (Array.isArray(data)) {
+    data.forEach((item, index) => {
+      validator(item, `${path}.${String(definition.name)}[${index}]`);
+    });
+    return;
+  }
+  validator(data, `${path}.${String(definition.name)}`);
 };
 
+/**
+ * @description Validates the format of a reference field.
+ * @param value - The reference value to be validated.
+ * @param resources - The list of valid resource types or 'all' to allow all resource types.
+ * @param path - The path to the data being validated (used for error messages).
+ * @throws ReferenceException if the reference format is invalid or the resource type is not allowed.
+ */
 export const ValidateReferenceFormat = (
   value: IReference,
   resources: ResourceType[] | 'all' | null = null,
   path?: string,
 ): void => {
   const { reference } = value;
-  if (!reference) return;
-  if (!resources) return;
 
-  let internalResources = [];
-  if (resources === 'all') {
-    internalResources = resourceListUtil as ResourceType[];
-  } else {
-    internalResources = resources;
-  }
+  // Exit if reference or resources are not provided
+  if (!reference || !resources) return;
 
+  // Determine the valid resource types
+  const internalResources: ResourceType[] = resources === 'all' ? (resourceListUtil as ResourceType[]) : resources;
+
+  // Extract the resource type from the reference string
   const [resourceType] = reference.split('/');
-
   const resourceTypeForCheck = resourceType as ResourceType;
 
+  // Check if the resource type is allowed
   if (!internalResources.includes(resourceTypeForCheck)) {
     throw new ReferenceException(resourceType, resources, `${path}.reference`);
   }
 };
 
+/**
+ * @description Checks if a value is not null, undefined, an empty string, an empty array, or an empty object.
+ * @param value - The value to be checked.
+ * @returns True if the value is valid (not null, undefined, or empty), otherwise false.
+ */
 export function hasValue(value: any): boolean {
-  return value !== null && value !== undefined && value !== '';
+  if (value === null || value === undefined) return false; // Checks for null and undefined
+  if (typeof value === 'string' && value.trim() === '') return false; // Checks for empty strings
+  if (Array.isArray(value) && value.length === 0) return false; // Checks for empty arrays
+  return !(typeof value === 'object' && Object.keys(value).length === 0); // Checks for empty objects
 }
 
 export function parseValidator(name: keyof ValidatorType): (value: any, path: string) => void {

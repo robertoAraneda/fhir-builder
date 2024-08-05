@@ -1,10 +1,8 @@
 import { ICoding, IElement, IMeta } from 'fhirtypes/dist/r4';
-import { Element } from '../base/element.model';
-import { MetaBuilder } from '../../builders/datatypes/meta.builder';
-import { IGenericObject } from '../../interfaces';
+import { Element } from '../base';
+import { MetaBuilder } from '../../builders';
 import { ValReturnType } from '../../validators/base/datatype.validator';
-import { IdentifierValidator } from '../../validators/datatypes/identifier.validator';
-import { MetaValidator } from '../../validators/datatypes/meta.validator';
+import { conformanceValidation } from '../../validators/base/object.validator';
 
 export class Meta extends Element implements IMeta {
   // Meta Properties
@@ -33,17 +31,8 @@ export class Meta extends Element implements IMeta {
     return `Meta${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      MetaValidator(args);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'Meta');
     return { error };
   }
 
@@ -51,7 +40,7 @@ export class Meta extends Element implements IMeta {
     return new MetaBuilder();
   }
 
-  constructor(args: IMeta) {
+  constructor(args?: IMeta) {
     super();
     Object.assign(this, args);
   }

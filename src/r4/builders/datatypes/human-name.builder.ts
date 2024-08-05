@@ -1,17 +1,17 @@
-import { ElementBuilder } from './element.builder';
+import { ElementBuilder } from '../base/element.builder';
 import { IHumanNameBuilder } from '../../interfaces';
-import { IElement, IHumanName, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
+import { IElement, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
 import { HumanName } from '../../models';
 import { HumanNameParamType } from '../../types';
 import { HumanNameArrayParamType } from '../../types';
 
 export class HumanNameBuilder extends ElementBuilder implements IHumanNameBuilder {
-  private readonly humanName: IHumanName;
+  private readonly humanName: HumanName;
 
   constructor() {
     super();
 
-    this.humanName = {} as IHumanName;
+    this.humanName = new HumanName();
   }
 
   addParamExtension<T extends HumanNameParamType>(
@@ -85,6 +85,6 @@ export class HumanNameBuilder extends ElementBuilder implements IHumanNameBuilde
 
   build(): HumanName {
     Object.assign(this.humanName, { ...super.entity() });
-    return new HumanName(this.humanName);
+    return this.humanName;
   }
 }

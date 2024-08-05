@@ -1,10 +1,8 @@
 import { ContactPointSystemType, ContactPointUseType, IContactPoint, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { Element } from '../base/element.model';
-import { ContactPointBuilder } from '../../builders/datatypes/contact-point.builder';
-import { ValReturnType, DatatypeValidator } from '../../validators/base/datatype.validator';
-import { IGenericObject } from '../../interfaces';
-import { CodingValidator } from '../../validators/datatypes/coding.validator';
-import { ContactPointValidator } from '../../validators/datatypes/contact-point.validator';
+import { Element } from '../base';
+import { ContactPointBuilder } from '../../builders';
+import { ValReturnType } from '../../validators/base/datatype.validator';
+import { conformanceValidation } from '../../validators/base/object.validator';
 
 /**
  * @description Details for all kinds of technology-mediated contact points for a person or organization, including telephone, email, etc.
@@ -82,17 +80,8 @@ export class ContactPoint extends Element implements IContactPoint {
     return `ContactPoint${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      ContactPointValidator(args);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'ContactPoint');
     return { error };
   }
 

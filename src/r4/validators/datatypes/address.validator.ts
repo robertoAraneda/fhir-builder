@@ -4,11 +4,12 @@ import { BaseValidator } from '../base/base.validator';
 import assert from 'node:assert';
 import { AddressTypeEnum, AddressUseEnum } from 'fhirtypes/dist/r4/enums';
 import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
+import { validator } from '../base/object.validator';
 
 const addressTypeValues: ReadonlyArray<string> = Object.values(AddressTypeEnum);
 const addressUseValues: ReadonlyArray<string> = Object.values(AddressUseEnum);
 
-export const modelFields = createDatatypeDefinition<IAddress>([
+const modelFields = createDatatypeDefinition<IAddress>([
   {
     name: 'use',
     type: 'code',
@@ -127,19 +128,10 @@ export const modelFields = createDatatypeDefinition<IAddress>([
   },
 ]);
 
-export const AddressValidator = (dataToValidate: IAddress | IAddress[], path: string = 'Address'): void => {
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
-  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
-
-  if (Array.isArray(cleanObject)) {
-    cleanObject.forEach((item, index) => {
-      AddressValidator(item, `${path}[${index}]`);
-    });
-    return;
-  }
-
-  BaseValidator(cleanObject, modelFields, path);
+export const AddressValidator = (dataToValidate: IAddress, path: string = 'Address'): void => {
+  validator<IAddress>({
+    dataToValidate,
+    path,
+    modelDefinition: modelFields,
+  });
 };

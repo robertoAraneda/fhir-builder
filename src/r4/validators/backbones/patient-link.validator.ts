@@ -1,9 +1,7 @@
 import { IPatientLink } from 'fhirtypes/dist/r4';
-import assert from 'node:assert';
-import { BaseValidator } from '../base/base.validator';
 import { LinkTypeEnum } from 'fhirtypes/dist/r4/enums';
 import { createBackboneDefinition } from '../base/definitions';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
+import { validator } from '../base/object.validator';
 
 const linkTypesValues = Object.values(LinkTypeEnum);
 
@@ -30,22 +28,10 @@ export const modelFields = createBackboneDefinition<IPatientLink>([
   },
 ]);
 
-export function PatientLinkValidator(
-  dataToValidate: IPatientLink | IPatientLink[],
-  path: string = 'PatientLink',
-): void {
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
-  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
-
-  if (Array.isArray(cleanObject)) {
-    cleanObject.forEach((item, index) => {
-      PatientLinkValidator(item, `${path}[${index}]`);
-    });
-    return;
-  }
-
-  BaseValidator(cleanObject, modelFields, path);
+export function PatientLinkValidator(dataToValidate: IPatientLink, path: string = 'PatientLink'): void {
+  validator<IPatientLink>({
+    path,
+    dataToValidate,
+    modelDefinition: modelFields,
+  });
 }

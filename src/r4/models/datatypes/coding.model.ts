@@ -1,10 +1,8 @@
 import { ICoding, IElement } from 'fhirtypes/dist/r4';
-import { Element } from '../base/element.model';
-import { CodingBuilder } from '../../builders/datatypes/coding.builder';
-import { ValReturnType, DatatypeValidator } from '../../validators/base/datatype.validator';
-import { IGenericObject } from '../../interfaces';
-import { CodeableConceptValidator } from '../../validators/datatypes/codeable-concept.validator';
-import { CodingValidator } from '../../validators/datatypes/coding.validator';
+import { Element } from '../base';
+import { CodingBuilder } from '../../builders';
+import { ValReturnType } from '../../validators/base/datatype.validator';
+import { conformanceValidation } from '../../validators/base/object.validator';
 
 /**
  * @description A reference to a code defined by a terminology system.
@@ -86,17 +84,8 @@ export class Coding extends Element implements ICoding {
     return `Coding${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      CodingValidator(args);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'Coding');
     return { error };
   }
 

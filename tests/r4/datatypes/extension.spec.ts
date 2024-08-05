@@ -61,6 +61,10 @@ describe('Extension FHIR R4', () => {
             url: 'url',
             valueDate: '2022-06-12',
           },
+          {
+            url: 'url',
+            valueDate: '2022-06',
+          },
         ],
       })
       .build();
@@ -77,6 +81,10 @@ describe('Extension FHIR R4', () => {
           {
             url: 'url',
             valueDate: '2022-06-12',
+          },
+          {
+            url: 'url',
+            valueDate: '2022-06',
           },
         ],
       },

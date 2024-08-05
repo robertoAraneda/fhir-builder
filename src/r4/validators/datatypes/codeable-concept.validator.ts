@@ -1,10 +1,8 @@
 import { createDatatypeDefinition } from '../base/definitions';
 import { ICodeableConcept } from 'fhirtypes/dist/r4';
-import { BaseValidator } from '../base/base.validator';
-import assert from 'node:assert';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
+import { validator } from '../base/object.validator';
 
-export const modelFields = createDatatypeDefinition<ICodeableConcept>([
+const modelFields = createDatatypeDefinition<ICodeableConcept>([
   {
     name: 'coding',
     type: 'Coding',
@@ -25,22 +23,10 @@ export const modelFields = createDatatypeDefinition<ICodeableConcept>([
   },
 ]);
 
-export const CodeableConceptValidator = (
-  dataToValidate: ICodeableConcept | ICodeableConcept[],
-  path: string = 'CodeableConcept',
-): void => {
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
-  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
-
-  if (Array.isArray(cleanObject)) {
-    cleanObject.forEach((item, index) => {
-      CodeableConceptValidator(item, `${path}[${index}]`);
-    });
-    return;
-  }
-
-  BaseValidator(cleanObject, modelFields, path);
+export const CodeableConceptValidator = (dataToValidate: ICodeableConcept, path: string = 'CodeableConcept'): void => {
+  validator<ICodeableConcept>({
+    path,
+    dataToValidate,
+    modelDefinition: modelFields,
+  });
 };

@@ -1,15 +1,15 @@
-import { ElementBuilder } from './element.builder';
+import { ElementBuilder } from '../base/element.builder';
 import { IAttachment, IElement } from 'fhirtypes/dist/r4';
 import { IAttachmentBuilder } from '../../interfaces';
 import { AttachmentParamExtensionType } from '../../types';
 import { Attachment } from '../../models';
 
 export class AttachmentBuilder extends ElementBuilder implements IAttachmentBuilder {
-  private readonly attachment: IAttachment;
+  private readonly attachment: Attachment;
 
   constructor() {
     super();
-    this.attachment = {} as IAttachment;
+    this.attachment = new Attachment();
   }
 
   addParamExtension(param: AttachmentParamExtensionType, extension: IElement): this {
@@ -59,6 +59,6 @@ export class AttachmentBuilder extends ElementBuilder implements IAttachmentBuil
 
   build(): Attachment {
     Object.assign(this.attachment, { ...super.entity() });
-    return new Attachment(this.attachment);
+    return this.attachment;
   }
 }

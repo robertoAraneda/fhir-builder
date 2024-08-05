@@ -11,9 +11,8 @@ import {
 } from 'fhirtypes/dist/r4';
 import { BackboneElement } from '../base';
 import { PatientContactBuilder } from '../../builders';
-import { IGenericObject } from '../../interfaces';
 import { ValReturnType } from '../../validators/base/datatype.validator';
-import { PatientContactValidator } from '../../validators/backbones/patient-contact.validator';
+import { conformanceValidation } from '../../validators/base/object.validator';
 
 export class PatientContact extends BackboneElement implements IPatientContact {
   // PatientContact attributes
@@ -38,17 +37,8 @@ export class PatientContact extends BackboneElement implements IPatientContact {
     return `PatientContact${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      PatientContactValidator(args);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'PatientContact');
     return { error };
   }
 
@@ -57,7 +47,7 @@ export class PatientContact extends BackboneElement implements IPatientContact {
     return new PatientContactBuilder();
   }
 
-  constructor(args: IPatientContact) {
+  constructor(args?: IPatientContact) {
     super();
     Object.assign(this, args);
   }

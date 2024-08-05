@@ -1,15 +1,15 @@
-import { ElementBuilder } from './element.builder';
+import { ElementBuilder } from '../base/element.builder';
 import { IQuantityBuilder } from '../../interfaces';
 import { IElement, IQuantity, QuantityComparatorType } from 'fhirtypes/dist/r4';
 import { QuantityParamExtensionType } from '../../types';
 import { Quantity } from '../../models';
 
 export class QuantityBuilder extends ElementBuilder implements IQuantityBuilder {
-  private readonly quantity: IQuantity;
+  private readonly quantity: Quantity;
 
   constructor() {
     super();
-    this.quantity = {} as IQuantity;
+    this.quantity = new Quantity();
   }
 
   addParamExtension<T extends QuantityParamExtensionType>(param: T, extension: IElement): this {
@@ -20,7 +20,7 @@ export class QuantityBuilder extends ElementBuilder implements IQuantityBuilder 
 
   build(): Quantity {
     Object.assign(this.quantity, { ...super.entity() });
-    return new Quantity(this.quantity);
+    return this.quantity;
   }
 
   setCode(value: string): this {

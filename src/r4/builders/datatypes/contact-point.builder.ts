@@ -1,16 +1,16 @@
 import { ContactPointSystemType, ContactPointUseType, IContactPoint, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from './element.builder';
+import { ElementBuilder } from '../base/element.builder';
 import { IContactPointBuilder } from '../../interfaces';
 import { ContactPointParamExtensionType } from '../../types';
 import { ContactPoint } from '../../models';
 
 export class ContactPointBuilder extends ElementBuilder implements IContactPointBuilder {
-  private readonly contactPoint: IContactPoint;
+  private readonly contactPoint: ContactPoint;
 
   constructor() {
     super();
 
-    this.contactPoint = {} as IContactPoint;
+    this.contactPoint = new ContactPoint();
   }
 
   /**
@@ -86,6 +86,6 @@ export class ContactPointBuilder extends ElementBuilder implements IContactPoint
    */
   build(): ContactPoint {
     Object.assign(this.contactPoint, { ...super.entity() });
-    return new ContactPoint(this.contactPoint);
+    return this.contactPoint;
   }
 }

@@ -1,9 +1,7 @@
 import { IResource } from 'fhirtypes/dist/r4';
-import { BaseValidator } from '../base/base.validator';
-import assert from 'node:assert';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
+import { validator } from '../base/object.validator';
 
-export const modelFields: ReadonlyArray<any> = [
+const modelFields: ReadonlyArray<any> = [
   {
     isRequired: false,
     isArray: false,
@@ -48,19 +46,10 @@ export const modelFields: ReadonlyArray<any> = [
   },
 ];
 
-export const ResourceValidator = (dataToValidate: IResource | IResource[], path: string = 'Resource'): void => {
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
-  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
-
-  if (Array.isArray(cleanObject)) {
-    cleanObject.forEach((item, index) => {
-      ResourceValidator(item, `${path}[${index}]`);
-    });
-    return;
-  }
-
-  BaseValidator(cleanObject, modelFields, path);
+export const ResourceValidator = (dataToValidate: IResource, path: string = 'Resource'): void => {
+  validator<IResource>({
+    dataToValidate,
+    path,
+    modelDefinition: modelFields,
+  });
 };

@@ -1,5 +1,5 @@
 import { AddressTypeType, AddressUseType, IAddress, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from './element.builder';
+import { ElementBuilder } from '../base/element.builder';
 import { IAddressBuilder } from '../../interfaces';
 import { Address } from '../../models';
 

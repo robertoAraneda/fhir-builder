@@ -1,10 +1,8 @@
-import { Element } from '../base/element.model';
+import { Element } from '../base';
 import { IElement, IQuantity, QuantityComparatorType } from 'fhirtypes/dist/r4';
-import { QuantityBuilder } from '../../builders/datatypes/quantity.builder';
-import { IGenericObject } from '../../interfaces';
+import { QuantityBuilder } from '../../builders';
 import { ValReturnType } from '../../validators/base/datatype.validator';
-import { PeriodValidator } from '../../validators/datatypes/period.validator';
-import { QuantityValidator } from '../../validators/datatypes/quantity.validator';
+import { conformanceValidation } from '../../validators/base/object.validator';
 
 export class Quantity extends Element implements IQuantity {
   // Quantity Properties
@@ -33,17 +31,8 @@ export class Quantity extends Element implements IQuantity {
     return `Quantity${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      QuantityValidator(args);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'Quantity');
     return { error };
   }
 
@@ -51,7 +40,7 @@ export class Quantity extends Element implements IQuantity {
     return new QuantityBuilder();
   }
 
-  constructor(args: IQuantity) {
+  constructor(args?: IQuantity) {
     super();
     Object.assign(this, args);
   }

@@ -19,19 +19,17 @@ import { PatientParamExtensionType } from '../../types';
 import { Patient } from '../../models';
 
 export class PatientBuilder extends DomainResourceBuilder implements IPatientBuilder {
-  private patient: IPatient;
+  private readonly patient: Patient;
 
   constructor() {
     super();
-    this.patient = {} as IPatient;
+    this.patient = new Patient();
   }
 
   fromJSON<T extends IPatient>(json: T | string): this {
-    if (typeof json === 'string') {
-      this.patient = JSON.parse(json);
-    } else {
-      this.patient = json;
-    }
+    const incomingPatient: IPatient = typeof json === 'string' ? JSON.parse(json) : json;
+
+    Object.assign(this.patient, incomingPatient);
     return this;
   }
 

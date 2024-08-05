@@ -1,13 +1,11 @@
-import assert from 'node:assert';
 import { IPatientContact } from 'fhirtypes/dist/r4';
 import { AdministrativeGenderEnum } from 'fhirtypes/dist/r4/enums';
-import { BaseValidator } from '../base/base.validator';
 import { createBackboneDefinition } from '../base/definitions';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
+import { validator } from '../base/object.validator';
 
 const administrativeGendersValues = Object.values(AdministrativeGenderEnum);
 
-export const modelFields = createBackboneDefinition<IPatientContact>([
+const modelFields = createBackboneDefinition<IPatientContact>([
   {
     name: 'relationship',
     type: 'CodeableConcept',
@@ -60,25 +58,12 @@ export const modelFields = createBackboneDefinition<IPatientContact>([
   },
 ]);
 
-export function PatientContactValidator(
-  dataToValidate: IPatientContact | IPatientContact[],
-  path: string = 'PatientContact',
-): void {
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
-  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
-
-  if (Array.isArray(cleanObject)) {
-    cleanObject.forEach((item, index) => {
-      PatientContactValidator(item, `${path}[${index}]`);
-    });
-
-    return;
-  }
-
-  BaseValidator(cleanObject, modelFields, path);
+export function PatientContactValidator(dataToValidate: IPatientContact, path: string = 'PatientContact'): void {
+  validator<IPatientContact>({
+    path,
+    dataToValidate,
+    modelDefinition: modelFields,
+  });
 }
 
 /*

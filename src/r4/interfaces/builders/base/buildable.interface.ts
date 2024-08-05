@@ -1,5 +1,6 @@
 // TODO: add R5 models
-import { BackboneElement, DomainResource } from '../../../models';
+
+import { BackboneElement, DomainResource } from '../../../models/base';
 
 type InstanceClass = DomainResource | BackboneElement;
 

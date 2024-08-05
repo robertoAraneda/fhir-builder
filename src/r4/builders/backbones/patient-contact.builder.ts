@@ -4,7 +4,6 @@ import {
   IContactPoint,
   IElement,
   IHumanName,
-  IPatientContact,
   IPeriod,
   IReference,
 } from 'fhirtypes/dist/r4';
@@ -13,11 +12,11 @@ import { IPatientContactBuilder } from '../../interfaces';
 import { PatientContact } from '../../models';
 
 export class PatientContactBuilder extends BackboneElementBuilder implements IPatientContactBuilder {
-  private readonly patientContact: IPatientContact;
+  private readonly patientContact: PatientContact;
 
   constructor() {
     super();
-    this.patientContact = {} as IPatientContact;
+    this.patientContact = new PatientContact();
   }
 
   addParamExtension(param: 'gender', extension: IElement): this {
@@ -69,6 +68,6 @@ export class PatientContactBuilder extends BackboneElementBuilder implements IPa
 
   build(): PatientContact {
     Object.assign(this.patientContact, { ...super.entity() });
-    return new PatientContact(this.patientContact);
+    return this.patientContact;
   }
 }

@@ -45,7 +45,7 @@ for (const folder of interfaceBuilderFolders) {
 }
 
 // models
-const modelFolders = ['backbones', 'resources', 'base', 'datatypes'];
+const modelFolders = ['backbones', 'resources', 'datatypes'];
 
 for (const folder of modelFolders) {
   const files = readdirSync(join(__dirname, `../src/r4/models/${folder}`));

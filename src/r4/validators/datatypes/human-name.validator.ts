@@ -1,13 +1,11 @@
 import { createDatatypeDefinition } from '../base/definitions';
 import { IHumanName } from 'fhirtypes/dist/r4';
-import { BaseValidator } from '../base/base.validator';
-import assert from 'node:assert';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 import { NameUseEnum } from 'fhirtypes/dist/r4/enums';
+import { validator } from '../base/object.validator';
 
-export const humanNameUseValues: ReadonlyArray<string> = Object.values(NameUseEnum);
+const humanNameUseValues: ReadonlyArray<string> = Object.values(NameUseEnum);
 
-export const modelFields = createDatatypeDefinition<IHumanName>([
+const modelFields = createDatatypeDefinition<IHumanName>([
   {
     name: 'use',
     type: 'code',
@@ -89,19 +87,10 @@ export const modelFields = createDatatypeDefinition<IHumanName>([
   },
 ]);
 
-export const HumanNameValidator = (dataToValidate: IHumanName | IHumanName[], path: string = 'HumanName'): void => {
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
-  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
-
-  if (Array.isArray(cleanObject)) {
-    cleanObject.forEach((item, index) => {
-      HumanNameValidator(item, `${path}[${index}]`);
-    });
-    return;
-  }
-
-  BaseValidator(cleanObject, modelFields, path);
+export const HumanNameValidator = (dataToValidate: IHumanName, path: string = 'HumanName'): void => {
+  validator<IHumanName>({
+    path,
+    dataToValidate,
+    modelDefinition: modelFields,
+  });
 };

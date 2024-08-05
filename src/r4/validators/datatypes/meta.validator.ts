@@ -1,10 +1,8 @@
 import { createDatatypeDefinition } from '../base/definitions';
 import { IMeta } from 'fhirtypes/dist/r4';
-import assert from 'node:assert';
-import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
-import { BaseValidator } from '../base/base.validator';
+import { validator } from '../base/object.validator';
 
-export const modelFields = createDatatypeDefinition<IMeta>([
+const modelFields = createDatatypeDefinition<IMeta>([
   {
     name: 'versionId',
     type: 'id',
@@ -67,19 +65,10 @@ export const modelFields = createDatatypeDefinition<IMeta>([
   },
 ]);
 
-export function MetaValidator(dataToValidate: IMeta | IMeta[], path: string = 'Meta'): void {
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
-  const cleanObject = RemoveUndefinedAttributes(dataToValidate);
-
-  if (Array.isArray(cleanObject)) {
-    cleanObject.forEach((item, index) => {
-      MetaValidator(item, `${path}[${index}]`);
-    });
-    return;
-  }
-
-  BaseValidator(cleanObject, modelFields, path);
+export function MetaValidator(dataToValidate: IMeta, path: string = 'Meta'): void {
+  validator<IMeta>({
+    dataToValidate,
+    modelDefinition: modelFields,
+    path,
+  });
 }

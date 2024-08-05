@@ -1,10 +1,8 @@
 import { IElement, IIdentifier, IReference } from 'fhirtypes/dist/r4';
-import { Element } from '../base/element.model';
-import { ReferenceBuilder } from '../../builders/datatypes/reference.builder';
-import { DatatypeValidator, ValReturnType } from '../../validators/base/datatype.validator';
-import { IGenericObject } from '../../interfaces';
-import { PeriodValidator } from '../../validators/datatypes/period.validator';
-import { ReferenceValidator } from '../../validators/datatypes/reference.validator';
+import { Element } from '../base';
+import { ReferenceBuilder } from '../../builders';
+import { ValReturnType } from '../../validators/base/datatype.validator';
+import { conformanceValidation } from '../../validators/base/object.validator';
 
 export class Reference extends Element implements IReference {
   // Reference attributes
@@ -30,17 +28,8 @@ export class Reference extends Element implements IReference {
     return `Reference${JSON.stringify(this.toJson())}`;
   }
 
-  private isValid(args: IGenericObject): ValReturnType {
-    try {
-      ReferenceValidator(args);
-      return { error: null };
-    } catch (e: any) {
-      return { error: e.message };
-    }
-  }
-
   validate(): ValReturnType {
-    const { error } = this.isValid(this);
+    const { error } = conformanceValidation(this, 'Reference');
     return { error };
   }
 

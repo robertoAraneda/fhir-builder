@@ -1,16 +1,16 @@
-import { ElementBuilder } from './element.builder';
+import { ElementBuilder } from '../base/element.builder';
 import { IMetaBuilder } from '../../interfaces';
-import { ICoding, IElement, IMeta } from 'fhirtypes/dist/r4';
+import { ICoding, IElement } from 'fhirtypes/dist/r4';
 import { MetaParamsExtensionType } from '../../types';
 import { Meta } from '../../models';
 
 export class MetaBuilder extends ElementBuilder implements IMetaBuilder {
-  private readonly meta: IMeta;
+  private readonly meta: Meta;
 
   constructor() {
     super();
 
-    this.meta = {} as IMeta;
+    this.meta = new Meta();
   }
 
   addParamExtension<T extends MetaParamsExtensionType>(param: T, extension: IElement): this {
@@ -69,6 +69,6 @@ export class MetaBuilder extends ElementBuilder implements IMetaBuilder {
 
   build(): Meta {
     Object.assign(this.meta, { ...super.entity() });
-    return new Meta(this.meta);
+    return this.meta;
   }
 }
