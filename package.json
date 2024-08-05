@@ -51,6 +51,6 @@
     "lib/**/*",
     "types/r4/*",
     "types/index.d.ts",
-    "README.md",
+    "README.md"
   ]
 }
