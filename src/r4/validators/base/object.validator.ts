@@ -1,11 +1,11 @@
-import { ValidatorType } from './internal.validator';
+import { fhirR4Types, ValidatorType } from './internal.validator';
 import { BaseValidator, parseValidator } from './base.validator';
 import { ValReturnType } from './datatype.validator';
 import { AttributeDefinition } from './definitions';
 import assert from 'node:assert';
 import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 
-export const conformanceValidation = <T>(args: T, validatorName: keyof ValidatorType): ValReturnType => {
+export const conformanceValidation = <T>(args: T, validatorName: fhirR4Types): ValReturnType => {
   try {
     const validator = parseValidator(validatorName);
 

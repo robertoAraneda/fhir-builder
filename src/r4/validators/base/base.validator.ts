@@ -1,7 +1,7 @@
 import { InvalidFieldException } from '../../../commons/exceptions/invalid-field.exception';
 import { RequiredException } from '../../../commons/exceptions/required.exception';
 import { AttributeDefinition } from './definitions';
-import { InternalValidator, ValidatorType } from './internal.validator';
+import { fhirR4Types, InternalValidator } from './internal.validator';
 import { PeriodValidator } from '../datatypes/period.validator';
 import { IReference, ResourceType } from 'fhirtypes/dist/r4';
 import { ReferenceException } from '../../../commons/exceptions/reference.exception';
@@ -113,7 +113,7 @@ export const validateObject = <T>(data: T | T[], definition: AttributeDefinition
     return;
   }
 
-  const validator = parseValidator(definition.type);
+  const validator = parseValidator(definition.type as fhirR4Types);
 
   if (!validator) {
     throw new Error(`No validator found for ${String(definition.type)}`);
@@ -170,7 +170,7 @@ export function hasValue(value: any): boolean {
   return !(typeof value === 'object' && Object.keys(value).length === 0); // Checks for empty objects
 }
 
-export function parseValidator(name: keyof ValidatorType): (value: any, path: string) => void {
+export function parseValidator(name: fhirR4Types): (value: any, path: string) => void {
   switch (name) {
     // TODO check why this is not working
     case 'Period':

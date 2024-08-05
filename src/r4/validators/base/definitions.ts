@@ -1,10 +1,10 @@
 import { IElement } from 'fhirtypes/dist/r4/base';
-import { ValidatorType } from './internal.validator';
+import { fhirR4Types, ValidatorType } from './internal.validator';
 import { IBackboneElement, IDomainResource, ResourceType } from 'fhirtypes/dist/r4';
 
 export type AttributeDefinition<T> = {
   name: keyof T;
-  type: keyof ValidatorType;
+  type: fhirR4Types;
   isRequired: boolean;
   isArray: boolean;
   enumValues?: ReadonlyArray<string>;
