@@ -33,10 +33,12 @@
     "Resource"
   ],
   "license": "ISC",
+  "dependencies": {
+    "fhirtypes": "^1.0.27"
+  },
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.2",
-    "fhirtypes": "^1.0.27",
     "jest": "^29.7.0",
     "prettier": "^3.3.2",
     "ts-jest": "^29.1.5",
