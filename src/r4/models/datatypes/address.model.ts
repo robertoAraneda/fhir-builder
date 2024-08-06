@@ -1,9 +1,8 @@
 import { AddressTypeType, AddressUseType, IAddress, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { Element } from '../../../core/r4/models/base';
 import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
 import { AddressBuilder } from '../../builders';
-
-import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../core/r4/validators/base';
+import { Element } from './element.model';
 
 export class Address extends Element implements IAddress {
   constructor(args?: IAddress) {

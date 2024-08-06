@@ -1,11 +1,14 @@
-import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
-import { IElement } from 'fhirtypes/dist/r4';
-import { AttachmentParamExtensionType } from '../../../core/r4/types';
+import { IElement, IExtension } from 'fhirtypes/dist/r4';
+import { AttachmentParamExtensionType } from '../../types';
 import { Attachment } from '../../models';
-import { IBuildable } from '../../../core/r4/interfaces';
-import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
 
-interface IAttachmentBuilder extends IBuildable<Attachment>, IElementBuilder {
+interface IAttachmentBuilder {
+  // Element properties
+  setId(id: string): this;
+  addExtension(extension: IExtension): this;
+  setMultipleExtension(extension: IExtension[]): this;
+
+  // Attachment properties
   addParamExtension(param: AttachmentParamExtensionType, extension: IElement): this;
   setContentType(contentType: string): this;
   setLanguage(language: string): this;
@@ -15,14 +18,32 @@ interface IAttachmentBuilder extends IBuildable<Attachment>, IElementBuilder {
   setCreation(creation: string): this;
   setHash(hash: string): this;
   setSize(size: number): this;
+
+  // Build
+  build(): Attachment;
 }
 
-export class AttachmentBuilder extends ElementBuilder implements IAttachmentBuilder {
+export class AttachmentBuilder implements IAttachmentBuilder {
   private readonly attachment: Attachment;
 
   constructor() {
-    super();
     this.attachment = new Attachment();
+  }
+
+  setId(id: string): this {
+    this.attachment.id = id;
+    return this;
+  }
+
+  setMultipleExtension(extension: IExtension[]): this {
+    this.attachment.extension = extension;
+    return this;
+  }
+
+  addExtension(extension: IExtension): this {
+    this.attachment.extension = this.attachment.extension || [];
+    this.attachment.extension.push(extension);
+    return this;
   }
 
   addParamExtension(param: AttachmentParamExtensionType, extension: IElement): this {
@@ -71,7 +92,6 @@ export class AttachmentBuilder extends ElementBuilder implements IAttachmentBuil
   }
 
   build(): Attachment {
-    Object.assign(this.attachment, { ...super.entity() });
     return this.attachment;
   }
 }

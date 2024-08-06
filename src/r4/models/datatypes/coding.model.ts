@@ -1,9 +1,8 @@
 import { ICoding, IElement } from 'fhirtypes/dist/r4';
-import { Element } from '../../../core/r4/models/base';
 import { CodingBuilder } from '../../builders';
-import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
 
-import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../core/r4/validators/base';
+import { Element } from './element.model';
 
 /**
  * @description A reference to a code defined by a terminology system.
@@ -85,7 +84,7 @@ export class Coding extends Element implements ICoding {
     return `Coding${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): ValReturnType {
+  validate(): { error: string | null } {
     const { error } = ConformanceValidator(this, 'Coding');
     return { error };
   }

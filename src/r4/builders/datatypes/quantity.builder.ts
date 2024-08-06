@@ -1,25 +1,46 @@
-import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
-import { IElement, QuantityComparatorType } from 'fhirtypes/dist/r4';
-import { QuantityParamExtensionType } from '../../../core/r4/types';
+import { IElement, IExtension, QuantityComparatorType } from 'fhirtypes/dist/r4';
+import { QuantityParamExtensionType } from '../../types';
 import { Quantity } from '../../models';
-import { IBuildable } from '../../../core/r4/interfaces';
-import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
 
-interface IQuantityBuilder extends IBuildable<Quantity>, IElementBuilder {
+interface IQuantityBuilder {
+  // Element properties
+  setId(id: string): this;
+  addExtension(extension: IExtension): this;
+  setMultipleExtension(extension: IExtension[]): this;
+
+  // Quantity properties
   addParamExtension(param: QuantityParamExtensionType, extension: IElement): this;
   setCode(value: string): this;
   setSystem(value: string): this;
   setUnit(value: string): this;
   setValue(value: number): this;
   setComparator(value: QuantityComparatorType): this;
+
+  // Build
+  build(): Quantity;
 }
 
-export class QuantityBuilder extends ElementBuilder implements IQuantityBuilder {
+export class QuantityBuilder implements IQuantityBuilder {
   private readonly quantity: Quantity;
 
   constructor() {
-    super();
     this.quantity = new Quantity();
+  }
+
+  setId(id: string): this {
+    this.quantity.id = id;
+    return this;
+  }
+
+  setMultipleExtension(extension: IExtension[]): this {
+    this.quantity.extension = extension;
+    return this;
+  }
+
+  addExtension(extension: IExtension): this {
+    this.quantity.extension = this.quantity.extension || [];
+    this.quantity.extension.push(extension);
+    return this;
   }
 
   addParamExtension<T extends QuantityParamExtensionType>(param: T, extension: IElement): this {
@@ -29,7 +50,6 @@ export class QuantityBuilder extends ElementBuilder implements IQuantityBuilder 
   }
 
   build(): Quantity {
-    Object.assign(this.quantity, { ...super.entity() });
     return this.quantity;
   }
 

@@ -1,24 +1,42 @@
-import { IElement } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
+import { IElement, IExtension } from 'fhirtypes/dist/r4';
 import { Period } from '../../models';
-import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
-import { IBuildable } from '../../../core/r4/interfaces';
 
-interface IPeriodBuilder extends IBuildable<Period>, IElementBuilder {
+interface IPeriodBuilder {
+  // Element properties
+  setId(id: string): this;
+  addExtension(extension: IExtension): this;
+  setMultipleExtension(extension: IExtension[]): this;
+
+  // Period properties
   addParamExtension(param: 'start' | 'end', extension: IElement): this;
   setStart(value: string): this;
   setEnd(value: string): this;
+  build(): Period;
 }
 
 /**
  * @description Class to build a Period instance with the builder pattern
  */
-export class PeriodBuilder extends ElementBuilder implements IPeriodBuilder {
+export class PeriodBuilder implements IPeriodBuilder {
   private readonly period: Period;
 
   constructor() {
-    super();
     this.period = new Period();
+  }
+  setId(id: string): this {
+    this.period.id = id;
+    return this;
+  }
+
+  setMultipleExtension(extension: IExtension[]): this {
+    this.period.extension = extension;
+    return this;
+  }
+
+  addExtension(extension: IExtension): this {
+    this.period.extension = this.period.extension || [];
+    this.period.extension.push(extension);
+    return this;
   }
 
   /**
@@ -60,7 +78,6 @@ export class PeriodBuilder extends ElementBuilder implements IPeriodBuilder {
    * @returns The built Period instance
    */
   build(): Period {
-    Object.assign(this.period, { ...super.entity() });
     return this.period;
   }
 }

@@ -1,4 +1,3 @@
-import { DomainResource } from '../../../core/r4/models/base';
 import {
   EpisodeOfCareStatusType,
   ICodeableConcept,
@@ -10,6 +9,7 @@ import {
   IPeriod,
   IReference,
 } from 'fhirtypes/dist/r4';
+import { DomainResource } from './domain-resource.model';
 
 export class EpisodeOfCare extends DomainResource implements IEpisodeOfCare {
   resourceType?: 'EpisodeOfCare';

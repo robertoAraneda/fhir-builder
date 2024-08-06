@@ -16,11 +16,11 @@ import {
   IReference,
   ISignature,
 } from 'fhirtypes/dist/r4';
-import { Element } from '../../../core/r4/models/base';
 import { ExtensionBuilder } from '../../builders';
 import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
 
-import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../core/r4/validators/base';
+import { Element } from './element.model';
 
 export class Extension extends Element implements IExtension {
   url: string;
@@ -74,7 +74,7 @@ export class Extension extends Element implements IExtension {
     return `Extension${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): ValReturnType {
+  validate(): { error: string | null } {
     const { error } = ConformanceValidator(this, 'Extension');
     return { error };
   }

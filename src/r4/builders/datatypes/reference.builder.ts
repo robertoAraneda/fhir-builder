@@ -1,24 +1,44 @@
-import { IIdentifier, IReference, ResourceType } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
+import { IExtension, IIdentifier, ResourceType } from 'fhirtypes/dist/r4';
 import { Reference } from '../../models';
-import { IBuildable } from '../../../core/r4/interfaces';
-import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
 
-interface IReferenceBuilder extends IBuildable<Reference>, IElementBuilder {
+interface IReferenceBuilder {
+  // Element properties
+  setId(id: string): this;
+  addExtension(extension: IExtension): this;
+  setMultipleExtension(extension: IExtension[]): this;
+
+  // Reference properties
   addParamExtension(param: 'display' | 'type' | 'reference', extension: Element): this;
   setReference(value: { resourceType: ResourceType; id: string | number } | string): this;
   setDisplay(value: string): this;
   setIdentifier(value: IIdentifier): this;
   setType(value: string): this;
+
+  // Build
+  build(): Reference;
 }
 
-export class ReferenceBuilder extends ElementBuilder implements IReferenceBuilder {
-  private readonly reference: IReference;
+export class ReferenceBuilder implements IReferenceBuilder {
+  private readonly reference: Reference;
 
   constructor() {
-    super();
+    this.reference = new Reference();
+  }
 
-    this.reference = {} as IReference;
+  setId(id: string): this {
+    this.reference.id = id;
+    return this;
+  }
+
+  setMultipleExtension(extension: IExtension[]): this {
+    this.reference.extension = extension;
+    return this;
+  }
+
+  addExtension(extension: IExtension): this {
+    this.reference.extension = this.reference.extension || [];
+    this.reference.extension.push(extension);
+    return this;
   }
 
   addParamExtension(param: 'display' | 'type' | 'reference', extension: Element): this {
@@ -52,8 +72,7 @@ export class ReferenceBuilder extends ElementBuilder implements IReferenceBuilde
   }
 
   build(): Reference {
-    Object.assign(this.reference, { ...super.entity() });
-    return new Reference(this.reference);
+    return this.reference;
   }
 }
 

@@ -1,9 +1,9 @@
 import { IElement, IPatientLink, IReference, LinkTypeType } from 'fhirtypes/dist/r4';
-import { BackboneElement } from '../../../core/r4/models/base';
 import { PatientLinkBuilder } from '../../builders';
 import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
 
-import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../core/r4/validators/base';
+import { BackboneElement } from './backbone-element.model';
 
 export class PatientLink extends BackboneElement implements IPatientLink {
   // PatientLink attributes

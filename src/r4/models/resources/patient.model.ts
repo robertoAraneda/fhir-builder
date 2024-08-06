@@ -1,4 +1,3 @@
-import { DomainResource } from '../../../core/r4/models/base';
 import {
   AdministrativeGenderType,
   IAddress,
@@ -17,7 +16,8 @@ import {
 import { PatientBuilder } from '../../builders';
 import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
 
-import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../core/r4/validators/base';
+import { DomainResource } from './domain-resource.model';
 
 /**
  * @description FHIR R4
@@ -73,7 +73,7 @@ export class Patient extends DomainResource implements IPatient {
     return `Patient${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): ValReturnType {
+  validate(): { error: string | null } {
     const { error } = ConformanceValidator(this, 'Patient');
     return { error };
   }

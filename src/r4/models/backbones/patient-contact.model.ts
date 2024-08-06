@@ -9,11 +9,11 @@ import {
   IPeriod,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { BackboneElement } from '../../../core/r4/models/base';
 import { PatientContactBuilder } from '../../builders';
 import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
 
-import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../core/r4/validators/base';
+import { BackboneElement } from './backbone-element.model';
 
 export class PatientContact extends BackboneElement implements IPatientContact {
   // PatientContact attributes

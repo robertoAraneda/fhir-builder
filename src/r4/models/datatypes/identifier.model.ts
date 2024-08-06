@@ -1,9 +1,8 @@
 import { ICodeableConcept, IdentifierUseType, IElement, IIdentifier, IPeriod, IReference } from 'fhirtypes/dist/r4';
-import { Element } from '../../../core/r4/models/base';
 import { IdentifierBuilder } from '../../builders';
-import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
 
-import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../core/r4/validators/base';
+import { Element } from './element.model';
 
 /**
  * @description An identifier intended for computation
@@ -79,7 +78,7 @@ export class Identifier extends Element implements IIdentifier {
     return `Identifier${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): ValReturnType {
+  validate(): { error: string | null } {
     const { error } = ConformanceValidator(this, 'Identifier');
     return { error };
   }

@@ -1,30 +1,49 @@
-import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
-import { IElement } from 'fhirtypes/dist/r4';
-import { CodingParamExtensionType } from '../../../core/r4/types';
+import { IElement, IExtension } from 'fhirtypes/dist/r4';
+import { CodingParamExtensionType } from '../../types';
 import { Coding } from '../../models';
-import { IBuildable } from '../../../core/r4/interfaces';
-import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
 
-interface ICodingBuilder extends IBuildable<Coding>, IElementBuilder {
+interface ICodingBuilder {
+  // Element properties
+  setId(id: string): this;
+  addExtension(extension: IExtension): this;
+  setMultipleExtension(extension: IExtension[]): this;
+
+  // Coding properties
   addParamExtension(param: CodingParamExtensionType, extension: IElement): this;
   setSystem(value: string): this;
   setVersion(value: string): this;
   setCode(value: string): this;
   setDisplay(value: string): this;
   setUserSelected(value: boolean): this;
+
+  // Build
+  build(): Coding;
 }
 
 /**
  * @description Coding builder
  *
  */
-export class CodingBuilder extends ElementBuilder implements ICodingBuilder {
+export class CodingBuilder implements ICodingBuilder {
   private readonly coding: Coding;
 
   constructor() {
-    super();
-
     this.coding = new Coding();
+  }
+  setId(id: string): this {
+    this.coding.id = id;
+    return this;
+  }
+
+  setMultipleExtension(extension: IExtension[]): this {
+    this.coding.extension = extension;
+    return this;
+  }
+
+  addExtension(extension: IExtension): this {
+    this.coding.extension = this.coding.extension || [];
+    this.coding.extension.push(extension);
+    return this;
   }
 
   /**
@@ -92,7 +111,6 @@ export class CodingBuilder extends ElementBuilder implements ICodingBuilder {
    * @returns {ICoding} The coding
    */
   build(): Coding {
-    Object.assign(this.coding, { ...super.entity() });
     return this.coding;
   }
 }

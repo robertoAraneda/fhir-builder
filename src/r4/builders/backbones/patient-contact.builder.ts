@@ -3,17 +3,24 @@ import {
   ICodeableConcept,
   IContactPoint,
   IElement,
+  IExtension,
   IHumanName,
   IPeriod,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { BackboneElementBuilder } from '../../../core/r4/builders/base';
 import { PatientContact } from '../../models';
-import { IBackboneElementBuilder } from '../../../core/r4/interfaces/backbone-element-builder.interface';
-import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
-import { IBuildable } from '../../../core/r4/interfaces';
 
-interface IPatientContactBuilder extends IBuildable<PatientContact>, IBackboneElementBuilder, IElementBuilder {
+interface IPatientContactBuilder {
+  // Element properties
+  setId(id: string): this;
+  addExtension(extension: IExtension): this;
+  setMultipleExtension(extension: IExtension[]): this;
+
+  // BackboneElement properties
+  addModifierExtension(modifierExtension: IExtension): this;
+  setMultipleModifierExtension(modifierExtension: IExtension[]): this;
+
+  // PatientContact properties
   addParamExtension(param: 'gender', element: IElement): this;
   addRelationship(relationship: ICodeableConcept): this;
   setMultipleRelationship(relationship: ICodeableConcept[]): this;
@@ -25,12 +32,38 @@ interface IPatientContactBuilder extends IBuildable<PatientContact>, IBackboneEl
   setPeriod(period: IPeriod): this;
 }
 
-export class PatientContactBuilder extends BackboneElementBuilder implements IPatientContactBuilder {
+export class PatientContactBuilder implements IPatientContactBuilder {
   private readonly patientContact: PatientContact;
 
   constructor() {
-    super();
     this.patientContact = new PatientContact();
+  }
+
+  setId(id: string): this {
+    this.patientContact.id = id;
+    return this;
+  }
+
+  setMultipleExtension(extension: IExtension[]): this {
+    this.patientContact.extension = extension;
+    return this;
+  }
+
+  addExtension(extension: IExtension): this {
+    this.patientContact.extension = this.patientContact.extension || [];
+    this.patientContact.extension.push(extension);
+    return this;
+  }
+
+  setMultipleModifierExtension(modifierExtension: IExtension[]): this {
+    this.patientContact.modifierExtension = modifierExtension;
+    return this;
+  }
+
+  addModifierExtension(modifierExtension: IExtension): this {
+    this.patientContact.modifierExtension = this.patientContact.modifierExtension || [];
+    this.patientContact.modifierExtension.push(modifierExtension);
+    return this;
   }
 
   addParamExtension(param: 'gender', extension: IElement): this {
@@ -81,7 +114,6 @@ export class PatientContactBuilder extends BackboneElementBuilder implements IPa
   }
 
   build(): PatientContact {
-    Object.assign(this.patientContact, { ...super.entity() });
     return this.patientContact;
   }
 }

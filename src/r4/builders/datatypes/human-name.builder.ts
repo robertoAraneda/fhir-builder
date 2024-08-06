@@ -1,11 +1,14 @@
-import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
-import { IElement, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
+import { IElement, IExtension, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
 import { HumanName } from '../../models';
-import { HumanNameParamType, HumanNameArrayParamType } from '../../../core/r4/types';
-import { IBuildable } from '../../../core/r4/interfaces';
-import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
+import { HumanNameParamType, HumanNameArrayParamType } from '../../types';
 
-interface IHumanNameBuilder extends IBuildable<HumanName>, IElementBuilder {
+interface IHumanNameBuilder {
+  // Element properties
+  setId(id: string): this;
+  addExtension(extension: IExtension): this;
+  setMultipleExtension(extension: IExtension[]): this;
+
+  // HumanName properties
   addParamExtension<T extends HumanNameParamType>(
     param: T,
     extension: T extends HumanNameArrayParamType ? IElement[] : IElement,
@@ -20,15 +23,32 @@ interface IHumanNameBuilder extends IBuildable<HumanName>, IElementBuilder {
   addSuffix(value: string): this;
   setMultipleSuffix(value: string[]): this;
   setPeriod(value: IPeriod): this;
+
+  // Build
+  build(): HumanName;
 }
 
-export class HumanNameBuilder extends ElementBuilder implements IHumanNameBuilder {
+export class HumanNameBuilder implements IHumanNameBuilder {
   private readonly humanName: HumanName;
 
   constructor() {
-    super();
-
     this.humanName = new HumanName();
+  }
+
+  setId(id: string): this {
+    this.humanName.id = id;
+    return this;
+  }
+
+  setMultipleExtension(extension: IExtension[]): this {
+    this.humanName.extension = extension;
+    return this;
+  }
+
+  addExtension(extension: IExtension): this {
+    this.humanName.extension = this.humanName.extension || [];
+    this.humanName.extension.push(extension);
+    return this;
   }
 
   addParamExtension<T extends HumanNameParamType>(
@@ -101,7 +121,6 @@ export class HumanNameBuilder extends ElementBuilder implements IHumanNameBuilde
   }
 
   build(): HumanName {
-    Object.assign(this.humanName, { ...super.entity() });
     return this.humanName;
   }
 }

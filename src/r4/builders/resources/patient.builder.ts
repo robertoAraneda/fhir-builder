@@ -5,20 +5,37 @@ import {
   ICodeableConcept,
   IContactPoint,
   IElement,
+  IExtension,
   IHumanName,
   IIdentifier,
+  INarrative,
   IPatient,
   IPatientCommunication,
   IPatientContact,
   IPatientLink,
   IReference,
+  IResource,
 } from 'fhirtypes/dist/r4';
-import { DomainResourceBuilder } from '../../../core/r4/builders/base';
-import { PatientParamExtensionType } from '../../../core/r4/types';
+import { PatientParamExtensionType } from '../../types';
 import { Patient } from '../../models';
-import { IBuildable, IDomainResourceBuilder } from '../../../core/r4/interfaces';
 
-interface IPatientBuilder extends IBuildable<Patient>, IDomainResourceBuilder {
+interface IPatientBuilder {
+  // Resource properties
+  setId(id: string): this;
+  setMeta(meta: any): this;
+  setImplicitRules(implicitRules: string): this;
+  setLanguage(language: string): this;
+
+  // DomainResource properties
+  setText(text: INarrative): this;
+  addContained(contained: IResource): this;
+  setMultipleContained(contained: IResource[]): this;
+  addExtension(extension: IExtension): this;
+  setMultipleExtension(extension: IExtension[]): this;
+  addModifierExtension(modifierExtension: IExtension): this;
+  setMultipleModifierExtension(modifierExtension: IExtension[]): this;
+
+  // Patient properties
   addParamExtension(param: PatientParamExtensionType, extension: IElement): this;
   addIdentifier(identifier: IIdentifier): this;
   setMultipleIdentifier(identifiers: IIdentifier[]): this;
@@ -50,12 +67,79 @@ interface IPatientBuilder extends IBuildable<Patient>, IDomainResourceBuilder {
   fromJSON(json: unknown | string): this;
 }
 
-export class PatientBuilder extends DomainResourceBuilder implements IPatientBuilder {
+export class PatientBuilder implements IPatientBuilder {
   private readonly patient: Patient;
 
   constructor() {
-    super();
     this.patient = new Patient();
+  }
+  setId(id: string): this {
+    this.patient.id = id;
+    return this;
+  }
+
+  setMeta(meta: any): this {
+    this.patient.meta = meta;
+    return this;
+  }
+
+  setImplicitRules(implicitRules: string): this {
+    this.patient.implicitRules = implicitRules;
+    return this;
+  }
+
+  setLanguage(language: string): this {
+    this.patient.language = language;
+    return this;
+  }
+
+  setText(text: INarrative): this {
+    // TODO: move to a validation function
+    if (text.div) {
+      if (!text.div.startsWith('<div')) throw new Error('Narrative.div must start with <div');
+      if (!text.div.includes('xmlns="http://www.w3.org/1999/xhtml')) {
+        throw new Error('Narrative.div must include the XHTML namespace');
+      }
+    }
+    this.patient.text = text;
+
+    return this;
+  }
+
+  // TODO: This should be a generic type
+  addContained(contained: any): this {
+    this.patient.contained = this.patient.contained || [];
+    this.patient.contained.push(contained);
+    return this;
+  }
+
+  // TODO: This should be a generic type
+  setMultipleContained(contained: any[]): this {
+    this.patient.contained = contained;
+    return this as unknown as this;
+  }
+
+  addExtension(extension: IExtension): this {
+    this.patient.extension = this.patient.extension || [];
+    this.patient.extension.push(extension);
+
+    return this;
+  }
+
+  addModifierExtension(modifierExtension: IExtension): this {
+    this.patient.modifierExtension = this.patient.modifierExtension || [];
+    this.patient.modifierExtension.push(modifierExtension);
+    return this;
+  }
+
+  setMultipleExtension(extension: IExtension[]): this {
+    this.patient.extension = extension;
+    return this;
+  }
+
+  setMultipleModifierExtension(modifierExtension: IExtension[]): this {
+    this.patient.modifierExtension = modifierExtension;
+    return this;
   }
 
   fromJSON<T extends IPatient>(json: T | string): this {
@@ -219,7 +303,6 @@ export class PatientBuilder extends DomainResourceBuilder implements IPatientBui
   }
 
   build(): Patient {
-    Object.assign(this.patient, { ...super.entity() });
     return new Patient(this.patient);
   }
 }

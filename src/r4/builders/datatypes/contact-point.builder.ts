@@ -1,26 +1,46 @@
-import { ContactPointSystemType, ContactPointUseType, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
-import { ContactPointParamExtensionType } from '../../../core/r4/types';
+import { ContactPointSystemType, ContactPointUseType, IElement, IExtension, IPeriod } from 'fhirtypes/dist/r4';
+import { ContactPointParamExtensionType } from '../../types';
 import { ContactPoint } from '../../models';
-import { IBuildable } from '../../../core/r4/interfaces';
-import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
 
-interface IContactPointBuilder extends IBuildable<ContactPoint>, IElementBuilder {
+interface IContactPointBuilder {
+  // Element properties
+  setId(id: string): this;
+  addExtension(extension: IExtension): this;
+  setMultipleExtension(extension: IExtension[]): this;
+
+  // ContactPoint properties
   addParamExtension(param: ContactPointParamExtensionType, extension: IElement): this;
   setSystem(value: ContactPointSystemType): this;
   setValue(value: string): this;
   setUse(value: ContactPointUseType): this;
   setRank(value: number): this;
   setPeriod(value: IPeriod): this;
+
+  // Build
+  build(): ContactPoint;
 }
 
-export class ContactPointBuilder extends ElementBuilder implements IContactPointBuilder {
+export class ContactPointBuilder implements IContactPointBuilder {
   private readonly contactPoint: ContactPoint;
 
   constructor() {
-    super();
-
     this.contactPoint = new ContactPoint();
+  }
+
+  setId(id: string): this {
+    this.contactPoint.id = id;
+    return this;
+  }
+
+  setMultipleExtension(extension: IExtension[]): this {
+    this.contactPoint.extension = extension;
+    return this;
+  }
+
+  addExtension(extension: IExtension): this {
+    this.contactPoint.extension = this.contactPoint.extension || [];
+    this.contactPoint.extension.push(extension);
+    return this;
   }
 
   /**
@@ -95,7 +115,6 @@ export class ContactPointBuilder extends ElementBuilder implements IContactPoint
    * @description Build a ContactPoint
    */
   build(): ContactPoint {
-    Object.assign(this.contactPoint, { ...super.entity() });
     return this.contactPoint;
   }
 }

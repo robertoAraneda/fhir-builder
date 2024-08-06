@@ -1,12 +1,15 @@
-import { AddressTypeType, AddressUseType, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
+import { AddressTypeType, AddressUseType, IElement, IExtension, IPeriod } from 'fhirtypes/dist/r4';
 import { Address } from '../../models';
-import { IBuildable } from '../../../core/r4/interfaces';
-import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
 
 type ParamExtensionType = 'use' | 'type' | 'text' | 'line' | 'city' | 'district' | 'state' | 'postalCode' | 'country';
 
-interface IAddressBuilder extends IBuildable<Address>, IElementBuilder {
+interface IAddressBuilder {
+  // Element properties
+  setId(id: string): this;
+  addExtension(extension: IExtension): this;
+  setMultipleExtension(extension: IExtension[]): this;
+
+  // Address properties
   addParamExtension<T extends ParamExtensionType>(param: T, extension: T extends 'line' ? IElement[] : IElement): this;
   setUse(value: AddressUseType): this;
   setType(value: AddressTypeType): this;
@@ -19,14 +22,32 @@ interface IAddressBuilder extends IBuildable<Address>, IElementBuilder {
   setPostalCode(value: string): this;
   setCountry(value: string): this;
   setPeriod(value: IPeriod): this;
+
+  // Build
+  build(): Address;
 }
 
-export class AddressBuilder extends ElementBuilder implements IAddressBuilder {
+export class AddressBuilder implements IAddressBuilder {
   private readonly address: Address;
 
   constructor() {
-    super();
     this.address = new Address();
+  }
+
+  setId(id: string): this {
+    this.address.id = id;
+    return this;
+  }
+
+  setMultipleExtension(extension: IExtension[]): this {
+    this.address.extension = extension;
+    return this;
+  }
+
+  addExtension(extension: IExtension): this {
+    this.address.extension = this.address.extension || [];
+    this.address.extension.push(extension);
+    return this;
   }
 
   addParamExtension<T extends ParamExtensionType>(param: T, extension: T extends 'line' ? IElement[] : IElement): this {
@@ -97,7 +118,6 @@ export class AddressBuilder extends ElementBuilder implements IAddressBuilder {
   }
 
   build(): Address {
-    Object.assign(this.address, { ...super.entity() });
     return this.address;
   }
 }

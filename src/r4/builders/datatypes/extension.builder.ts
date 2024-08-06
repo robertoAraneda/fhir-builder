@@ -5,6 +5,7 @@ import {
   ICoding,
   IContactPoint,
   IElement,
+  IExtension,
   IHumanName,
   IIdentifier,
   IMeta,
@@ -12,13 +13,16 @@ import {
   IQuantity,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
-import { BuildType } from '../../../core/r4/types';
+import { BuildType } from '../../types';
 import { Extension } from '../../models';
-import { IBuildable } from '../../../core/r4/interfaces';
-import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
 
-interface IExtensionBuilder extends IBuildable<Extension>, IElementBuilder {
+interface IExtensionBuilder {
+  // Element properties
+  setId(id: string): this;
+  addExtension(extension: IExtension): this;
+  setMultipleExtension(extension: IExtension[]): this;
+
+  // Extension properties
   addParamExtension(param: 'url', extension: IElement): BuildType;
   setUrl(url: string): this;
   setValueId(valueId: string): BuildType;
@@ -50,14 +54,32 @@ interface IExtensionBuilder extends IBuildable<Extension>, IElementBuilder {
   setValueReference(valueReference: IReference): BuildType;
   setValueMeta(valueMeta: IMeta): BuildType;
   setValueHumanName(valueHumanName: IHumanName): BuildType;
+
+  // Build
+  build(): Extension;
 }
 
-export class ExtensionBuilder extends ElementBuilder implements IExtensionBuilder {
+export class ExtensionBuilder implements IExtensionBuilder {
   private readonly extension: Extension;
 
   constructor() {
-    super();
     this.extension = new Extension();
+  }
+
+  setId(id: string): this {
+    this.extension.id = id;
+    return this;
+  }
+
+  setMultipleExtension(extension: IExtension[]): this {
+    this.extension.extension = extension;
+    return this;
+  }
+
+  addExtension(extension: IExtension): this {
+    this.extension.extension = this.extension.extension || [];
+    this.extension.extension.push(extension);
+    return this;
   }
 
   addParamExtension<T extends 'url'>(param: T, extension: IElement): BuildType {
@@ -276,7 +298,6 @@ export class ExtensionBuilder extends ElementBuilder implements IExtensionBuilde
   }
 
   build(): Extension {
-    Object.assign(this.extension, { ...super.entity() });
     return this.extension;
   }
 }

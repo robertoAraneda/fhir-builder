@@ -1,24 +1,44 @@
-import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
-import { ICoding, IElement } from 'fhirtypes/dist/r4';
+import { ICoding, IElement, IExtension } from 'fhirtypes/dist/r4';
 import { CodeableConcept } from '../../models';
-import { IBuildable } from '../../../core/r4/interfaces';
-import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
 
-interface ICodeableConceptBuilder extends IBuildable<CodeableConcept>, IElementBuilder {
+interface ICodeableConceptBuilder {
+  // Element properties
+  setId(id: string): this;
+  addExtension(extension: IExtension): this;
+  setMultipleExtension(extension: IExtension[]): this;
+
+  // CodeableConcept properties
   addCodeableConceptParamExtension(param: 'text', extension: IElement): this;
   addCoding(coding: ICoding): this;
   setMultipleCoding(coding: ICoding[]): this;
   setText(text: string): this;
+
+  // Build
+  build(): CodeableConcept;
 }
 
-export class CodeableConceptBuilder extends ElementBuilder implements ICodeableConceptBuilder {
+export class CodeableConceptBuilder implements ICodeableConceptBuilder {
   private readonly codeableConcept: CodeableConcept;
 
   constructor() {
-    super();
-
     this.codeableConcept = new CodeableConcept();
   }
+  setId(id: string): this {
+    this.codeableConcept.id = id;
+    return this;
+  }
+
+  setMultipleExtension(extension: IExtension[]): this {
+    this.codeableConcept.extension = extension;
+    return this;
+  }
+
+  addExtension(extension: IExtension): this {
+    this.codeableConcept.extension = this.codeableConcept.extension || [];
+    this.codeableConcept.extension.push(extension);
+    return this;
+  }
+
   /**
    * @description Add a param extension to the codeable concept
    * @param {string} param The param to add the extension to
@@ -49,7 +69,6 @@ export class CodeableConceptBuilder extends ElementBuilder implements ICodeableC
   }
 
   build(): CodeableConcept {
-    Object.assign(this.codeableConcept, { ...super.entity() });
     return this.codeableConcept;
   }
 }

@@ -1,25 +1,54 @@
-import { ICodeableConcept, IElement } from 'fhirtypes/dist/r4';
-import { BackboneElementBuilder } from '../../../core/r4/builders/base';
+import { ICodeableConcept, IElement, IExtension } from 'fhirtypes/dist/r4';
 import { PatientCommunication } from '../../models';
-import { IBuildable } from '../../../core/r4/interfaces';
-import { IBackboneElementBuilder } from '../../../core/r4/interfaces/backbone-element-builder.interface';
-import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
 
-interface IPatientCommunicationBuilder
-  extends IBuildable<PatientCommunication>,
-    IBackboneElementBuilder,
-    IElementBuilder {
+interface IPatientCommunicationBuilder {
+  // Element properties
+  setId(id: string): this;
+  addExtension(extension: IExtension): this;
+  setMultipleExtension(extension: IExtension[]): this;
+
+  // BackboneElement properties
+  addModifierExtension(modifierExtension: IExtension): this;
+  setMultipleModifierExtension(modifierExtension: IExtension[]): this;
+
+  // PatientCommunication properties
   addParamExtension(param: 'preferred', extension: IElement): this;
   setLanguage(language: ICodeableConcept): this;
   setPreferred(preferred: boolean): this;
 }
 
-export class PatientCommunicationBuilder extends BackboneElementBuilder implements IPatientCommunicationBuilder {
+export class PatientCommunicationBuilder implements IPatientCommunicationBuilder {
   private readonly patientCommunication: PatientCommunication;
 
   constructor() {
-    super();
     this.patientCommunication = new PatientCommunication();
+  }
+
+  setId(id: string): this {
+    this.patientCommunication.id = id;
+    return this;
+  }
+
+  setMultipleExtension(extension: IExtension[]): this {
+    this.patientCommunication.extension = extension;
+    return this;
+  }
+
+  addExtension(extension: IExtension): this {
+    this.patientCommunication.extension = this.patientCommunication.extension || [];
+    this.patientCommunication.extension.push(extension);
+    return this;
+  }
+
+  setMultipleModifierExtension(modifierExtension: IExtension[]): this {
+    this.patientCommunication.modifierExtension = modifierExtension;
+    return this;
+  }
+
+  addModifierExtension(modifierExtension: IExtension): this {
+    this.patientCommunication.modifierExtension = this.patientCommunication.modifierExtension || [];
+    this.patientCommunication.modifierExtension.push(modifierExtension);
+    return this;
   }
 
   addParamExtension(param: 'preferred', extension: IElement): this {
@@ -38,7 +67,6 @@ export class PatientCommunicationBuilder extends BackboneElementBuilder implemen
   }
 
   build(): PatientCommunication {
-    Object.assign(this.patientCommunication, { ...super.entity() });
     return this.patientCommunication;
   }
 }

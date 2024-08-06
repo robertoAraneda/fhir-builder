@@ -1,11 +1,14 @@
-import { ElementBuilder } from '../../../core/r4/builders/base/element.builder';
-import { ICoding, IElement } from 'fhirtypes/dist/r4';
-import { MetaParamsExtensionType } from '../../../core/r4/types';
+import { ICoding, IElement, IExtension } from 'fhirtypes/dist/r4';
+import { MetaParamsExtensionType } from '../../types';
 import { Meta } from '../../models';
-import { IBuildable } from '../../../core/r4/interfaces';
-import { IElementBuilder } from '../../../core/r4/interfaces/element-builder.interface';
 
-interface IMetaBuilder extends IBuildable<Meta>, IElementBuilder {
+interface IMetaBuilder {
+  // Element properties
+  setId(id: string): this;
+  addExtension(extension: IExtension): this;
+  setMultipleExtension(extension: IExtension[]): this;
+
+  // Meta properties
   addParamExtension(param: MetaParamsExtensionType, extension: IElement): this;
   setSource(source: string): this;
   setVersionId(versionId: string | number): this;
@@ -16,15 +19,32 @@ interface IMetaBuilder extends IBuildable<Meta>, IElementBuilder {
   setMultipleTag(tag: ICoding[]): this;
   setMultipleProfile(profile: string[]): this;
   setMultipleSecurity(security: ICoding[]): this;
+
+  // Build
+  build(): Meta;
 }
 
-export class MetaBuilder extends ElementBuilder implements IMetaBuilder {
+export class MetaBuilder implements IMetaBuilder {
   private readonly meta: Meta;
 
   constructor() {
-    super();
-
     this.meta = new Meta();
+  }
+
+  setId(id: string): this {
+    this.meta.id = id;
+    return this;
+  }
+
+  setMultipleExtension(extension: IExtension[]): this {
+    this.meta.extension = extension;
+    return this;
+  }
+
+  addExtension(extension: IExtension): this {
+    this.meta.extension = this.meta.extension || [];
+    this.meta.extension.push(extension);
+    return this;
   }
 
   addParamExtension<T extends MetaParamsExtensionType>(param: T, extension: IElement): this {
@@ -82,7 +102,6 @@ export class MetaBuilder extends ElementBuilder implements IMetaBuilder {
   }
 
   build(): Meta {
-    Object.assign(this.meta, { ...super.entity() });
     return this.meta;
   }
 }

@@ -1,9 +1,9 @@
-import { Element } from '../../../core/r4/models/base';
 import { IElement, IHumanName, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
 import { HumanNameBuilder } from '../../builders';
 import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
 
 import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
+import { Element } from './element.model';
 
 /**
  * @description Name of a human or other living entity - parts and usage
@@ -106,7 +106,7 @@ export class HumanName extends Element implements IHumanName {
     return `HumanName${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): ValReturnType {
+  validate(): { error: string | null } {
     const { error } = ConformanceValidator(this, 'HumanName');
     return { error };
   }
