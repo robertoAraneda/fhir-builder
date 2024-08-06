@@ -8,9 +8,9 @@ npm i fhirbuilder
 ## Use
 ### Create context
 ```ts
-import { CreateContext } from 'fhirbuilder';
+import { contextR4 } from 'fhirbuilder';
 
-const r4Context = new CreateContext().forR4();
+const r4Context = contextR4()
 ```
 From `r4Context` Object you can access to all FHIR Datatypes, Resources models and Validators
 
@@ -18,7 +18,8 @@ From `r4Context` Object you can access to all FHIR Datatypes, Resources models a
 
 In this example we will use and Address model datatype
 ```ts
-  const { Address } = new CreateContext().forR4();
+  import { contextR4 } from 'fhirbuilder';
+  const { Address } = contextR4();
 
   //you can create a new Instance
 
@@ -29,14 +30,18 @@ In this example we will use and Address model datatype
     line: ['line1', 'line2'],
   })
   console.log(address)
-// print
-/* Address {
-      use: 'home',
-        type: 'postal',
-        text: 'test',
-        line: ['line1', 'line2'],
+```
+Output
+```json
+    {
+      "use": "home",
+      "type": "postal",
+      "text": "test",
+      "line": [
+        "line1",
+        "line2"
+      ]
     }
- */
 ```
 
 ### Using builders
@@ -44,51 +49,86 @@ In this example we will use and Address model datatype
 For complex object you can use a builders
 
 ```ts
-    const { Address } = new CreateContext().forR4();
+    import { contextR4 } from 'fhirbuilder';
+    import { AdministrativeGenderEnum } from "fhirtypes/dist/r4/enums";
+    const { Patient, HumanName, Address } = contextR4();
 
-    const address = Address.builder()
-      .setId('123')
-      .addLine('123 Main St')
-      .setType('both')
-      .setUse('old')
-      .setCity('Anytown')
-      .addParamExtension('district', {
-        extension: [
-          {
-            url: 'district',
-            valueString: 'district',
-          },
-        ],
-      })
-      .build();
-    
-    console.log(address)
-
-    //print
-  /* {
-      _district: {
-        extension: [
-          {
-            url: 'district',
-            valueString: 'district',
-          },
-        ],
-      },
-      city: 'Anytown',
-      id: '123',
-      line: ['123 Main St'],
-      type: 'both',
-      use: 'old',
+    const patient = Patient.builder()
+      .setId("123")
+      .setActive(true)
+      .addName(new HumanName({
+        family: "Doe",
+        given: ["John"]
+      }))
+      .setGender(AdministrativeGenderEnum.MALE)
+      .addAddress(new Address({
+        use: "home",
+        line: ["123 Main St"],
+        city: "Somewhere",
+        state: "CA",
+        postalCode: "12345",
+        country: "USA"
+      }))
+      .build()
+```
+Output
+```json
+    {
+      "id": "123",
+      "resourceType": "Patient",
+      "active": true,
+      "name": [
+        {
+          "family": "Doe",
+          "given": [
+            "John"
+          ]
+        }
+      ],
+      "gender": "male",
+      "address": [
+        {
+          "use": "home",
+          "line": [
+            "123 Main St"
+          ],
+          "city": "Somewhere",
+          "state": "CA",
+          "postalCode": "12345",
+          "country": "USA"
+        }
+      ]
     }
-  */
 ```
 ### Using Validators
 
 ```ts
-    const { Validator } = new CreateContext().forR4();
+    const { Patient } = contextR4();
 
-    // expose error string if validator throws an error, otherwise error will be null. 
-    const { error } = Validator.Address(item);
+    const identifier = new Identifier({
+      assigner: {
+        reference: "Acme Healthcare", // ❌ invalid reference
+      },
+    }) 
+
+    const patient = new Patient({
+      id: "123",
+      active: true,
+      identifier: [identifier]
+    })
+
+    const { error } = patient.validate()
+
+    console.log(errors)
+```
+Output error
+```json
+    { 
+        "error": "ReferenceException",
+        "message": "ResourceType must be one of the following: 'Organization'",
+        "path": "identifier[0].assigner.reference",
+        "value": "Acme Healthcare"
+    }
 ```
 
 
