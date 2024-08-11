@@ -4,7 +4,7 @@ import { IBackboneElement, IDomainResource, ResourceType } from 'fhirtypes/dist/
 
 export interface AttributeDefinition<T> {
   name: keyof T;
-  type: fhirR4Types;
+  type: fhirR4Types | 'Resource';
   isRequired: boolean;
   isArray: boolean;
   enumValues?: readonly string[];

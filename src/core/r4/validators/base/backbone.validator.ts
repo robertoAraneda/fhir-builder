@@ -10,14 +10,19 @@ export interface InternalBackboneValidatorType {
 }
 
 type InternalBackboneElementType =
-  | Extract<BackboneElementType, 'PatientCommunication' | 'PatientContact' | 'PatientLink'>
+  | Extract<
+      BackboneElementType,
+      | 'PatientCommunication'
+      | 'PatientContact'
+      | 'PatientLink'
+      | 'EpisodeOfCareDiagnosis'
+      | 'EpisodeOfCareStatusHistory'
+    >
   // TODO - this is a placeholder for now
   | 'EpisodeOfCareDiagnosis'
   | 'EpisodeOfCareStatusHistory';
 
-export const InternalBackboneValidator: {
-  [key in InternalBackboneElementType]: (args: any, path: string) => void;
-} = {
+export const InternalBackboneValidator: Record<InternalBackboneElementType, (args: any, path: string) => void> = {
   PatientCommunication: PatientCommunicationValidator,
   PatientContact: PatientContactValidator,
   PatientLink: PatientLinkValidator,
