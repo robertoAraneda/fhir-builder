@@ -14,7 +14,7 @@ import { ConformanceValidator } from '../../../core/r4/validators/base';
 import { EpisodeOfCareBuilder } from '../../builders';
 
 export class EpisodeOfCare extends DomainResource implements IEpisodeOfCare {
-  resourceType: 'EpisodeOfCare' = 'EpisodeOfCare' as const;
+  resourceType? = 'EpisodeOfCare' as const;
   identifier?: IIdentifier[];
   status: EpisodeOfCareStatusType;
   statusHistory?: IEpisodeOfCareStatusHistory[];
@@ -36,11 +36,11 @@ export class EpisodeOfCare extends DomainResource implements IEpisodeOfCare {
   }
 
   toPrettyString(): string {
-    return `Patient${JSON.stringify(this.toJson(), null, 2)}`;
+    return `EpisodeOfCare${JSON.stringify(this.toJson(), null, 2)}`;
   }
 
   toString(): string {
-    return `Patient${JSON.stringify(this.toJson())}`;
+    return `EpisodeOfCare${JSON.stringify(this.toJson())}`;
   }
 
   validate(): { error: string | null } {

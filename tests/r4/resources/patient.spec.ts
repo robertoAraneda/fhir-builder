@@ -598,4 +598,59 @@ describe('Patient FHIR R4', () => {
       },
     });
   });
+
+  it("should validate toPrettyString() and toString() methods of a new patient's instance", async () => {
+    const item = Patient.builder()
+      .setId('123')
+      .setDeceasedBoolean(false)
+      .setActive(true)
+      .setGender('other')
+      .setBirthDate('1974-12-25')
+      .build();
+
+    expect(item).toBeDefined();
+    expect(item.toPrettyString()).toEqual(`Patient${JSON.stringify(item.toJson(), null, 2)}`);
+    expect(item.toString()).toEqual(`Patient${JSON.stringify(item.toJson())}`);
+  });
+
+  it("should validate toJson() method of a new patient's instance", async () => {
+    const item = Patient.builder()
+      .setId('123')
+      .setDeceasedBoolean(false)
+      .setActive(true)
+      .setGender('other')
+      .setBirthDate('1974-12-25')
+      .build();
+
+    expect(item).toBeDefined();
+    expect(item.toJson()).toEqual({
+      resourceType: 'Patient',
+      id: '123',
+      active: true,
+      deceasedBoolean: false,
+      gender: 'other',
+      birthDate: '1974-12-25',
+    });
+  });
+
+  it('should create a new patient using BuilderFromJson method', async () => {
+    const unknownItem = {
+      resourceType: 'Patient',
+      id: '123',
+      active: true,
+      deceasedBoolean: false,
+    };
+
+    const itemBuilder = Patient.builderFromJson(unknownItem);
+    const item = itemBuilder.setGender('other').build();
+
+    expect(item).toBeDefined();
+    expect(item.toJson()).toEqual({
+      resourceType: 'Patient',
+      id: '123',
+      active: true,
+      deceasedBoolean: false,
+      gender: 'other',
+    });
+  });
 });

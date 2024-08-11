@@ -77,96 +77,10 @@ export class Patient extends DomainResource implements IPatient {
     return new PatientBuilder();
   }
 
-  static fromJsonBuilder(json: unknown | string): PatientBuilder {
+  static builderFromJson(json: unknown | string): PatientBuilder {
     const patient = json as Patient;
     const patientBuilder = new PatientBuilder();
     return patientBuilder.fromJSON(patient);
-  }
-
-  // getters
-  getIdentifiers(): IIdentifier[] | undefined {
-    return this.identifier;
-  }
-
-  getActive(): boolean | undefined {
-    return this.active;
-  }
-
-  getNames(): IHumanName[] | undefined {
-    return this.name;
-  }
-
-  getTelecoms(): IContactPoint[] | undefined {
-    return this.telecom;
-  }
-
-  getGender(): AdministrativeGenderType | undefined {
-    return this.gender;
-  }
-
-  getBirthDate(): string | undefined {
-    return this.birthDate;
-  }
-
-  getDeceasedBoolean(): boolean | undefined {
-    return this.deceasedBoolean;
-  }
-
-  getDeceasedDateTime(): string | undefined {
-    return this.deceasedDateTime;
-  }
-
-  getAddresses(int?: number): IAddress | IAddress[] | undefined {
-    if (int) return this.address?.[int];
-    return this.address;
-  }
-
-  getMaritalStatus(): ICodeableConcept | undefined {
-    return this.maritalStatus;
-  }
-
-  getMultipleBirthBoolean(): boolean | undefined {
-    return this.multipleBirthBoolean;
-  }
-
-  getMultipleBirthInteger(): number | undefined {
-    return this.multipleBirthInteger;
-  }
-
-  getPhotos(): IAttachment[] | undefined {
-    return this.photo;
-  }
-
-  getContacts(): IPatientContact[] | undefined {
-    return this.contact;
-  }
-
-  getCommunications(): IPatientCommunication[] | undefined {
-    return this.communication;
-  }
-
-  getGeneralPractitioners(): IReference[] | undefined {
-    return this.generalPractitioner;
-  }
-
-  getManagingOrganization(): IReference | undefined {
-    return this.managingOrganization;
-  }
-
-  getLinks(): IPatientLink[] | undefined {
-    return this.link;
-  }
-
-  getActiveExtension(): IElement | undefined {
-    return this._active;
-  }
-
-  getBirthDateExtension(): IElement | undefined {
-    return this._birthDate;
-  }
-
-  getGenderExtension(): IElement | undefined {
-    return;
   }
 
   constructor(args?: IPatient) {
