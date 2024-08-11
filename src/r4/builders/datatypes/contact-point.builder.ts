@@ -1,5 +1,5 @@
 import { ContactPointSystemType, ContactPointUseType, IElement, IExtension, IPeriod } from 'fhirtypes/dist/r4';
-import { ContactPointParamExtensionType } from '../../types';
+import { ContactPointParamExtensionType } from '../../params-types';
 import { ContactPoint } from '../../models';
 
 interface IContactPointBuilder {

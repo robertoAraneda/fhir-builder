@@ -15,7 +15,7 @@ import {
   IPatientLink,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { PatientParamExtensionType } from '../../types';
+import { PatientParamExtensionType } from '../../params-types';
 import { Patient } from '../../models';
 import { DomainResourceBuilder } from '../base/DomainResourceBuilder';
 import { IBuildable } from '../base/IBuildable';

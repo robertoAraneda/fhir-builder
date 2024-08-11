@@ -1,9 +1,7 @@
 name: Publish Package to NPM
 on:
-  push:
+  pull_request:
     branches:
-      # placeholder for the branch name names 1-branch-name
-      - '[0-9]+-[a-z0-9-]+' # 1-branch-name
       - master
 env:
   HUSKY: 0

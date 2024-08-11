@@ -1,5 +1,5 @@
 import { IElement, IExtension } from 'fhirtypes/dist/r4';
-import { CodingParamExtensionType } from '../../types';
+import { CodingParamExtensionType } from '../../params-types';
 import { Coding } from '../../models';
 
 interface ICodingBuilder {

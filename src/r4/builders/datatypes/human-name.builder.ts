@@ -1,6 +1,6 @@
 import { IElement, IExtension, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
 import { HumanName } from '../../models';
-import { HumanNameParamType, HumanNameArrayParamType } from '../../types';
+import { HumanNameParamType, HumanNameArrayParamType } from '../../params-types';
 
 interface IHumanNameBuilder {
   // Element properties

@@ -1,5 +1,5 @@
 import { ICoding, IElement, IExtension } from 'fhirtypes/dist/r4';
-import { MetaParamsExtensionType } from '../../types';
+import { MetaParamsExtensionType } from '../../params-types';
 import { Meta } from '../../models';
 
 interface IMetaBuilder {

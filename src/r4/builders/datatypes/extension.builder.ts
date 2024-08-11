@@ -13,7 +13,7 @@ import {
   IQuantity,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { BuildType } from '../../types';
+import { BuildType } from '../../params-types';
 import { Extension } from '../../models';
 
 interface IExtensionBuilder {

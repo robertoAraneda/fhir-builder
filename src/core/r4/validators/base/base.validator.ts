@@ -127,7 +127,7 @@ export const validateObject = <T>(data: T | T[], definition: AttributeDefinition
 /**
  * @description Validates the format of a reference field.
  * @param value - The reference value to be validated.
- * @param resources - The list of valid resource types or 'all' to allow all resource types.
+ * @param resources - The list of valid resource params-types or 'all' to allow all resource params-types.
  * @param path - The path to the data being validated (used for error messages).
  * @throws ReferenceException if the reference format is invalid or the resource type is not allowed.
  */
@@ -141,7 +141,7 @@ export const ValidateReferenceFormat = (
   // Exit if reference or resources are not provided
   if (!reference || !resources) return;
 
-  // Determine the valid resource types
+  // Determine the valid resource params-types
   const internalResources: ResourceType[] = resources === 'all' ? (resourceListUtil as ResourceType[]) : resources;
 
   // Extract the resource type from the reference string

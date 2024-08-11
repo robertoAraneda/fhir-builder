@@ -1,5 +1,5 @@
 import { IElement, IExtension } from 'fhirtypes/dist/r4';
-import { AttachmentParamExtensionType } from '../../types';
+import { AttachmentParamExtensionType } from '../../params-types';
 import { Attachment } from '../../models';
 
 interface IAttachmentBuilder {

@@ -90,8 +90,8 @@ for (const folder of modelFolders) {
   writeFileSync(indexPath, exports);
 }
 
-// types
-const files = readdirSync(join(__dirname, `../src/r4/types`));
+// params-types
+const files = readdirSync(join(__dirname, `../src/r4/params-types`));
 const _exports = files
   .filter((file) => file !== 'index.ts')
   .map((file) => {
@@ -104,6 +104,6 @@ const _exports = files
   })
   .join('\n');
 
-const indexPath = join(__dirname, `../src/r4/types/index.ts`);
+const indexPath = join(__dirname, `../src/r4/params-types/index.ts`);
 writeFileSync(indexPath, _exports);
 */

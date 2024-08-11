@@ -1,5 +1,5 @@
 import { IElement, IExtension, QuantityComparatorType } from 'fhirtypes/dist/r4';
-import { QuantityParamExtensionType } from '../../types';
+import { QuantityParamExtensionType } from '../../params-types';
 import { Quantity } from '../../models';
 
 interface IQuantityBuilder {
