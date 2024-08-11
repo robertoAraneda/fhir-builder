@@ -1,5 +1,11 @@
-export * from './models';
-export * from './builders';
+import * as modelsR4 from './models';
+import { ResourceValidator } from '../core/r4/validators/base';
 
-// export interfaces
-export * from 'fhirtypes';
+export function contextR4() {
+  return {
+    ...modelsR4,
+    Validator: {
+      ...ResourceValidator,
+    },
+  };
+}

@@ -8,7 +8,7 @@ export default {
   collectCoverage: true,
   collectCoverageFrom: ['./src/**'],
   coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: ['<rootDir>/src/tests', '<rootDir>/src/lib'],
+  coveragePathIgnorePatterns: ['<rootDir>/src/tests', '<rootDir>/src/library'],
   coverageThreshold: {
     global: {
       lines: 50,

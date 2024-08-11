@@ -6,8 +6,6 @@
     "module": "CommonJS",
     "declaration": true,
     "outDir": "./lib",
-    "rootDir": ".",
-    "declarationMap": true,
     "strict": true,
     "strictPropertyInitialization": false,
     "esModuleInterop": true,
@@ -16,5 +14,5 @@
     "resolveJsonModule": true
   },
   "include": ["src"],
-  "exclude": ["node_modules", "src/core/**/*.ts"]
+  "exclude": ["node_modules"]
 }
