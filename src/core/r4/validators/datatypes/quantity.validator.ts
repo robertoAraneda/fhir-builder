@@ -4,7 +4,7 @@ import { createDatatypeDefinition } from '../base/definitions';
 import { ConstraintException } from '../../../commons/exceptions/constraint.exception';
 import { ModelValidator } from '../base';
 
-const quantityComparatorValues: ReadonlyArray<string> = Object.values(QuantityComparatorEnum);
+const quantityComparatorValues: readonly string[] = Object.values(QuantityComparatorEnum);
 
 const modelFields = createDatatypeDefinition<IQuantity>([
   {
@@ -77,7 +77,7 @@ function ValidateConstraint(payload: IQuantity, path: string): void {
   }
 }
 
-export function QuantityValidator(dataToValidate: IQuantity, path: string = 'Quantity'): void {
+export function QuantityValidator(dataToValidate: IQuantity, path = 'Quantity'): void {
   ModelValidator<IQuantity>({
     dataToValidate,
     path,

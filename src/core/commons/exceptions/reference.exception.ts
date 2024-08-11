@@ -1,5 +1,5 @@
 export class ReferenceException extends Error {
-  constructor(value: string, resources: any[] | string | null = '', path: string = 'Reference.reference') {
+  constructor(value: string, resources: any[] | string | null = '', path = 'Reference.reference') {
     if (!value) throw new Error('ReferenceException. Value is required');
 
     let message = `ReferenceException. Value: '${value}'. Reference must be in the format {ResourceType}/{id}. Path: ${path}`;

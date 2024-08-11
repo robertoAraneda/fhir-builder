@@ -1,4 +1,4 @@
-import { IExtension, IIdentifier, ResourceType } from 'fhirtypes/dist/r4';
+import type { IElement, IExtension, IIdentifier, ResourceType } from 'fhirtypes/dist/r4';
 import { Reference } from '../../models';
 
 interface IReferenceBuilder {
@@ -8,7 +8,7 @@ interface IReferenceBuilder {
   setMultipleExtension(extension: IExtension[]): this;
 
   // Reference properties
-  addParamExtension(param: 'display' | 'type' | 'reference', extension: Element): this;
+  addParamExtension(param: 'display' | 'type' | 'reference', extension: IElement): this;
   setReference(value: { resourceType: ResourceType; id: string | number } | string): this;
   setDisplay(value: string): this;
   setIdentifier(value: IIdentifier): this;
@@ -41,7 +41,7 @@ export class ReferenceBuilder implements IReferenceBuilder {
     return this;
   }
 
-  addParamExtension(param: 'display' | 'type' | 'reference', extension: Element): this {
+  addParamExtension(param: 'display' | 'type' | 'reference', extension: IElement): this {
     this.reference[`_${param}`] = extension;
 
     return this;

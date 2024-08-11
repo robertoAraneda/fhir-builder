@@ -4,8 +4,8 @@ import { createDatatypeDefinition } from '../base/definitions';
 import { ConstraintException } from '../../../commons/exceptions/constraint.exception';
 import { ModelValidator } from '../base';
 
-const contactPointSystemValues: ReadonlyArray<string> = Object.values(ContactPointSystemEnum);
-const contactPointUseValues: ReadonlyArray<string> = Object.values(ContactPointUseEnum);
+const contactPointSystemValues: readonly string[] = Object.values(ContactPointSystemEnum);
+const contactPointUseValues: readonly string[] = Object.values(ContactPointUseEnum);
 
 const modelFields = createDatatypeDefinition<IContactPoint>([
   {
@@ -73,7 +73,7 @@ const validateConstraint = (payload: IContactPoint, path: string): void => {
   }
 };
 
-export const ContactPointValidator = (dataToValidate: IContactPoint, path: string = 'ContactPoint'): void => {
+export const ContactPointValidator = (dataToValidate: IContactPoint, path = 'ContactPoint'): void => {
   ModelValidator<IContactPoint>({
     path,
     dataToValidate,

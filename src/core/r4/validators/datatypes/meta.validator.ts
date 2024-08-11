@@ -65,7 +65,7 @@ const modelFields = createDatatypeDefinition<IMeta>([
   },
 ]);
 
-export function MetaValidator(dataToValidate: IMeta, path: string = 'Meta'): void {
+export function MetaValidator(dataToValidate: IMeta, path = 'Meta'): void {
   ModelValidator<IMeta>({
     dataToValidate,
     modelDefinition: modelFields,

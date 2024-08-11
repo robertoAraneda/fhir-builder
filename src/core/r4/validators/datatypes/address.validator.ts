@@ -3,8 +3,8 @@ import { AddressTypeEnum, AddressUseEnum } from 'fhirtypes/dist/r4/enums';
 import { createDatatypeDefinition } from '../base/definitions';
 import { ModelValidator } from '../base';
 
-const addressTypeValues: ReadonlyArray<string> = Object.values(AddressTypeEnum);
-const addressUseValues: ReadonlyArray<string> = Object.values(AddressUseEnum);
+const addressTypeValues: readonly string[] = Object.values(AddressTypeEnum);
+const addressUseValues: readonly string[] = Object.values(AddressUseEnum);
 
 const modelFields = createDatatypeDefinition<IAddress>([
   {
@@ -125,7 +125,7 @@ const modelFields = createDatatypeDefinition<IAddress>([
   },
 ]);
 
-export const AddressValidator = (dataToValidate: IAddress, path: string = 'Address'): void => {
+export const AddressValidator = (dataToValidate: IAddress, path = 'Address'): void => {
   ModelValidator<IAddress>({
     dataToValidate,
     path,

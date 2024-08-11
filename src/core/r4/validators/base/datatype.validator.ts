@@ -20,7 +20,7 @@ export interface ValReturnType {
   error: string | null;
 }
 
-export type InternalDatatypeValidatorType = {
+export interface InternalDatatypeValidatorType {
   Period: typeof PeriodValidator;
   Address: typeof AddressValidator;
   Attachment: typeof AttachmentValidator;
@@ -36,7 +36,7 @@ export type InternalDatatypeValidatorType = {
   Meta: typeof MetaValidator;
   Narrative: typeof NarrativeValidator;
   Quantity: typeof QuantityValidator;
-};
+}
 
 export const InternalDataTypeValidator: InternalDatatypeValidatorType = {
   Period: PeriodValidator,

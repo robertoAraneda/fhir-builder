@@ -65,7 +65,7 @@ const modelFields = createDatatypeDefinition<ICoding>([
   },
 ]);
 
-export const CodingValidator = (dataToValidate: ICoding, path: string = 'Coding'): void => {
+export const CodingValidator = (dataToValidate: ICoding, path = 'Coding'): void => {
   ModelValidator<ICoding>({
     path,
     dataToValidate,

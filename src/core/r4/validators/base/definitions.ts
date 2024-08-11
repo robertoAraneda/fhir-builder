@@ -2,18 +2,18 @@ import { IElement } from 'fhirtypes/dist/r4/base';
 import { fhirR4Types } from './internal.validator';
 import { IBackboneElement, IDomainResource, ResourceType } from 'fhirtypes/dist/r4';
 
-export type AttributeDefinition<T> = {
+export interface AttributeDefinition<T> {
   name: keyof T;
   type: fhirR4Types;
   isRequired: boolean;
   isArray: boolean;
-  enumValues?: ReadonlyArray<string>;
+  enumValues?: readonly string[];
   referenceValues?: ResourceType[] | 'all' | null;
-};
+}
 
 export function createDatatypeDefinition<T extends IElement>(
-  array: ReadonlyArray<AttributeDefinition<T>>,
-): ReadonlyArray<AttributeDefinition<T>> {
+  array: readonly AttributeDefinition<T>[],
+): readonly AttributeDefinition<T>[] {
   return array.concat([
     {
       name: 'id',
@@ -31,8 +31,8 @@ export function createDatatypeDefinition<T extends IElement>(
 }
 
 export function createBackboneDefinition<T extends IBackboneElement>(
-  array: ReadonlyArray<AttributeDefinition<T>>,
-): ReadonlyArray<AttributeDefinition<T>> {
+  array: readonly AttributeDefinition<T>[],
+): readonly AttributeDefinition<T>[] {
   return array.concat([
     {
       isRequired: false,
@@ -60,8 +60,8 @@ interface IResourceDefinition extends IDomainResource {
 }
 
 export function createResourceDefinition<T extends IResourceDefinition>(
-  array: ReadonlyArray<AttributeDefinition<T>>,
-): ReadonlyArray<AttributeDefinition<T>> {
+  array: readonly AttributeDefinition<T>[],
+): readonly AttributeDefinition<T>[] {
   return array.concat([
     {
       name: 'id',

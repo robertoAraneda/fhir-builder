@@ -3,63 +3,6 @@ import { createDatatypeDefinition } from '../base/definitions';
 import { ConstraintException } from '../../../commons/exceptions/constraint.exception';
 import { ModelValidator } from '../base';
 
-const extensionAttributes: string[] = [
-  'id',
-  'extension',
-  'url',
-  'valueAddress',
-  'valueAttachment',
-  'valueBase64Binary',
-  'valueBoolean',
-  'valueCanonical',
-  'valueCode',
-  'valueCodeableConcept',
-  'valueCoding',
-  'valueContactPoint',
-  'valueDate',
-  'valueDateTime',
-  'valueDecimal',
-  'valueId',
-  'valueIdentifier',
-  'valueInstant',
-  'valueInteger',
-  'valueMarkdown',
-  'valueOid',
-  'valuePeriod',
-  'valuePositiveInt',
-  'valueQuantity',
-  'valueString',
-  'valueTime',
-  'valueUnsignedInt',
-  'valueUri',
-  'valueUrl',
-  'valueUuid',
-  'valueDuration',
-  'valueHumanName',
-  'valueMeta',
-  'valueReference',
-  '_url',
-  '_valueBase64Binary',
-  '_valueBoolean',
-  '_valueCanonical',
-  '_valueCode',
-  '_valueDate',
-  '_valueDateTime',
-  '_valueDecimal',
-  '_valueId',
-  '_valueInstant',
-  '_valueInteger',
-  '_valueMarkdown',
-  '_valueOid',
-  '_valuePositiveInt',
-  '_valueString',
-  '_valueTime',
-  '_valueUnsignedInt',
-  '_valueUri',
-  '_valueUrl',
-  '_valueUuid',
-];
-
 const modelFields = createDatatypeDefinition<IExtension>([
   {
     name: 'url',
@@ -333,7 +276,7 @@ const ValidateConstraints = (args: IExtension, path: string): void => {
   }
 };
 
-export const ExtensionValidator = (dataToValidate: IExtension, path: string = 'Extension'): void => {
+export const ExtensionValidator = (dataToValidate: IExtension, path = 'Extension'): void => {
   ModelValidator<IExtension>({
     path,
     dataToValidate,

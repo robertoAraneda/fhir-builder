@@ -1,5 +1,4 @@
 import { INarrative, NarrativeStatusType } from 'fhirtypes/dist/r4';
-import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
 import { NarrativeBuilder } from '../../builders';
 
 import { ConformanceValidator } from '../../../core/r4/validators/base';

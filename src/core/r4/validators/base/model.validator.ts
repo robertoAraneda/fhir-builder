@@ -3,10 +3,10 @@ import { AttributeDefinition } from './definitions';
 import assert from 'node:assert';
 import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 
-export const ModelValidator = <T extends {}>(options: {
+export const ModelValidator = <T extends object>(options: {
   dataToValidate: T;
   path: string;
-  modelDefinition: ReadonlyArray<AttributeDefinition<T>>;
+  modelDefinition: readonly AttributeDefinition<T>[];
   additionalValidation?: ((data: T, path: string) => void)[];
 }) => {
   const { dataToValidate, path, modelDefinition, additionalValidation } = options;

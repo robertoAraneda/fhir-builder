@@ -8,13 +8,9 @@ import { resourceListUtil } from '../../../commons/utils/resource-list.util';
 import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 import { PeriodValidator } from '../datatypes';
 
-export const BaseValidator = <
-  T extends {
-    [key: string]: any;
-  },
->(
+export const BaseValidator = <T extends Record<string, any>>(
   data: T | T[],
-  definitions: ReadonlyArray<AttributeDefinition<T>>,
+  definitions: readonly AttributeDefinition<T>[],
   path: string,
 ): void => {
   const cleanData = RemoveUndefinedAttributes(data);
@@ -29,7 +25,7 @@ export const BaseValidator = <
   validateRequiredFieldByDefinition(cleanData, definitions, path);
 
   for (const dataKey in cleanData) {
-    if (!cleanData.hasOwnProperty(dataKey)) {
+    if (!Object.prototype.hasOwnProperty.call(cleanData, dataKey)) {
       continue;
     }
     const definition = definitions.find((definition) => definition.name === dataKey);
@@ -54,7 +50,7 @@ export const BaseValidator = <
 
 export const validateAdditionalFields = <T>(
   data: any,
-  definitions: ReadonlyArray<AttributeDefinition<T>>,
+  definitions: readonly AttributeDefinition<T>[],
   path: string,
 ) => {
   const properties = Object.keys(data);
@@ -69,7 +65,7 @@ export const validateAdditionalFields = <T>(
 
 export const validateRequiredFieldByDefinition = <T>(
   data: T,
-  definitions: ReadonlyArray<AttributeDefinition<T>>,
+  definitions: readonly AttributeDefinition<T>[],
   path: string,
 ) => {
   for (const definition of definitions) {

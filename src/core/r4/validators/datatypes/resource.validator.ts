@@ -1,7 +1,8 @@
 import { IResource } from 'fhirtypes/dist/r4';
 import { ModelValidator } from '../base';
+import { AttributeDefinition } from '../base/definitions';
 
-const modelFields: ReadonlyArray<any> = [
+const modelFields: readonly AttributeDefinition<any>[] = [
   {
     isRequired: false,
     isArray: false,
@@ -46,7 +47,7 @@ const modelFields: ReadonlyArray<any> = [
   },
 ];
 
-export const ResourceValidator = (dataToValidate: IResource, path: string = 'Resource'): void => {
+export const ResourceValidator = (dataToValidate: IResource, path = 'Resource'): void => {
   ModelValidator<IResource>({
     dataToValidate,
     path,

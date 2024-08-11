@@ -3,7 +3,7 @@ import { IdentifierUseEnum } from 'fhirtypes/dist/r4/enums';
 import { createDatatypeDefinition } from '../base/definitions';
 import { ModelValidator } from '../base';
 
-const identifierUseValues: ReadonlyArray<string> = Object.values(IdentifierUseEnum);
+const identifierUseValues: readonly string[] = Object.values(IdentifierUseEnum);
 
 const modelFields = createDatatypeDefinition<IIdentifier>([
   {
@@ -64,7 +64,7 @@ const modelFields = createDatatypeDefinition<IIdentifier>([
   },
 ]);
 
-export const IdentifierValidator = (dataToValidate: IIdentifier, path: string = 'Identifier'): void => {
+export const IdentifierValidator = (dataToValidate: IIdentifier, path = 'Identifier'): void => {
   ModelValidator<IIdentifier>({
     path,
     dataToValidate,

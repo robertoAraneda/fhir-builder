@@ -1,6 +1,5 @@
 import { ContactPointSystemType, ContactPointUseType, IContactPoint, IElement, IPeriod } from 'fhirtypes/dist/r4';
 import { ContactPointBuilder } from '../../builders';
-import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
 
 import { ConformanceValidator } from '../../../core/r4/validators/base';
 import { Element } from './element.model';

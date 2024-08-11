@@ -143,7 +143,7 @@ export class PatientBuilder implements IPatientBuilder {
   }
 
   fromJSON<T extends IPatient>(json: T | string): this {
-    const incomingPatient: IPatient = typeof json === 'string' ? JSON.parse(json) : json;
+    const incomingPatient = typeof json === 'string' ? JSON.parse(json) : json;
 
     Object.assign(this.patient, incomingPatient);
     return this;

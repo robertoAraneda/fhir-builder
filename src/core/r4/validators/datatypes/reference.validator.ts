@@ -58,7 +58,7 @@ export const ValidateReferenceFormat = (value: IReference, path?: string): void 
   if (reference.startsWith('http://') || reference.startsWith('https://')) return;
 
   // regex for resourceType/id
-  const regex = /^[a-zA-Z]+\/[a-zA-Z0-9\-\.]+$/;
+  const regex = /^[a-zA-Z]+\/[a-zA-Z0-9\-.]+$/;
 
   // match with regex
   if (!regex.test(reference)) {
@@ -66,7 +66,7 @@ export const ValidateReferenceFormat = (value: IReference, path?: string): void 
   }
 };
 
-export const ReferenceValidator = (dataToValidate: IReference, path: string = 'Reference'): void => {
+export const ReferenceValidator = (dataToValidate: IReference, path = 'Reference'): void => {
   ModelValidator<IReference>({
     dataToValidate,
     path,

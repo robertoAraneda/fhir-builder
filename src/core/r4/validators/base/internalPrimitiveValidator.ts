@@ -1,6 +1,6 @@
 export const Base64BinaryValidator = (value: string, path: string) => {
   // regex for /^(\s*([0-9a-zA-Z\+\=]){4}\s*)+$/
-  const regex = /^(\s*([0-9a-zA-Z\+\=]){4}\s*)+$/;
+  const regex = /^(\s*([0-9a-zA-Z+=]){4}\s*)+$/;
   if (!regex.test(value)) {
     throw new Error(`Invalid base64Binary: ${value} at path: ${path}`);
   }
@@ -57,7 +57,7 @@ export const DecimalValidator = (value: number, path: string) => {
 
 export const IdValidator = (value: string, path: string) => {
   // regex for ^[A-Za-z0-9\\-\\.]{1,64}$
-  const regex = /^[A-Za-z0-9\-\.]{1,64}$/;
+  const regex = /^[A-Za-z0-9\-.]{1,64}$/;
   if (!regex.test(value)) {
     throw new Error(`Invalid id: ${value} at path: ${path}`);
   }
@@ -88,13 +88,13 @@ export const IntegerValidator = (value: number, path: string) => {
 
 export const Integer64Validator = (value: number, path: string) => {
   // regex for ^-?([0]|([1-9][0-9]*))$
-  const regex = /^-?([0]|([1-9][0-9]*))$/;
+  const regex = /^-?(0|([1-9][0-9]*))$/;
   if (!regex.test(value.toString())) {
     throw new Error(`Invalid integer64: ${value} at path: ${path}`);
   }
 
-  const minValue = -9223372036854775808;
-  const maxValue = 9223372036854775807;
+  const minValue = -9223372036854775808n;
+  const maxValue = 9223372036854775807n;
   if (value < minValue || value > maxValue) {
     throw new Error(`Invalid integer64: ${value} at path: ${path}`);
   }
@@ -186,7 +186,7 @@ export const UuidValidator = (value: string, path: string) => {
   }
 };
 
-export type InternalPrimitiveValidatorType = {
+export interface InternalPrimitiveValidatorType {
   base64Binary: typeof Base64BinaryValidator;
   boolean: typeof BooleanValidator;
   canonical: typeof CanonicalValidator;
@@ -207,7 +207,7 @@ export type InternalPrimitiveValidatorType = {
   uri: typeof UriValidator;
   url: typeof UrlValidator;
   uuid: typeof UuidValidator;
-};
+}
 
 export const InternalPrimitiveValidator: InternalPrimitiveValidatorType = {
   base64Binary: Base64BinaryValidator,

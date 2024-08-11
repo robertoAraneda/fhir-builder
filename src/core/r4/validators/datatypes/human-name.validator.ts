@@ -3,7 +3,7 @@ import { NameUseEnum } from 'fhirtypes/dist/r4/enums';
 import { createDatatypeDefinition } from '../base/definitions';
 import { ModelValidator } from '../base';
 
-const humanNameUseValues: ReadonlyArray<string> = Object.values(NameUseEnum);
+const humanNameUseValues: readonly string[] = Object.values(NameUseEnum);
 
 const modelFields = createDatatypeDefinition<IHumanName>([
   {
@@ -87,7 +87,7 @@ const modelFields = createDatatypeDefinition<IHumanName>([
   },
 ]);
 
-export const HumanNameValidator = (dataToValidate: IHumanName, path: string = 'HumanName'): void => {
+export const HumanNameValidator = (dataToValidate: IHumanName, path = 'HumanName'): void => {
   ModelValidator<IHumanName>({
     path,
     dataToValidate,

@@ -23,7 +23,7 @@ const modelFields = createDatatypeDefinition<ICodeableConcept>([
   },
 ]);
 
-export const CodeableConceptValidator = (dataToValidate: ICodeableConcept, path: string = 'CodeableConcept'): void => {
+export const CodeableConceptValidator = (dataToValidate: ICodeableConcept, path = 'CodeableConcept'): void => {
   ModelValidator<ICodeableConcept>({
     path,
     dataToValidate,

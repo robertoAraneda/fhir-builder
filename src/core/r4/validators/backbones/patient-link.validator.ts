@@ -28,7 +28,7 @@ export const modelFields = createBackboneDefinition<IPatientLink>([
   },
 ]);
 
-export function PatientLinkValidator(dataToValidate: IPatientLink, path: string = 'PatientLink'): void {
+export function PatientLinkValidator(dataToValidate: IPatientLink, path = 'PatientLink'): void {
   ModelValidator<IPatientLink>({
     path,
     dataToValidate,

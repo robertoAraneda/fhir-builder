@@ -32,12 +32,12 @@ const modelFields = createDatatypeDefinition<IPeriod>([
 const ValidateStartEnd = (data: IPeriod, path: string) => {
   if (data.start && data.end) {
     if (new Date(data.start) > new Date(data.end)) {
-      throw new Error(`The start date ${data.start} is after the end date ${data.end}`);
+      throw new Error(`The start date ${data.start} is after the end date ${data.end}. Path: ${path}`);
     }
   }
 };
 
-export const PeriodValidator = (dataToValidate: IPeriod, path: string = 'Period'): void => {
+export const PeriodValidator = (dataToValidate: IPeriod, path = 'Period'): void => {
   ModelValidator<IPeriod>({
     dataToValidate,
     path,

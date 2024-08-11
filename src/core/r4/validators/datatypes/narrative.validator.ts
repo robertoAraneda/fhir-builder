@@ -18,7 +18,7 @@ const modelFields = createDatatypeDefinition<INarrative>([
   },
 ]);
 
-export function NarrativeValidator(dataToValidate: INarrative, path: string = 'Narrative') {
+export function NarrativeValidator(dataToValidate: INarrative, path = 'Narrative') {
   ModelValidator<INarrative>({
     dataToValidate,
     path,

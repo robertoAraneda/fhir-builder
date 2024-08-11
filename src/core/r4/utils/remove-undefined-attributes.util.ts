@@ -1,3 +1,3 @@
-export const RemoveUndefinedAttributes = (obj: { [key: string]: any }) => {
+export const RemoveUndefinedAttributes = (obj: Record<string, any>) => {
   return JSON.parse(JSON.stringify(obj));
 };

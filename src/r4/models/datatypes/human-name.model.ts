@@ -1,8 +1,6 @@
 import { IElement, IHumanName, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
 import { HumanNameBuilder } from '../../builders';
-import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
-
-import { ConformanceValidator } from '../../../core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../core/r4/validators/base';
 import { Element } from './element.model';
 
 /**

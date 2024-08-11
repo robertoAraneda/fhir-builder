@@ -58,7 +58,7 @@ const modelFields = createBackboneDefinition<IPatientContact>([
   },
 ]);
 
-export function PatientContactValidator(dataToValidate: IPatientContact, path: string = 'PatientContact'): void {
+export function PatientContactValidator(dataToValidate: IPatientContact, path = 'PatientContact'): void {
   ModelValidator<IPatientContact>({
     path,
     dataToValidate,

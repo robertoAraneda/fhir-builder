@@ -37,9 +37,16 @@ type primitiveType =
   | 'Narrative' // TODO - this is a placeholder for now
   | 'Quantity'; // TODO - this is a placeholder for now
 
-export type fhirR4Types = primitiveType | DatatypeType | ResourceType | BackboneElementType;
+export type fhirR4Types =
+  | primitiveType
+  | DatatypeType
+  | ResourceType
+  | BackboneElementType
+  // TODO - this is a placeholder for now
+  | 'EpisodeOfCareStatusHistory'
+  | 'EpisodeOfCareDiagnosis';
 
-export const InternalValidator: { [key: string]: any } = {
+export const InternalValidator: Record<string, any> = {
   ...InternalDataTypeValidator,
   ...InternalPrimitiveValidator,
   ...InternalResourceValidator,

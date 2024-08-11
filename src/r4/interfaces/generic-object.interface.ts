@@ -1,3 +1,1 @@
-export interface IGenericObject {
-  [key: string]: any | any[];
-}
+export type GenericObject = Record<string, any | any[]>;

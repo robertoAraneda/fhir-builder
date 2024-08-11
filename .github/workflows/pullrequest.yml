@@ -1,0 +1,30 @@
+name: Publish Package to NPM
+on:
+  push:
+    branches:
+      # placeholder for the branch name names 1-branch-name
+      - '[0-9]+-[a-z0-9-]+' # 1-branch-name
+env:
+  HUSKY: 0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run Tests
+        run: npm run test

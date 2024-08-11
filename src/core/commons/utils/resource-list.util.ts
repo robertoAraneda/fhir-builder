@@ -1,4 +1,4 @@
-export const resourceListUtil: ReadonlyArray<string> = [
+export const resourceListUtil: readonly string[] = [
   'Patient',
   'Organization',
   'Endpoint',

@@ -4,7 +4,7 @@ import { ModelValidator } from '../base';
 
 const modelFields = createDatatypeDefinition<IElement>([]);
 
-export const ElementValidator = (dataToValidate: IElement, path: string = 'Element'): void => {
+export const ElementValidator = (dataToValidate: IElement, path = 'Element'): void => {
   ModelValidator<IElement>({
     path,
     dataToValidate,

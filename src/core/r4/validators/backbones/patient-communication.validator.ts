@@ -25,7 +25,7 @@ const modelDefinition = createBackboneDefinition<IPatientCommunication>([
 
 export function PatientCommunicationValidator(
   dataToValidate: IPatientCommunication,
-  path: string = 'PatientCommunication',
+  path = 'PatientCommunication',
 ): void {
   ModelValidator<IPatientCommunication>({
     path,

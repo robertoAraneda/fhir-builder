@@ -109,7 +109,7 @@ function ValidateConstraint(payload: IAttachment): void {
   }
 }
 
-export const AttachmentValidator = (dataToValidate: IAttachment, path: string = 'Attachment'): void => {
+export const AttachmentValidator = (dataToValidate: IAttachment, path = 'Attachment'): void => {
   ModelValidator<IAttachment>({
     dataToValidate,
     path,

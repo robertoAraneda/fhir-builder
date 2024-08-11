@@ -4,7 +4,7 @@ import { createResourceDefinition } from '../base/definitions';
 import { ModelValidator } from '../base';
 import { ResourceException } from '../../../commons/exceptions/resource.exception';
 
-const administrativeGenderValues: ReadonlyArray<string> = Object.values(AdministrativeGenderEnum);
+const administrativeGenderValues: readonly string[] = Object.values(AdministrativeGenderEnum);
 
 const modelFields = createResourceDefinition<IPatient>([
   {
@@ -162,7 +162,7 @@ const modelFields = createResourceDefinition<IPatient>([
   },
 ]);
 
-export function PatientValidator(dataToValidate: IPatient, path: string = 'Patient'): void {
+export function PatientValidator(dataToValidate: IPatient, path = 'Patient'): void {
   ModelValidator<IPatient>({
     path,
     dataToValidate,

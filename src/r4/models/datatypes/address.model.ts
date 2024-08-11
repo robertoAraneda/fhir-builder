@@ -10,7 +10,7 @@ export class Address extends Element implements IAddress {
     Object.assign(this, args);
   }
 
-  toJson(): { [key: string]: any } {
+  toJson(): Record<string, any> {
     return JSON.parse(JSON.stringify(this));
   }
 
