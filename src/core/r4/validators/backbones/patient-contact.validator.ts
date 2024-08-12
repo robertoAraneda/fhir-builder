@@ -42,7 +42,7 @@ const modelFields = createBackboneDefinition<IPatientContact>([
     type: 'Reference',
     isArray: false,
     isRequired: false,
-    referenceValues: ['Organization'],
+    referenceTypes: ['Organization'],
   },
   {
     name: 'period',

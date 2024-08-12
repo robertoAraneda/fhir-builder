@@ -8,7 +8,7 @@ export interface AttributeDefinition<T> {
   isRequired: boolean;
   isArray: boolean;
   enumValues?: readonly string[];
-  referenceValues?: ResourceType[] | 'all' | null;
+  referenceTypes?: (ResourceType | 'Any')[] | null;
 }
 
 export function createDatatypeDefinition<T extends IElement>(

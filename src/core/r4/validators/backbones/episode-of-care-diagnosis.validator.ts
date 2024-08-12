@@ -8,7 +8,7 @@ const modelDefinition = createBackboneDefinition<IEpisodeOfCareDiagnosis>([
     type: 'Reference',
     isArray: false,
     isRequired: true,
-    referenceValues: ['Condition'],
+    referenceTypes: ['Condition'],
   },
   {
     name: 'role',

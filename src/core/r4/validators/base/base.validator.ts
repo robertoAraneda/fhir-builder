@@ -34,7 +34,7 @@ export const BaseValidator = <T extends Record<string, any>>(
     }
 
     if (definition.type === 'Reference') {
-      ValidateReferenceFormat(cleanData[dataKey], definition.referenceValues, `${path}.${String(definition.name)}`);
+      ValidateReferenceFormat(cleanData[dataKey], definition.referenceTypes, `${path}.${String(definition.name)}`);
     }
 
     // Check if the field is a valid enum value
@@ -133,7 +133,7 @@ export const validateObject = <T>(data: T | T[], definition: AttributeDefinition
  */
 export const ValidateReferenceFormat = (
   value: IReference,
-  resources: ResourceType[] | 'all' | null = null,
+  resources: (ResourceType | 'Any')[] | null = null,
   path?: string,
 ): void => {
   const { reference } = value;
@@ -142,7 +142,9 @@ export const ValidateReferenceFormat = (
   if (!reference || !resources) return;
 
   // Determine the valid resource params-types
-  const internalResources: ResourceType[] = resources === 'all' ? (resourceListUtil as ResourceType[]) : resources;
+  const internalResources: ResourceType[] = resources.includes('Any')
+    ? (resourceListUtil as ResourceType[])
+    : (resources as ResourceType[]);
 
   // Extract the resource type from the reference string
   const [resourceType] = reference.split('/');

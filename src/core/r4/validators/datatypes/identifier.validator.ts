@@ -42,7 +42,7 @@ const modelFields = createDatatypeDefinition<IIdentifier>([
     type: 'Reference',
     isRequired: false,
     isArray: false,
-    referenceValues: ['Organization'],
+    referenceTypes: ['Organization'],
   },
   {
     name: '_use',

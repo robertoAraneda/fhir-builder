@@ -103,14 +103,14 @@ const modelFields = createResourceDefinition<IPatient>([
     type: 'Reference',
     isArray: true,
     isRequired: false,
-    referenceValues: ['Practitioner', 'Organization', 'PractitionerRole'],
+    referenceTypes: ['Practitioner', 'Organization', 'PractitionerRole'],
   },
   {
     name: 'managingOrganization',
     type: 'Reference',
     isArray: false,
     isRequired: false,
-    referenceValues: ['Organization'],
+    referenceTypes: ['Organization'],
   },
   {
     name: 'link',

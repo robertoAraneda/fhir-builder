@@ -38,14 +38,14 @@ const modelFields = createResourceDefinition<IEpisodeOfCare>([
     type: 'Reference',
     isRequired: true,
     isArray: false,
-    referenceValues: ['Patient'],
+    referenceTypes: ['Patient'],
   },
   {
     name: 'managingOrganization',
     type: 'Reference',
     isRequired: false,
     isArray: false,
-    referenceValues: ['Organization'],
+    referenceTypes: ['Organization'],
   },
   {
     name: 'period',
@@ -58,7 +58,7 @@ const modelFields = createResourceDefinition<IEpisodeOfCare>([
     type: 'Reference',
     isRequired: false,
     isArray: true,
-    referenceValues: ['ServiceRequest'],
+    referenceTypes: ['ServiceRequest'],
   },
   {
     name: 'careManager',

@@ -15,6 +15,7 @@ import {
   ReferenceValidator,
   ResourceValidator,
 } from '../datatypes';
+import { AnnotationValidator } from '../datatypes/annotation.validator';
 
 export interface ValReturnType {
   error: string | null;
@@ -36,6 +37,7 @@ export interface InternalDatatypeValidatorType {
   Meta: typeof MetaValidator;
   Narrative: typeof NarrativeValidator;
   Quantity: typeof QuantityValidator;
+  Annotation: typeof AnnotationValidator;
 }
 
 export const InternalDataTypeValidator: InternalDatatypeValidatorType = {
@@ -54,4 +56,5 @@ export const InternalDataTypeValidator: InternalDatatypeValidatorType = {
   Meta: MetaValidator,
   Narrative: NarrativeValidator,
   Quantity: QuantityValidator,
+  Annotation: AnnotationValidator,
 };

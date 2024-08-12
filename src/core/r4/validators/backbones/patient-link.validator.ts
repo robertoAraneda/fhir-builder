@@ -11,7 +11,7 @@ export const modelFields = createBackboneDefinition<IPatientLink>([
     type: 'Reference',
     isArray: false,
     isRequired: true,
-    referenceValues: ['Patient', 'RelatedPerson'],
+    referenceTypes: ['Patient', 'RelatedPerson'],
   },
   {
     name: 'type',

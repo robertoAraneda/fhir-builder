@@ -9,7 +9,6 @@ import {
   IHumanName,
   IIdentifier,
   INarrative,
-  IPatient,
   IPatientCommunication,
   IPatientContact,
   IPatientLink,
@@ -104,7 +103,7 @@ export class PatientBuilder extends DomainResourceBuilder implements IPatientBui
     return this;
   }
 
-  fromJSON<T extends IPatient>(json: T | string): this {
+  fromJSON(json: unknown): this {
     const incomingPatient = typeof json === 'string' ? JSON.parse(json) : json;
 
     Object.assign(this.patient, incomingPatient);
