@@ -2,9 +2,10 @@ import { IElement } from 'fhirtypes/dist/r4/base';
 import { fhirR4Types } from './internal.validator';
 import { IBackboneElement, IDomainResource, ResourceType } from 'fhirtypes/dist/r4';
 
+// TODO: fix type: fhirR4Types | 'Resource' | 'Repeat' | 'Timing';
 export interface AttributeDefinition<T> {
   name: keyof T;
-  type: fhirR4Types | 'Resource';
+  type: fhirR4Types | 'Resource' | 'Repeat' | 'Timing';
   isRequired: boolean;
   isArray: boolean;
   enumValues?: readonly string[];

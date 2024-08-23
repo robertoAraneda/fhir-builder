@@ -3,82 +3,39 @@ import {
   ICodeableConcept,
   IContactPoint,
   IElement,
-  IExtension,
   IHumanName,
+  IPatientContact,
   IPeriod,
   IReference,
 } from 'fhirtypes/dist/r4';
 import { PatientContact } from '../../models';
+import { IBuildable } from '../base/buildable.interface';
+import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { BackboneBuilder } from '../base/backbone.builder';
 
-interface IPatientContactBuilder {
-  // Element properties
-  setId(id: string): this;
-  addExtension(extension: IExtension): this;
-  setMultipleExtension(extension: IExtension[]): this;
+type PrimitiveExtensionFields = keyof Pick<IPatientContact, UnderscoreKeys<IPatientContact>>;
 
-  // BackboneElement properties
-  addModifierExtension(modifierExtension: IExtension): this;
-  setMultipleModifierExtension(modifierExtension: IExtension[]): this;
-
+interface IPatientContactBuilder extends IBuildable<PatientContact> {
   // PatientContact properties
-  addParamExtension(param: 'gender', element: IElement): this;
   addRelationship(relationship: ICodeableConcept): this;
-  setMultipleRelationship(relationship: ICodeableConcept[]): this;
   setName(name: IHumanName): this;
   addTelecom(telecom: IContactPoint): this;
-  setMultipleTelecom(telecom: IContactPoint[]): this;
   setGender(gender: AdministrativeGenderType): this;
   setOrganization(organization: IReference): this;
   setPeriod(period: IPeriod): this;
 }
 
-export class PatientContactBuilder implements IPatientContactBuilder {
+export class PatientContactBuilder extends BackboneBuilder implements IPatientContactBuilder {
   private readonly patientContact: PatientContact;
 
   constructor() {
+    super();
     this.patientContact = new PatientContact();
-  }
-
-  setId(id: string): this {
-    this.patientContact.id = id;
-    return this;
-  }
-
-  setMultipleExtension(extension: IExtension[]): this {
-    this.patientContact.extension = extension;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.patientContact.extension = this.patientContact.extension || [];
-    this.patientContact.extension.push(extension);
-    return this;
-  }
-
-  setMultipleModifierExtension(modifierExtension: IExtension[]): this {
-    this.patientContact.modifierExtension = modifierExtension;
-    return this;
-  }
-
-  addModifierExtension(modifierExtension: IExtension): this {
-    this.patientContact.modifierExtension = this.patientContact.modifierExtension || [];
-    this.patientContact.modifierExtension.push(modifierExtension);
-    return this;
-  }
-
-  addParamExtension(param: 'gender', extension: IElement): this {
-    this.patientContact[`_${param}`] = extension;
-    return this;
   }
 
   addRelationship(relationship: ICodeableConcept): this {
     this.patientContact.relationship = this.patientContact.relationship || [];
     this.patientContact.relationship.push(relationship);
-    return this;
-  }
-
-  setMultipleRelationship(relationship: ICodeableConcept[]): this {
-    this.patientContact.relationship = relationship;
     return this;
   }
 
@@ -90,11 +47,6 @@ export class PatientContactBuilder implements IPatientContactBuilder {
   addTelecom(telecom: IContactPoint): this {
     this.patientContact.telecom = this.patientContact.telecom || [];
     this.patientContact.telecom.push(telecom);
-    return this;
-  }
-
-  setMultipleTelecom(telecom: IContactPoint[]): this {
-    this.patientContact.telecom = telecom;
     return this;
   }
 
@@ -113,7 +65,12 @@ export class PatientContactBuilder implements IPatientContactBuilder {
     return this;
   }
 
+  addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
+    this.patientContact[param] = extension;
+    return this;
+  }
+
   build(): PatientContact {
-    return this.patientContact;
+    return Object.assign(this.patientContact, super.build());
   }
 }

@@ -2,7 +2,9 @@ import { ICoding, IElement } from 'fhirtypes/dist/r4';
 import { CodingBuilder } from '../../builders';
 
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
+import { IValidatable } from '../base/validatable.interface';
+import { ISerializable } from '../base/serializable.interface';
 
 /**
  * @description A reference to a code defined by a terminology system.
@@ -20,7 +22,7 @@ import { Element } from './element.model';
  * @see https://www.hl7.org/fhir/datatypes.html#Coding Coding
  * @author Roberto Araneda
  */
-export class Coding extends Element implements ICoding {
+export class Coding extends Element implements ICoding, IValidatable, ISerializable {
   /**
    * @description Identity of the terminology system
    */
@@ -72,7 +74,7 @@ export class Coding extends Element implements ICoding {
    */
   _userSelected: IElement;
 
-  toJson(): Coding {
+  toJson() {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -84,17 +86,20 @@ export class Coding extends Element implements ICoding {
     return `Coding${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): { error: string | null } {
-    const { error } = ConformanceValidator(this, 'Coding');
-    return { error };
-  }
-
-  static builder(): CodingBuilder {
-    return new CodingBuilder();
+  validate() {
+    return ConformanceValidator(this, 'Coding');
   }
 
   constructor(args?: ICoding) {
     super();
     Object.assign(this, args);
+  }
+
+  protected builderInstance(): CodingBuilder {
+    return new CodingBuilder();
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 }

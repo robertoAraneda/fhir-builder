@@ -1,10 +1,9 @@
 import { contextR4 } from '../../../src';
 import { IIdentifier } from 'fhirtypes/dist/r4';
-
-import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../src/core/r4/validators/base';
 
 describe('Identifier FHIR R4', () => {
-  const { Identifier, Period, Validator } = contextR4();
+  const { Identifier, PeriodBuilder, IdentifierBuilder } = contextR4();
 
   it('should be able to create a new identifier and validate with correct data [new Identifier()]', async () => {
     const item = new Identifier({
@@ -23,8 +22,8 @@ describe('Identifier FHIR R4', () => {
 
     expect(item).toBeDefined();
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
   });
 
   it('should be validate: Malformed assigner reference', async () => {
@@ -42,10 +41,20 @@ describe('Identifier FHIR R4', () => {
       },
     };
 
-    const { error } = ConformanceValidator(item, 'Identifier');
-    expect(error).toBe(
-      "ReferenceException. Value: 'malformed reference'. ResourceType must be one of the following: 'Organization'. Path: Identifier.assigner.reference",
-    );
+    const { isValid, operationOutcome } = ConformanceValidator(item, 'Identifier');
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Identifier.assigner.reference. Value: malformed reference',
+          },
+          diagnostics: "Invalid reference format. Reference must be in the format '{ResourceType}/{id}'.",
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should be validate: Malformed assigner reference 2', async () => {
@@ -63,10 +72,20 @@ describe('Identifier FHIR R4', () => {
       },
     };
 
-    const { error } = ConformanceValidator(item, 'Identifier');
-    expect(error).toBe(
-      "ReferenceException. Value: 'WrongResourceType'. ResourceType must be one of the following: 'Organization'. Path: Identifier.assigner.reference",
-    );
+    const { operationOutcome, isValid } = ConformanceValidator(item, 'Identifier');
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Identifier.assigner.reference. Value: WrongResourceType/id',
+          },
+          diagnostics: 'Invalid reference resource type. Reference must be one of [Organization].',
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should be able to validate a new reference and validate with wrong data', async () => {
@@ -85,15 +104,27 @@ describe('Identifier FHIR R4', () => {
       wrongProperty: 'wrongProperty', // wrong property
     };
 
-    const { error } = ConformanceValidator(item, 'Identifier');
-    expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: Identifier.");
+    const { isValid, operationOutcome } = ConformanceValidator(item, 'Identifier');
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Identifier. Additional fields: wrongProperty',
+          },
+          diagnostics: 'Invalid fields have been found.',
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should be able to create a new identifier using builder methods [new IdentifierBuilder()]', async () => {
     // build() is a method that returns the object that was built
-    const period = Period.builder().setStart('2020-01-01').setEnd('2020-01-02').build();
+    const period = new PeriodBuilder().setStart('2020-01-01').setEnd('2020-01-02').build();
 
-    const item = Identifier.builder()
+    const item = new IdentifierBuilder()
       .setUse('official')
       .setSystem('http://hl7.org/fhir/sid/us-npi')
       .setPeriod(period)
@@ -104,8 +135,8 @@ describe('Identifier FHIR R4', () => {
     expect(item).toBeDefined();
     expect(item).toBeInstanceOf(Identifier);
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
 
     expect(item).toEqual({
       assigner: {

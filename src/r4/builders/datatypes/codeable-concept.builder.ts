@@ -1,20 +1,14 @@
 import { ICoding, IElement, IExtension } from 'fhirtypes/dist/r4';
 import { CodeableConcept } from '../../models';
+import { IElementBuilder } from '../base/element-builder.interface';
+import { IBuildable } from '../base/buildable.interface';
+import { UnderscoreKeys } from '../base/resource-type-map.interface';
 
-interface ICodeableConceptBuilder {
-  // Element properties
-  setId(id: string): this;
-  addExtension(extension: IExtension): this;
-  setMultipleExtension(extension: IExtension[]): this;
+type PrimitiveExtensionFields = keyof Pick<CodeableConcept, UnderscoreKeys<CodeableConcept>>;
 
-  // CodeableConcept properties
-  addCodeableConceptParamExtension(param: 'text', extension: IElement): this;
+interface ICodeableConceptBuilder extends IElementBuilder, IBuildable<CodeableConcept> {
   addCoding(coding: ICoding): this;
-  setMultipleCoding(coding: ICoding[]): this;
   setText(text: string): this;
-
-  // Build
-  build(): CodeableConcept;
 }
 
 export class CodeableConceptBuilder implements ICodeableConceptBuilder {
@@ -25,11 +19,6 @@ export class CodeableConceptBuilder implements ICodeableConceptBuilder {
   }
   setId(id: string): this {
     this.codeableConcept.id = id;
-    return this;
-  }
-
-  setMultipleExtension(extension: IExtension[]): this {
-    this.codeableConcept.extension = extension;
     return this;
   }
 
@@ -45,8 +34,8 @@ export class CodeableConceptBuilder implements ICodeableConceptBuilder {
    * @param {IElement} extension The extension to add
    * @returns {CodeableConceptBuilder} The builder
    */
-  addCodeableConceptParamExtension(param: 'text', extension: IElement): this {
-    this.codeableConcept[`_${param}`] = extension;
+  addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
+    this.codeableConcept[param] = extension;
 
     return this;
   }
@@ -55,11 +44,6 @@ export class CodeableConceptBuilder implements ICodeableConceptBuilder {
     this.codeableConcept.coding = this.codeableConcept.coding || [];
 
     this.codeableConcept.coding.push(coding);
-    return this;
-  }
-
-  setMultipleCoding(coding: ICoding[]): this {
-    this.codeableConcept.coding = coding;
     return this;
   }
 

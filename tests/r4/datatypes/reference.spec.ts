@@ -1,9 +1,8 @@
 import { contextR4 } from '../../../src';
-
-import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../src/core/r4/validators/base';
 
 describe('Reference FHIR R4', () => {
-  const { Reference, Validator } = contextR4();
+  const { Reference, ReferenceBuilder } = contextR4();
 
   it('should be able to create a new reference instance and validate with correct data [new Reference()]', async () => {
     const item = new Reference({
@@ -34,8 +33,8 @@ describe('Reference FHIR R4', () => {
 
     expect(item).toBeDefined();
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
     expect(item).toEqual({
       _type: {
         extension: [
@@ -70,10 +69,20 @@ describe('Reference FHIR R4', () => {
       type: 'Patient',
     });
 
-    const { error } = item.validate();
-    expect(error).toBe(
-      "ReferenceException. Value: 'malformed reference string'. Reference must be in the format {ResourceType}/{id}. Path: Reference.reference",
-    );
+    const { isValid, operationOutcome } = item.validate();
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Reference.reference. Value: malformed reference string',
+          },
+          diagnostics: "Invalid reference format. Reference must be in the format '{ResourceType}/{id}'.",
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should throw and error if reference instance has malformed reference string [new Reference()]', async () => {
@@ -93,10 +102,20 @@ describe('Reference FHIR R4', () => {
       },
     });
 
-    const { error } = item.validate();
-    expect(error).toBe(
-      "ReferenceException. Value: 'malformed reference string'. Reference must be in the format {ResourceType}/{id}. Path: Reference.reference",
-    );
+    const { isValid, operationOutcome } = item.validate();
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Reference.reference. Value: malformed reference string',
+          },
+          diagnostics: "Invalid reference format. Reference must be in the format '{ResourceType}/{id}'.",
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should throw and error if extension have extensions and value[x] [_type]', async () => {
@@ -113,10 +132,20 @@ describe('Reference FHIR R4', () => {
       },
     });
 
-    const { error } = item.validate();
-    expect(error).toBe(
-      'ConstraintException. Must have either extensions or value[x], not both.. Path: Reference._type.extension[0]',
-    );
+    const { isValid, operationOutcome } = item.validate();
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invariant',
+          details: {
+            text: 'Path: Reference._type.extension[0]',
+          },
+          diagnostics: 'Must have either extensions or value[x], not both.',
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should throw and error if extension have extensions and value[x] [_reference]', async () => {
@@ -133,10 +162,20 @@ describe('Reference FHIR R4', () => {
       },
     });
 
-    const { error } = item.validate();
-    expect(error).toBe(
-      'ConstraintException. Must have either extensions or value[x], not both.. Path: Reference._reference.extension[0]',
-    );
+    const { isValid, operationOutcome } = item.validate();
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invariant',
+          details: {
+            text: 'Path: Reference._reference.extension[0]',
+          },
+          diagnostics: 'Must have either extensions or value[x], not both.',
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should throw and error if extension have extensions and value[x] [_display]', async () => {
@@ -153,10 +192,20 @@ describe('Reference FHIR R4', () => {
       },
     });
 
-    const { error } = item.validate();
-    expect(error).toBe(
-      'ConstraintException. Must have either extensions or value[x], not both.. Path: Reference._reference.extension[0]',
-    );
+    const { isValid, operationOutcome } = item.validate();
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invariant',
+          details: {
+            text: 'Path: Reference._reference.extension[0]',
+          },
+          diagnostics: 'Must have either extensions or value[x], not both.',
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should be able to validate a new reference with wrong field', async () => {
@@ -167,14 +216,26 @@ describe('Reference FHIR R4', () => {
       wrongProperty: 'wrongProperty', // wrong property
     };
 
-    const { error } = ConformanceValidator(item, 'Reference');
+    const { isValid, operationOutcome } = ConformanceValidator(item, 'Reference');
+    expect(isValid).toBeFalsy();
 
-    expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: Reference.");
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Reference. Additional fields: wrongProperty',
+          },
+          diagnostics: 'Invalid fields have been found.',
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should be able to create a new attachment using builder methods [new ReferenceBuilder()]', async () => {
     // build() is a method that returns the object that was built
-    const item = Reference.builder()
+    const item = new ReferenceBuilder()
       .setType('Patient')
       .setDisplay('test')
       .setReference({
@@ -186,8 +247,8 @@ describe('Reference FHIR R4', () => {
     expect(item).toBeDefined();
     expect(item).toBeInstanceOf(Reference);
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
 
     expect(item).toEqual({
       display: 'test',

@@ -5,35 +5,43 @@ import {
   ICodeableConcept,
   IContactPoint,
   IElement,
-  IExtension,
   IHumanName,
   IIdentifier,
-  INarrative,
   IPatientCommunication,
   IPatientContact,
   IPatientLink,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { PatientParamExtensionType } from '../../params-types';
 import { Patient } from '../../models';
-import { DomainResourceBuilder } from '../base/DomainResourceBuilder';
-import { IBuildable } from '../base/IBuildable';
+import { IBuildable } from '../base/buildable.interface';
+import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { IDomainResourceBuilder } from '../base/domain-resource-builder.interface';
+import { DomainResourceBuilder } from '../base/domain-resource.builder';
 
-interface IPatientBuilder extends IBuildable<Patient> {
+interface IDeceasedMap {
+  deceasedBoolean: boolean;
+  deceasedDateTime: string;
+}
+type DeceasedValue<T extends keyof IDeceasedMap> = IDeceasedMap[T];
+interface IMultipleBirth {
+  multipleBirthBoolean: boolean;
+  multipleBirthInteger: number;
+}
+type MultipleBirthValue<T extends keyof IMultipleBirth> = IMultipleBirth[T];
+type PrimitiveExtensionFields = keyof Pick<Patient, UnderscoreKeys<Patient>>;
+
+interface IPatientBuilder extends IDomainResourceBuilder, IBuildable<Patient> {
   // Patient properties
-  addParamExtension(param: PatientParamExtensionType, extension: IElement): this;
   addIdentifier(identifier: IIdentifier): this;
   setActive(active: boolean): this;
   addName(name: IHumanName): this;
   addTelecom(telecom: IContactPoint): this;
   setGender(gender: AdministrativeGenderType): this;
   setBirthDate(birthDate: string): this;
-  setDeceasedBoolean(deceasedBoolean: boolean): this;
-  setDeceasedDateTime(deceasedDateTime: string): this;
+  setDeceased<T extends keyof IDeceasedMap>(type: T, value: DeceasedValue<T>): this;
   addAddress(address: IAddress): this;
   setMaritalStatus(maritalStatus: ICodeableConcept): this;
-  setMultipleBirthBoolean(multipleBirthBoolean: boolean): this;
-  setMultipleBirthInteger(multipleBirthInteger: number): this;
+  setMultipleBirth<T extends keyof IMultipleBirth>(type: T, value: MultipleBirthValue<T>): this;
   addPhoto(photo: IAttachment): this;
   addContact(contact: IPatientContact): this;
   addCommunication(communication: IPatientCommunication): this;
@@ -50,59 +58,6 @@ export class PatientBuilder extends DomainResourceBuilder implements IPatientBui
     this.patient = new Patient();
   }
 
-  setId(id: string): this {
-    this.patient.id = id;
-    return this;
-  }
-
-  setMeta(meta: any): this {
-    this.patient.meta = meta;
-    return this;
-  }
-
-  setImplicitRules(implicitRules: string): this {
-    this.patient.implicitRules = implicitRules;
-    return this;
-  }
-
-  setLanguage(language: string): this {
-    this.patient.language = language;
-    return this;
-  }
-
-  setText(text: INarrative): this {
-    // TODO: move to a validation function
-    if (text.div) {
-      if (!text.div.startsWith('<div')) throw new Error('Narrative.div must start with <div');
-      if (!text.div.includes('xmlns="http://www.w3.org/1999/xhtml')) {
-        throw new Error('Narrative.div must include the XHTML namespace');
-      }
-    }
-    this.patient.text = text;
-
-    return this;
-  }
-
-  // TODO: This should be a generic type
-  addContained(contained: any): this {
-    this.patient.contained = this.patient.contained || [];
-    this.patient.contained.push(contained);
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.patient.extension = this.patient.extension || [];
-    this.patient.extension.push(extension);
-
-    return this;
-  }
-
-  addModifierExtension(modifierExtension: IExtension): this {
-    this.patient.modifierExtension = this.patient.modifierExtension || [];
-    this.patient.modifierExtension.push(modifierExtension);
-    return this;
-  }
-
   fromJSON(json: unknown): this {
     const incomingPatient = typeof json === 'string' ? JSON.parse(json) : json;
 
@@ -110,8 +65,8 @@ export class PatientBuilder extends DomainResourceBuilder implements IPatientBui
     return this;
   }
 
-  addParamExtension(param: PatientParamExtensionType, extension: IElement): this {
-    this.patient[`_${param}`] = extension;
+  addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
+    this.patient[param] = extension;
 
     return this;
   }
@@ -161,23 +116,23 @@ export class PatientBuilder extends DomainResourceBuilder implements IPatientBui
     return this;
   }
 
-  setDeceasedBoolean(deceasedBoolean: boolean): this {
-    this.patient.deceasedBoolean = deceasedBoolean;
+  setDeceased<T extends keyof IDeceasedMap>(type: T, value: DeceasedValue<T>): this {
+    if (type === 'deceasedBoolean') {
+      this.patient.deceasedBoolean = value as boolean;
+    }
+    if (type === 'deceasedDateTime') {
+      this.patient.deceasedDateTime = value as string;
+    }
     return this;
   }
 
-  setDeceasedDateTime(deceasedDateTime: string): this {
-    this.patient.deceasedDateTime = deceasedDateTime;
-    return this;
-  }
-
-  setMultipleBirthBoolean(multipleBirthBoolean: boolean): this {
-    this.patient.multipleBirthBoolean = multipleBirthBoolean;
-    return this;
-  }
-
-  setMultipleBirthInteger(multipleBirthInteger: number): this {
-    this.patient.multipleBirthInteger = multipleBirthInteger;
+  setMultipleBirth<T extends keyof IMultipleBirth>(type: T, value: MultipleBirthValue<T>): this {
+    if (type === 'multipleBirthBoolean') {
+      this.patient.multipleBirthBoolean = value as boolean;
+    }
+    if (type === 'multipleBirthInteger') {
+      this.patient.multipleBirthInteger = value as number;
+    }
     return this;
   }
 
@@ -219,6 +174,6 @@ export class PatientBuilder extends DomainResourceBuilder implements IPatientBui
   }
 
   build(): Patient {
-    return new Patient(this.patient);
+    return Object.assign(this.patient, super.build());
   }
 }

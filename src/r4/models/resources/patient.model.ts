@@ -14,14 +14,15 @@ import {
   IReference,
 } from 'fhirtypes/dist/r4';
 import { PatientBuilder } from '../../builders';
-
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { DomainResource } from './domain-resource.model';
+import { DomainResource } from '../base/domain-resource.model';
+import { IValidatable } from '../base/validatable.interface';
+import { ISerializable } from '../base/serializable.interface';
 
 /**
  * @description FHIR R4
  */
-export class Patient extends DomainResource implements IPatient {
+export class Patient extends DomainResource implements IPatient, IValidatable, ISerializable {
   resourceType?: 'Patient' = 'Patient' as const;
 
   // Patient attributes
@@ -56,7 +57,7 @@ export class Patient extends DomainResource implements IPatient {
   _birthDate?: IElement;
   _gender?: IElement;
 
-  toJson(): unknown {
+  toJson() {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -68,15 +69,11 @@ export class Patient extends DomainResource implements IPatient {
     return `Patient${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): { error: string | null } {
-    const { error } = ConformanceValidator(this, 'Patient');
-    return { error };
+  validate() {
+    return ConformanceValidator(this, 'Patient');
   }
 
-  static builder(): PatientBuilder {
-    return new PatientBuilder();
-  }
-
+  // TODO: refactor this to use the builder pattern
   static builderFromJson(json: unknown | string): PatientBuilder {
     const patient = json as Patient;
     const patientBuilder = new PatientBuilder();
@@ -86,5 +83,13 @@ export class Patient extends DomainResource implements IPatient {
   constructor(args?: IPatient) {
     super();
     if (args) Object.assign(this, args);
+  }
+
+  protected builderInstance(): PatientBuilder {
+    return new PatientBuilder();
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 }

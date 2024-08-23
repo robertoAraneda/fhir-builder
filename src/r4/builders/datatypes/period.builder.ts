@@ -1,17 +1,14 @@
 import { IElement, IExtension } from 'fhirtypes/dist/r4';
 import { Period } from '../../models';
+import { IElementBuilder } from '../base/element-builder.interface';
+import { IBuildable } from '../base/buildable.interface';
+import { UnderscoreKeys } from '../base/resource-type-map.interface';
 
-interface IPeriodBuilder {
-  // Element properties
-  setId(id: string): this;
-  addExtension(extension: IExtension): this;
-  setMultipleExtension(extension: IExtension[]): this;
+type PrimitiveExtensionFields = keyof Pick<Period, UnderscoreKeys<Period>>;
 
-  // Period properties
-  addParamExtension(param: 'start' | 'end', extension: IElement): this;
+interface IPeriodBuilder extends IElementBuilder, IBuildable<Period> {
   setStart(value: string): this;
   setEnd(value: string): this;
-  build(): Period;
 }
 
 /**
@@ -28,11 +25,6 @@ export class PeriodBuilder implements IPeriodBuilder {
     return this;
   }
 
-  setMultipleExtension(extension: IExtension[]): this {
-    this.period.extension = extension;
-    return this;
-  }
-
   addExtension(extension: IExtension): this {
     this.period.extension = this.period.extension || [];
     this.period.extension.push(extension);
@@ -45,8 +37,8 @@ export class PeriodBuilder implements IPeriodBuilder {
    * @param extension - The extension to add
    * @returns The instance of PeriodBuilder for method chaining
    */
-  addParamExtension(param: 'start' | 'end', extension: IElement): this {
-    this.period[`_${param}`] = extension;
+  addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
+    this.period[param] = extension;
 
     return this;
   }

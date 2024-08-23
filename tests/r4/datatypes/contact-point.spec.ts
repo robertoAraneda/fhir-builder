@@ -1,10 +1,9 @@
 import { contextR4 } from '../../../src';
 import { IContactPoint } from 'fhirtypes/dist/r4';
-
-import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../src/core/r4/validators/base';
 
 describe('ContactPoint FHIR R4', () => {
-  const { ContactPoint, Validator } = contextR4();
+  const { ContactPoint, ContactPointBuilder } = contextR4();
 
   it('should be able to create a new contact point and validate with correct data [new ContactPoint()]', async () => {
     const item = new ContactPoint({
@@ -23,8 +22,8 @@ describe('ContactPoint FHIR R4', () => {
 
     expect(item).toBeDefined();
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const result = item.validate();
+    expect(result.isValid).toBeTruthy();
   });
 
   it('should be able to create a new contact point and validate with correct data [IContactPoint]', async () => {
@@ -36,38 +35,59 @@ describe('ContactPoint FHIR R4', () => {
       use: 'home',
     };
 
-    const { error } = ConformanceValidator(item, 'ContactPoint');
-    expect(error).toBeNull();
+    const result = ConformanceValidator(item, 'ContactPoint');
+    expect(result.isValid).toBeTruthy();
   });
 
   it('should be able to validate a new contact point and validate with wrong data', async () => {
     const item = {
       id: '123',
       value: 'test',
-      system: 'bad system', // wrong property
+      system: 'wrong-system', // wrong property
       rank: 1,
       use: 'home',
       test: 'test', // wrong property
     };
 
-    const { error } = ConformanceValidator(item, 'ContactPoint');
-    expect(error).toBe("InvalidFieldException. Field(s): 'test'. Path: ContactPoint.");
+    const result = ConformanceValidator(item, 'ContactPoint');
+    expect(result.isValid).toBeFalsy();
+    // TODO: expect(result.errors).toEqual([])
+    expect(result.operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: ContactPoint. Additional fields: test',
+          },
+          diagnostics: 'Invalid fields have been found.',
+          severity: 'error',
+        },
+        {
+          code: 'code-invalid',
+          details: {
+            text: 'Path: ContactPoint.system; Value: wrong-system',
+          },
+          diagnostics: 'Code must be one of [phone, fax, email, pager, url, sms, other]',
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should be able to create a new contact point using builder methods', async () => {
     // build() is a method that returns the object that was built
-    const item = ContactPoint.builder()
+    const item = new ContactPointBuilder()
       .setId('123')
       .setRank(1)
       .setSystem('url')
       .setValue('test')
-      .addParamExtension('system', { extension: [{ id: '123', url: 'url', valueDate: '2022-06-12' }] })
+      .addPrimitiveExtension('_system', { extension: [{ id: '123', url: 'url', valueDate: '2022-06-12' }] })
       .build();
 
     expect(item).toBeDefined();
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const result = item.validate();
+    expect(result.isValid).toBeTruthy();
 
     expect(item).toEqual({
       id: '123',

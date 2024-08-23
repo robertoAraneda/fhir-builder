@@ -1,13 +1,16 @@
-import { IBuildable } from '../base/IBuildable';
-import { Annotation } from '../../models/datatypes/annotation.model';
-import { IElement, IExtension, IReference } from 'fhirtypes/dist/r4';
-import { IElementBuilder } from '../base/IElementBuilder';
-import { ElementBuilder } from '../base/ElementBuilder';
+import { IBuildable } from '../base/buildable.interface';
+import { Annotation } from '../../models';
+import { IAnnotation, IElement, IExtension, IReference } from 'fhirtypes/dist/r4';
+import { IElementBuilder } from '../base/element-builder.interface';
+import { ElementBuilder } from '../base/element.builder';
+import { UnderscoreKeys } from '../base/resource-type-map.interface';
+
+type PrimitiveExtensionFields = keyof Pick<IAnnotation, UnderscoreKeys<IAnnotation>>;
+type ExtractAuthor<T> = Extract<{ [K in keyof T]: K extends `author${string}` ? K : never }[keyof T], keyof T>;
+type ExtractAuthorType = keyof Pick<IAnnotation, ExtractAuthor<IAnnotation>>;
 
 interface IAnnotationBuilder extends IElementBuilder, IBuildable<Annotation> {
-  addParamExtension(param: 'time' | 'text', extension: IElement): this;
-  setAuthorReference(authorReference: IReference): this;
-  setAuthorString(authorString: string): this;
+  setAuthor<T extends ExtractAuthorType>(type: T, value: T extends 'authorReference' ? IReference : string): this;
   setTime(time: string): this;
   setText(text: string): this;
 }
@@ -25,13 +28,13 @@ export class AnnotationBuilder extends ElementBuilder implements IAnnotationBuil
     return this;
   }
 
-  setAuthorReference(authorReference: IReference): this {
-    this.annotation.authorReference = authorReference;
-    return this;
-  }
-
-  setAuthorString(authorString: string): this {
-    this.annotation.authorString = authorString;
+  setAuthor<T extends ExtractAuthorType>(type: T, value: T extends 'authorReference' ? IReference : string): this {
+    if (type === 'authorReference') {
+      this.annotation.authorReference = value as IReference;
+    }
+    if (type === 'authorString') {
+      this.annotation.authorString = value as string;
+    }
     return this;
   }
 
@@ -51,8 +54,13 @@ export class AnnotationBuilder extends ElementBuilder implements IAnnotationBuil
     return this;
   }
 
-  addParamExtension(param: 'time' | 'text', extension: IElement): this {
-    this.annotation[`_${param}`] = extension;
+  /**
+   * @description Add a primitive extension to the element
+   * @param param
+   * @param extension
+   */
+  addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
+    this.annotation[param] = extension;
     return this;
   }
 

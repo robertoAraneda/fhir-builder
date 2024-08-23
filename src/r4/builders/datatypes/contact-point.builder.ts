@@ -1,23 +1,17 @@
 import { ContactPointSystemType, ContactPointUseType, IElement, IExtension, IPeriod } from 'fhirtypes/dist/r4';
-import { ContactPointParamExtensionType } from '../../params-types';
 import { ContactPoint } from '../../models';
+import { IElementBuilder } from '../base/element-builder.interface';
+import { IBuildable } from '../base/buildable.interface';
+import { UnderscoreKeys } from '../base/resource-type-map.interface';
 
-interface IContactPointBuilder {
-  // Element properties
-  setId(id: string): this;
-  addExtension(extension: IExtension): this;
-  setMultipleExtension(extension: IExtension[]): this;
+type PrimitiveExtensionFields = keyof Pick<ContactPoint, UnderscoreKeys<ContactPoint>>;
 
-  // ContactPoint properties
-  addParamExtension(param: ContactPointParamExtensionType, extension: IElement): this;
+interface IContactPointBuilder extends IElementBuilder, IBuildable<ContactPoint> {
   setSystem(value: ContactPointSystemType): this;
   setValue(value: string): this;
   setUse(value: ContactPointUseType): this;
   setRank(value: number): this;
   setPeriod(value: IPeriod): this;
-
-  // Build
-  build(): ContactPoint;
 }
 
 export class ContactPointBuilder implements IContactPointBuilder {
@@ -29,11 +23,6 @@ export class ContactPointBuilder implements IContactPointBuilder {
 
   setId(id: string): this {
     this.contactPoint.id = id;
-    return this;
-  }
-
-  setMultipleExtension(extension: IExtension[]): this {
-    this.contactPoint.extension = extension;
     return this;
   }
 
@@ -49,8 +38,8 @@ export class ContactPointBuilder implements IContactPointBuilder {
    * @param extension
    * @returns ContactPointBuilder The builder
    */
-  addParamExtension(param: ContactPointParamExtensionType, extension: IElement): this {
-    this.contactPoint[`_${param}`] = extension;
+  addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
+    this.contactPoint[param] = extension;
 
     return this;
   }

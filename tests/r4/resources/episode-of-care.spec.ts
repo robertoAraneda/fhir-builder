@@ -1,7 +1,7 @@
 import { contextR4 } from '../../../src';
 
 describe('Patient FHIR R4', () => {
-  const { EpisodeOfCare, Validator } = contextR4();
+  const { EpisodeOfCare, EpisodeOfCareValidator, EpisodeOfCareBuilder } = contextR4();
 
   it('should validate EpisodeOfCare', async () => {
     const item = new EpisodeOfCare({
@@ -107,13 +107,13 @@ describe('Patient FHIR R4', () => {
       ],
     });
 
-    const { error } = Validator.EpisodeOfCare(item);
+    const { isValid } = EpisodeOfCareValidator(item);
 
-    expect(error).toBeNull();
+    expect(isValid).toBeTruthy();
   });
 
   it('should create a instance of EpisodeOfCare using Builder', () => {
-    const item = EpisodeOfCare.builder()
+    const item = new EpisodeOfCareBuilder()
       .setId('example')
       .setText({
         status: 'generated',
@@ -189,7 +189,7 @@ describe('Patient FHIR R4', () => {
       })
       .build();
 
-    expect(item).toEqual({
+    expect(item.toJson()).toEqual({
       resourceType: 'EpisodeOfCare',
       id: 'example',
       text: {
@@ -279,8 +279,9 @@ describe('Patient FHIR R4', () => {
         },
       ],
     });
+    const { isValid } = item.validate();
 
-    expect(item.validate()).toEqual({ error: null });
+    expect(isValid).toBeTruthy();
   });
 
   it('should validate toPrettyString() and toString() methods', () => {
@@ -412,6 +413,8 @@ describe('Patient FHIR R4', () => {
         },
       ],
     });
-    expect(item.validate()).toEqual({ error: null });
+
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
   });
 });

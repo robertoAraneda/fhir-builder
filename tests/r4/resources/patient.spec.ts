@@ -3,7 +3,7 @@ import { IPatient } from 'fhirtypes/dist/r4';
 import { AdministrativeGenderEnum } from 'fhirtypes/dist/r4/enums';
 
 describe('Patient FHIR R4', () => {
-  const { Patient, Validator } = contextR4();
+  const { Patient, PatientValidator, PatientBuilder } = contextR4();
 
   it('should be able to create a new patient and validate with correct data [new Patient()]', async () => {
     const item = new Patient({
@@ -169,8 +169,8 @@ describe('Patient FHIR R4', () => {
 
     expect(item).toBeDefined();
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
   });
 
   it('should be able to create a new patient and validate with correct data [IPatient]', async () => {
@@ -213,8 +213,8 @@ describe('Patient FHIR R4', () => {
       },
     };
 
-    const { error } = Validator.Patient(item);
-    expect(error).toBeNull();
+    const { isValid } = PatientValidator(item);
+    expect(isValid).toBeTruthy();
   });
 
   it('should be able to create a new patient and validate with correct data [Patient-example-f001-pieter.json]', async () => {
@@ -327,8 +327,8 @@ describe('Patient FHIR R4', () => {
       },
     };
 
-    const { error } = Validator.Patient(item);
-    expect(error).toBeNull();
+    const { isValid } = PatientValidator(item);
+    expect(isValid).toBeTruthy();
   });
 
   it('should be able to create a new patient and validate with correct data [Example Patient/dicom]', async () => {
@@ -391,8 +391,8 @@ describe('Patient FHIR R4', () => {
       },
     };
 
-    const { error } = Validator.Patient(item);
-    expect(error).toBeNull();
+    const { isValid } = PatientValidator(item);
+    expect(isValid).toBeTruthy();
   });
 
   it('should throw an error if patient resource not contain at least a contact details or a reference to an organization', async () => {
@@ -417,10 +417,20 @@ describe('Patient FHIR R4', () => {
       ],
     });
 
-    const { error } = item.validate();
-    expect(error).toBe(
-      "Invalid Resource: Patient: SHALL at least contain a contact's details or a reference to an organization (pat-1)",
-    );
+    const { isValid, operationOutcome } = item.validate();
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invariant',
+          details: {
+            text: 'Path: Patient.contact[0].',
+          },
+          diagnostics: "+ Rule (pat-1). SHALL at least contain a contact's details or a reference to an organization",
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should be able to validate a new patient and validate with wrong data', async () => {
@@ -493,19 +503,47 @@ describe('Patient FHIR R4', () => {
       ],
     };
 
-    const { error } = Validator.Patient(item);
-    expect(error).toBe("InvalidFieldException. Field(s): 'managingPatient'. Path: Patient.");
+    const { isValid, operationOutcome } = PatientValidator(item);
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Patient. Additional fields: managingPatient',
+          },
+          diagnostics: 'Invalid fields have been found.',
+          severity: 'error',
+        },
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Patient._gender.extension[0]. Additional fields: valueCodeableConcept',
+          },
+          diagnostics: 'Invalid fields have been found.',
+          severity: 'error',
+        },
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Patient.photo[0].data. Value: base64Data',
+          },
+          diagnostics: 'Invalid base64Binary.',
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should be able to create a new patient using builder methods [new PatientBuilder()]', async () => {
     // build() is a method that returns the object that was built
-    const item = Patient.builder()
+    const item = new PatientBuilder()
       .setId('123')
       .setText({
         status: 'generated',
         div: '<div xmlns="http://www.w3.org/1999/xhtml">Generated</div>',
       })
-      .setDeceasedBoolean(false)
+      .setDeceased('deceasedBoolean', false)
       .setActive(true)
       .setGender('other')
       .setBirthDate('1974-12-25')
@@ -546,8 +584,8 @@ describe('Patient FHIR R4', () => {
 
     expect(item).toBeInstanceOf(Patient);
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
     expect(item).toEqual({
       active: true,
       address: [
@@ -600,9 +638,9 @@ describe('Patient FHIR R4', () => {
   });
 
   it("should validate toPrettyString() and toString() methods of a new patient's instance", async () => {
-    const item = Patient.builder()
+    const item = new PatientBuilder()
       .setId('123')
-      .setDeceasedBoolean(false)
+      .setDeceased('deceasedBoolean', false)
       .setActive(true)
       .setGender('other')
       .setBirthDate('1974-12-25')
@@ -614,9 +652,9 @@ describe('Patient FHIR R4', () => {
   });
 
   it("should validate toJson() method of a new patient's instance", async () => {
-    const item = Patient.builder()
+    const item = new PatientBuilder()
       .setId('123')
-      .setDeceasedBoolean(false)
+      .setDeceased('deceasedBoolean', true)
       .setActive(true)
       .setGender('other')
       .setBirthDate('1974-12-25')
@@ -627,7 +665,7 @@ describe('Patient FHIR R4', () => {
       resourceType: 'Patient',
       id: '123',
       active: true,
-      deceasedBoolean: false,
+      deceasedBoolean: true,
       gender: 'other',
       birthDate: '1974-12-25',
     });

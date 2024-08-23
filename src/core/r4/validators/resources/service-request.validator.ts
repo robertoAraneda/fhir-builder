@@ -1,9 +1,8 @@
 import { createResourceDefinition } from '../base/definitions';
-import { IServiceRequest } from 'fhirtypes/dist/r4';
+import { IOperationOutcomeIssue, IServiceRequest } from 'fhirtypes/dist/r4';
 import { ModelValidator } from '../base';
 import { RequestIntentEnum, RequestPriorityEnum, RequestStatusEnum } from 'fhirtypes/dist/r4/enums';
-import { ResourceException } from '../../../commons/exceptions/resource.exception';
-
+import { OperationOutcomeIssueException } from '../../../commons/exceptions/operation-outcome.exception';
 const statusValues: readonly string[] = Object.values(RequestStatusEnum);
 const intentValues: readonly string[] = Object.values(RequestIntentEnum);
 const priorityValues: readonly string[] = Object.values(RequestPriorityEnum);
@@ -311,27 +310,32 @@ const modelFields = createResourceDefinition<IServiceRequest>([
   },
 ]);
 
-const ConstraintValidator = (dataToValidate: IServiceRequest, path: string): void => {
+const ConstraintValidator = (dataToValidate: IServiceRequest, path: string, errors: IOperationOutcomeIssue[]): void => {
   // orderDetail SHALL only be present if code is present
   if (dataToValidate.orderDetail && !dataToValidate.code) {
-    throw new ResourceException('ServiceRequest', [
-      {
-        constraint: {
-          id: 'prr-1',
-          level: 'Rule',
-          description: 'orderDetail SHALL only be present if code is present',
-          location: `${path}.orderDetail`,
+    errors.push(
+      new OperationOutcomeIssueException({
+        severity: 'error',
+        code: 'invariant',
+        diagnostics: `+ Rule (prr-1). OrderDetail SHALL only be present if code is present`,
+        details: {
+          text: `Path: ${path}.orderDetail.`,
         },
-      },
-    ]);
+      }),
+    );
   }
 };
 
-export const ServiceRequestValidator = (dataToValidate: IServiceRequest, path = 'EpisodeOfCare'): void => {
+export const ServiceRequestValidator = (
+  dataToValidate: IServiceRequest,
+  path = 'EpisodeOfCare',
+  errors: IOperationOutcomeIssue[] = [],
+): void => {
   ModelValidator<IServiceRequest>({
     dataToValidate,
     path,
     modelDefinition: modelFields,
     additionalValidation: [ConstraintValidator],
+    errors,
   });
 };

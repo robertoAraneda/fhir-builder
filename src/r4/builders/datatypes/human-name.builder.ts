@@ -1,31 +1,24 @@
 import { IElement, IExtension, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
 import { HumanName } from '../../models';
-import { HumanNameParamType, HumanNameArrayParamType } from '../../params-types';
+import { IElementBuilder } from '../base/element-builder.interface';
+import { IBuildable } from '../base/buildable.interface';
+import { UnderscoreKeys } from '../base/resource-type-map.interface';
 
-interface IHumanNameBuilder {
-  // Element properties
-  setId(id: string): this;
-  addExtension(extension: IExtension): this;
-  setMultipleExtension(extension: IExtension[]): this;
+type PrimitiveExtensionFields = keyof Pick<HumanName, UnderscoreKeys<HumanName>>;
 
-  // HumanName properties
-  addParamExtension<T extends HumanNameParamType>(
-    param: T,
-    extension: T extends HumanNameArrayParamType ? IElement[] : IElement,
-  ): this;
+interface IHumanNameBuilder extends IElementBuilder, IBuildable<HumanName> {
   setUse(value: NameUseType): this;
   setText(value: string): this;
   setFamily(value: string): this;
   addGiven(value: string): this;
-  setMultipleGiven(value: string[]): this;
   addPrefix(value: string): this;
-  setMultiplePrefix(value: string[]): this;
   addSuffix(value: string): this;
-  setMultipleSuffix(value: string[]): this;
+  /**
+   * Set period
+   * @param value
+   * @returns {HumanNameBuilder}
+   */
   setPeriod(value: IPeriod): this;
-
-  // Build
-  build(): HumanName;
 }
 
 export class HumanNameBuilder implements IHumanNameBuilder {
@@ -40,30 +33,23 @@ export class HumanNameBuilder implements IHumanNameBuilder {
     return this;
   }
 
-  setMultipleExtension(extension: IExtension[]): this {
-    this.humanName.extension = extension;
-    return this;
-  }
-
   addExtension(extension: IExtension): this {
     this.humanName.extension = this.humanName.extension || [];
     this.humanName.extension.push(extension);
     return this;
   }
 
-  addParamExtension<T extends HumanNameParamType>(
+  addPrimitiveExtension<T extends PrimitiveExtensionFields>(
     param: T,
-    extension: T extends HumanNameArrayParamType ? IElement[] : IElement,
+    extension: T extends '_given' | '_prefix' | '_suffix' ? IElement[] : IElement,
   ): this {
-    const includes = ['given', 'prefix', 'suffix'];
+    const includes = ['_given', '_prefix', '_suffix'];
     if (includes.includes(param)) {
-      const localMultipleParam = param as HumanNameArrayParamType;
-      this.humanName[`_${localMultipleParam}`] = extension as IElement[];
+      this.humanName[param] = extension as IElement[];
     } else {
-      const localParam = param as Exclude<HumanNameParamType, 'given' | 'prefix' | 'suffix'>;
-      this.humanName[`_${localParam}`] = extension as IElement;
+      const localParam = param as Exclude<PrimitiveExtensionFields, '_given' | '_prefix' | '_suffix'>;
+      this.humanName[localParam] = extension as IElement;
     }
-
     return this;
   }
 
@@ -88,19 +74,9 @@ export class HumanNameBuilder implements IHumanNameBuilder {
     return this;
   }
 
-  setMultipleGiven(value: string[]): this {
-    this.humanName.given = value;
-    return this;
-  }
-
   addPrefix(value: string): this {
     this.humanName.prefix = this.humanName.prefix || [];
     this.humanName.prefix.push(value);
-    return this;
-  }
-
-  setMultiplePrefix(value: string[]): this {
-    this.humanName.prefix = value;
     return this;
   }
 
@@ -110,11 +86,11 @@ export class HumanNameBuilder implements IHumanNameBuilder {
     return this;
   }
 
-  setMultipleSuffix(value: string[]): this {
-    this.humanName.suffix = value;
-    return this;
-  }
-
+  /**
+   * Set period
+   * @param value
+   * @returns {HumanNameBuilder}
+   */
   setPeriod(value: IPeriod): this {
     this.humanName.period = value;
     return this;

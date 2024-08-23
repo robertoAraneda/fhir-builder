@@ -1,17 +1,25 @@
 import { ICodeableConcept, IElement, IPatientCommunication } from 'fhirtypes/dist/r4';
-import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
 import { PatientCommunicationBuilder } from '../../builders';
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { BackboneElement } from './backbone-element.model';
+import { BackboneElement } from '../base/backbone-element.model';
+import { IValidatable } from '../base/validatable.interface';
+import { ISerializable } from '../base/serializable.interface';
 
-export class PatientCommunication extends BackboneElement implements IPatientCommunication {
+export class PatientCommunication
+  extends BackboneElement
+  implements IPatientCommunication, IValidatable, ISerializable
+{
   // PatientCommunication attributes
   language: ICodeableConcept;
   preferred?: boolean;
   _preferred?: IElement;
 
-  toJson(): PatientCommunication {
+  toJson() {
     return JSON.parse(JSON.stringify(this));
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 
   toPrettyString(): string {
@@ -22,12 +30,11 @@ export class PatientCommunication extends BackboneElement implements IPatientCom
     return `PatientCommunication${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): ValReturnType {
-    const { error } = ConformanceValidator(this, 'PatientCommunication');
-    return { error };
+  validate() {
+    return ConformanceValidator(this, 'PatientCommunication');
   }
 
-  static builder(): PatientCommunicationBuilder {
+  protected builderInstance(): PatientCommunicationBuilder {
     return new PatientCommunicationBuilder();
   }
 

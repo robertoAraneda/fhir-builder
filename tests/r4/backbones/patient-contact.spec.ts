@@ -1,10 +1,9 @@
 import { contextR4 } from '../../../src';
 import { IPatientContact } from 'fhirtypes/dist/r4';
-
-import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../src/core/r4/validators/base';
 
 describe('PatientContact FHIR R4', () => {
-  const { PatientContact, Validator } = contextR4();
+  const { PatientContact, PatientContactBuilder } = contextR4();
 
   it('should be able to validate a new patient_contact [new PatientContact()]', async () => {
     const item = new PatientContact({
@@ -24,8 +23,8 @@ describe('PatientContact FHIR R4', () => {
       },
     });
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
   });
 
   it('should be able to validate a new patient_contact [IPatientContact]', async () => {
@@ -46,12 +45,12 @@ describe('PatientContact FHIR R4', () => {
       },
     };
 
-    const { error } = ConformanceValidator(item, 'PatientContact');
-    expect(error).toBeNull();
+    const { isValid } = ConformanceValidator(item, 'PatientContact');
+    expect(isValid).toBeTruthy();
   });
 
   it('should be able to create a new patient_contact using builder methods [new PatientContact()]', async () => {
-    const item = PatientContact.builder()
+    const item = new PatientContactBuilder()
       .setId('123')
       .addRelationship({
         coding: [
@@ -65,7 +64,7 @@ describe('PatientContact FHIR R4', () => {
         start: '2020-01-01',
         end: '2020-01-01',
       })
-      .addParamExtension('gender', {
+      .addPrimitiveExtension('_gender', {
         extension: [
           {
             url: 'preferred',
@@ -78,8 +77,8 @@ describe('PatientContact FHIR R4', () => {
     expect(item).toBeDefined();
     expect(item).toBeInstanceOf(PatientContact);
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
 
     expect(item).toEqual({
       _gender: {
@@ -114,7 +113,19 @@ describe('PatientContact FHIR R4', () => {
       wrongProperty: 'wrongProperty',
     };
 
-    const { error } = ConformanceValidator(item, 'PatientContact');
-    expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: PatientContact.");
+    const { isValid, operationOutcome } = ConformanceValidator(item, 'PatientContact');
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: PatientContact. Additional fields: wrongProperty',
+          },
+          diagnostics: 'Invalid fields have been found.',
+          severity: 'error',
+        },
+      ],
+    });
   });
 });

@@ -1,8 +1,8 @@
-import { IPatient } from 'fhirtypes/dist/r4';
+import { IOperationOutcomeIssue, IPatient } from 'fhirtypes/dist/r4';
 import { AdministrativeGenderEnum } from 'fhirtypes/dist/r4/enums';
 import { createResourceDefinition } from '../base/definitions';
 import { ModelValidator } from '../base';
-import { ResourceException } from '../../../commons/exceptions/resource.exception';
+import { OperationOutcomeIssueException } from '../../../commons/exceptions/operation-outcome.exception';
 
 const administrativeGenderValues: readonly string[] = Object.values(AdministrativeGenderEnum);
 
@@ -162,30 +162,35 @@ const modelFields = createResourceDefinition<IPatient>([
   },
 ]);
 
-export function PatientValidator(dataToValidate: IPatient, path = 'Patient'): void {
+export function PatientValidator(
+  dataToValidate: IPatient,
+  path = 'Patient',
+  errors: IOperationOutcomeIssue[] = [],
+): void {
   ModelValidator<IPatient>({
     path,
     dataToValidate,
     modelDefinition: modelFields,
     additionalValidation: [ConstraintValidator],
+    errors,
   });
 }
 
-function ConstraintValidator(payload: IPatient, path: string) {
+function ConstraintValidator(payload: IPatient, path: string, errors: IOperationOutcomeIssue[]): void {
   if (payload.contact && payload.contact.length > 0) {
     payload.contact.forEach((contact, index) => {
       // SHALL at least contain a contact's details or a reference to an organization
       if (!contact.name && !contact.organization && !contact.telecom && !contact.address) {
-        throw new ResourceException('Patient', [
-          {
-            constraint: {
-              id: 'pat-1',
-              level: 'Rule',
-              description: "SHALL at least contain a contact's details or a reference to an organization",
-              location: `${path}.contact[${index}]`,
+        errors.push(
+          new OperationOutcomeIssueException({
+            severity: 'error',
+            code: 'invariant',
+            diagnostics: `+ Rule (pat-1). SHALL at least contain a contact's details or a reference to an organization`,
+            details: {
+              text: `Path: ${path}.contact[${index}].`,
             },
-          },
-        ]);
+          }),
+        );
       }
     });
   }

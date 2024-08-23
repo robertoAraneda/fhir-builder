@@ -1,4 +1,4 @@
-import { IContactPoint } from 'fhirtypes/dist/r4';
+import { IContactPoint, IOperationOutcomeIssue } from 'fhirtypes/dist/r4';
 import { ContactPointSystemEnum, ContactPointUseEnum } from 'fhirtypes/dist/r4/enums';
 import { createDatatypeDefinition } from '../base/definitions';
 import { ConstraintException } from '../../../commons/exceptions/constraint.exception';
@@ -8,62 +8,15 @@ const contactPointSystemValues: readonly string[] = Object.values(ContactPointSy
 const contactPointUseValues: readonly string[] = Object.values(ContactPointUseEnum);
 
 const modelFields = createDatatypeDefinition<IContactPoint>([
-  {
-    name: 'system',
-    type: 'code',
-    isRequired: false,
-    isArray: false,
-    enumValues: contactPointSystemValues,
-  },
-  {
-    name: 'value',
-    type: 'string',
-    isRequired: false,
-    isArray: false,
-  },
-  {
-    name: 'use',
-    type: 'code',
-    isRequired: false,
-    isArray: false,
-    enumValues: contactPointUseValues,
-  },
-  {
-    name: 'rank',
-    type: 'positiveInt',
-    isRequired: false,
-    isArray: false,
-  },
-  {
-    name: 'period',
-    type: 'Period',
-    isRequired: false,
-    isArray: false,
-  },
-  {
-    name: '_system',
-    type: 'Element',
-    isArray: false,
-    isRequired: false,
-  },
-  {
-    name: '_value',
-    type: 'Element',
-    isArray: false,
-    isRequired: false,
-  },
-  {
-    name: '_use',
-    type: 'Element',
-    isArray: false,
-    isRequired: false,
-  },
-  {
-    name: '_rank',
-    type: 'Element',
-    isArray: false,
-    isRequired: false,
-  },
+  { name: 'system', type: 'code', isRequired: false, isArray: false, enumValues: contactPointSystemValues },
+  { name: 'value', type: 'string', isRequired: false, isArray: false },
+  { name: 'use', type: 'code', isRequired: false, isArray: false, enumValues: contactPointUseValues },
+  { name: 'rank', type: 'positiveInt', isRequired: false, isArray: false },
+  { name: 'period', type: 'Period', isRequired: false, isArray: false },
+  { name: '_system', type: 'Element', isArray: false, isRequired: false },
+  { name: '_value', type: 'Element', isArray: false, isRequired: false },
+  { name: '_use', type: 'Element', isArray: false, isRequired: false },
+  { name: '_rank', type: 'Element', isArray: false, isRequired: false },
 ]);
 
 const validateConstraint = (payload: IContactPoint, path: string): void => {
@@ -73,11 +26,16 @@ const validateConstraint = (payload: IContactPoint, path: string): void => {
   }
 };
 
-export const ContactPointValidator = (dataToValidate: IContactPoint, path = 'ContactPoint'): void => {
+export const ContactPointValidator = (
+  dataToValidate: IContactPoint,
+  path = 'ContactPoint',
+  errors: IOperationOutcomeIssue[],
+): void => {
   ModelValidator<IContactPoint>({
     path,
     dataToValidate,
     modelDefinition: modelFields,
+    errors,
     additionalValidation: [validateConstraint],
   });
 };

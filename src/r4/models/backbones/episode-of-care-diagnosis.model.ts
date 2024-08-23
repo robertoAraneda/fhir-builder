@@ -1,15 +1,26 @@
-import { Element } from '../datatypes/element.model';
-import { ICodeableConcept, IEpisodeOfCareDiagnosis, IReference } from 'fhirtypes/dist/r4';
+import { ICodeableConcept, IElement, IEpisodeOfCareDiagnosis, IReference } from 'fhirtypes/dist/r4';
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { PatientBuilder } from '../../builders';
+import { BackboneElement } from '../base/backbone-element.model';
+import { IValidatable } from '../base/validatable.interface';
+import { ISerializable } from '../base/serializable.interface';
 
-export class EpisodeOfCareDiagnosis extends Element implements IEpisodeOfCareDiagnosis {
+export class EpisodeOfCareDiagnosis
+  extends BackboneElement
+  implements IEpisodeOfCareDiagnosis, IValidatable, ISerializable
+{
   condition: IReference;
   role?: ICodeableConcept;
   rank?: number;
 
-  toJson(): unknown {
+  // TODO: review this with Interface IEpisodeOfCareDiagnosis
+  _rank?: IElement;
+
+  toJson() {
     return JSON.parse(JSON.stringify(this));
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 
   toPrettyString(): string {
@@ -20,17 +31,16 @@ export class EpisodeOfCareDiagnosis extends Element implements IEpisodeOfCareDia
     return `EpisodeOfCareDiagnosis${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): { error: string | null } {
-    const { error } = ConformanceValidator(this, 'EpisodeOfCareDiagnosis');
-    return { error };
-  }
-
-  static builder(): PatientBuilder {
-    return new PatientBuilder();
+  validate() {
+    return ConformanceValidator(this, 'EpisodeOfCareDiagnosis');
   }
 
   constructor(args?: IEpisodeOfCareDiagnosis) {
     super();
     if (args) Object.assign(this, args);
+  }
+
+  protected builderInstance(): any {
+    throw new Error('Method not implemented.');
   }
 }

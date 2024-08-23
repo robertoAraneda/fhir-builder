@@ -1,10 +1,9 @@
 import { contextR4 } from '../../../src';
 import { IExtension } from 'fhirtypes/dist/r4';
-
-import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../src/core/r4/validators/base';
 
 describe('Extension FHIR R4', () => {
-  const { Validator, Extension } = contextR4();
+  const { Extension, ExtensionBuilder } = contextR4();
 
   it('should be able to create a new extension and validate with correct data [new Extension()]', async () => {
     const item = new Extension({
@@ -14,6 +13,9 @@ describe('Extension FHIR R4', () => {
     });
 
     expect(item).toBeDefined();
+
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
   });
 
   it('should be able to create a new extension and validate with correct data [IExtension]', async () => {
@@ -24,8 +26,8 @@ describe('Extension FHIR R4', () => {
     };
 
     expect(item).toBeDefined();
-    const { error } = ConformanceValidator(item, 'Extension');
-    expect(error).toBeNull();
+    const { isValid } = ConformanceValidator(item, 'Extension');
+    expect(isValid).toBeTruthy();
   });
 
   it('should be validate: Must have either extensions or value[x], not both', async () => {
@@ -36,8 +38,20 @@ describe('Extension FHIR R4', () => {
       extension: [], // extra property
     };
 
-    const { error } = ConformanceValidator(item, 'Extension');
-    expect(error).toBe('ConstraintException. Must have either extensions or value[x], not both.. Path: Extension');
+    const { operationOutcome, isValid } = ConformanceValidator(item, 'Extension');
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invariant',
+          details: {
+            text: 'Path: Extension',
+          },
+          diagnostics: 'Must have either extensions or value[x], not both.',
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should be able to validate a new extension and validate with wrong data', async () => {
@@ -47,50 +61,44 @@ describe('Extension FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { error } = ConformanceValidator(item, 'Extension');
-    expect(error).toBe("InvalidFieldException. Field(s): 'test'. Path: Extension.");
+    const { operationOutcome, isValid } = ConformanceValidator(item, 'Extension');
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Extension. Additional fields: test',
+          },
+          diagnostics: 'Invalid fields have been found.',
+          severity: 'error',
+        },
+        {
+          code: 'required',
+          details: {
+            text: 'Path: Extension.url. Value: undefined',
+          },
+          diagnostics: 'Field url is required',
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should be able to create a new extension using builder methods', async () => {
     // build() is a method that returns the object that was built
-    const item = Extension.builder()
-      .setId('123')
-      .setUrl('url')
-      .addParamExtension('url', {
-        extension: [
-          {
-            url: 'url',
-            valueDate: '2022-06-12',
-          },
-          {
-            url: 'url',
-            valueDate: '2022-06',
-          },
-        ],
-      })
-      .build();
+    const item = new ExtensionBuilder().setId('123').setUrl('url').setValue('valueBoolean', true).build();
 
     expect(item).toBeDefined();
 
-    const { error } = ConformanceValidator(item, 'Extension');
-    expect(error).toBeNull();
+    const { operationOutcome, isValid } = ConformanceValidator(item, 'Extension');
+    expect(isValid).toBeTruthy();
     expect(item).toBeInstanceOf(Extension);
 
-    expect(item).toEqual({
-      _url: {
-        extension: [
-          {
-            url: 'url',
-            valueDate: '2022-06-12',
-          },
-          {
-            url: 'url',
-            valueDate: '2022-06',
-          },
-        ],
-      },
+    expect(item.toJson()).toEqual({
       id: '123',
       url: 'url',
+      valueBoolean: true,
     });
   });
 });

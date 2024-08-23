@@ -22,10 +22,8 @@ for (const folder of validatorFolders) {
   writeFileSync(indexPath, exports);
 }
 
-/*
-
 // builders
-const builderFolders = ['backbones', 'base', 'resources', 'datatypes'];
+const builderFolders = ['backbones', 'resources', 'datatypes'];
 
 for (const folder of builderFolders) {
   const files = readdirSync(join(__dirname, `../src/r4/builders/${folder}`));
@@ -44,6 +42,7 @@ for (const folder of builderFolders) {
   writeFileSync(indexPath, exports);
 }
 
+/*
 // interfaces
 const interfaceBuilderFolders = ['backbones', 'base', 'resources', 'datatypes', 'utils'];
 
@@ -66,6 +65,8 @@ for (const folder of interfaceBuilderFolders) {
   const indexPath = join(__dirname, `../src/r4/interfaces/builders/${folder}/index.ts`);
   writeFileSync(indexPath, exports);
 }
+
+ */
 
 // models
 const modelFolders = ['backbones', 'resources', 'datatypes'];
@@ -90,6 +91,7 @@ for (const folder of modelFolders) {
   writeFileSync(indexPath, exports);
 }
 
+/*
 // params-types
 const files = readdirSync(join(__dirname, `../src/r4/params-types`));
 const _exports = files

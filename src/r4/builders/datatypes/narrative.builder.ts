@@ -1,16 +1,12 @@
 import { IExtension, NarrativeStatusType } from 'fhirtypes/dist/r4';
 import { Narrative } from '../../models';
+import { IBuildable } from '../base/buildable.interface';
+import { IElementBuilder } from '../base/element-builder.interface';
 
-interface INarrativeBuilder {
-  // Element properties
-  setId(id: string): this;
-  addExtension(extension: IExtension): this;
-  setMultipleExtension(extension: IExtension[]): this;
-
+interface INarrativeBuilder extends IElementBuilder, IBuildable<Narrative> {
   // Narrative properties
   setDiv(div: string): this;
   setStatus(status: NarrativeStatusType): this;
-  build(): Narrative;
 }
 
 export class NarrativeBuilder implements INarrativeBuilder {
@@ -22,11 +18,6 @@ export class NarrativeBuilder implements INarrativeBuilder {
 
   setId(id: string): this {
     this.narrative.id = id;
-    return this;
-  }
-
-  setMultipleExtension(extension: IExtension[]): this {
-    this.narrative.extension = extension;
     return this;
   }
 

@@ -13,18 +13,15 @@ import {
   RequestPriorityType,
   RequestStatusType,
 } from 'fhirtypes/dist/r4';
-import { IDomainResourceBuilder } from '../base/IDomainResourceBuilder';
-import { DomainResourceBuilder } from '../base/DomainResourceBuilder';
-import { ServiceRequest } from '../../models/resources/service-request.model';
-import { IBuildable } from '../base/IBuildable';
+import { IDomainResourceBuilder } from '../base/domain-resource-builder.interface';
+import { DomainResourceBuilder } from '../base/domain-resource.builder';
+import { ServiceRequest } from '../../models';
+import { IBuildable } from '../base/buildable.interface';
+import { UnderscoreKeys } from '../base/resource-type-map.interface';
+
+type PrimitiveExtensionFields = keyof Pick<ServiceRequest, UnderscoreKeys<ServiceRequest>>;
 
 interface IServiceRequestBuilder extends IDomainResourceBuilder, IBuildable<ServiceRequest> {
-  addParamExtension<
-    T extends 'instantiatesCanonical' | 'instantiatesUri' | 'doNotPerform' | 'authoredOn' | 'patientInstruction',
-  >(
-    param: T,
-    extension: T extends 'instantiatesCanonical' | 'instantiatesUri' ? IElement[] : IElement,
-  ): this;
   addIdentifier(value: IIdentifier): this;
   addInstantiatesCanonical(value: string): this;
   addInstantiatesUri(value: string): this;
@@ -71,17 +68,20 @@ export class ServiceRequestBuilder extends DomainResourceBuilder implements ISer
     this.serviceRequest = new ServiceRequest();
   }
 
-  addParamExtension<
-    T extends 'instantiatesCanonical' | 'instantiatesUri' | 'doNotPerform' | 'authoredOn' | 'patientInstruction',
-  >(param: T, extension: T extends 'instantiatesCanonical' | 'instantiatesUri' ? IElement[] : IElement): this {
-    const arrayParam = ['instantiatesCanonical', 'instantiatesUri'];
+  addPrimitiveExtension<T extends PrimitiveExtensionFields>(
+    param: T,
+    extension: T extends Extract<PrimitiveExtensionFields, '_instantiatesCanonical' | '_instantiatesUri'>
+      ? IElement[]
+      : IElement,
+  ): this {
+    const arrayParam = ['_instantiatesCanonical', '_instantiatesUri'];
     if (arrayParam.includes(param)) {
-      this.serviceRequest[`_${param}`] = extension as IElement[];
+      this.serviceRequest[param] = extension as IElement[];
       return this;
     }
 
-    const localParam = param as 'doNotPerform' | 'authoredOn' | 'patientInstruction';
-    this.serviceRequest[`_${localParam}`] = extension as IElement;
+    const localParam = param as Exclude<PrimitiveExtensionFields, '_instantiatesCanonical' | '_instantiatesUri'>;
+    this.serviceRequest[localParam] = extension as IElement;
     return this;
   }
 
@@ -283,55 +283,12 @@ export class ServiceRequestBuilder extends DomainResourceBuilder implements ISer
   }
 
   build(): ServiceRequest {
-    return this.serviceRequest;
-  }
-
-  addContained(contained: any): this {
-    this.serviceRequest.contained = this.serviceRequest.contained || [];
-    this.serviceRequest.contained.push(contained);
-    return this;
-  }
-
-  addExtension(extension: any): this {
-    this.serviceRequest.extension = this.serviceRequest.extension || [];
-    this.serviceRequest.extension.push(extension);
-    return this;
-  }
-
-  addModifierExtension(modifierExtension: any): this {
-    this.serviceRequest.modifierExtension = this.serviceRequest.modifierExtension || [];
-    this.serviceRequest.modifierExtension.push(modifierExtension);
-    return this;
+    return Object.assign(this.serviceRequest, super.build());
   }
 
   fromJSON(json: unknown): this {
     const incomingData = typeof json === 'string' ? JSON.parse(json) : json;
     Object.assign(this.serviceRequest, incomingData);
-    return this;
-  }
-
-  setImplicitRules(implicitRules: string): this {
-    this.serviceRequest.implicitRules = implicitRules;
-    return this;
-  }
-
-  setLanguage(language: string): this {
-    this.serviceRequest.language = language;
-    return this;
-  }
-
-  setMeta(meta: any): this {
-    this.serviceRequest.meta = meta;
-    return this;
-  }
-
-  setText(text: any): this {
-    this.serviceRequest.text = text;
-    return this;
-  }
-
-  setId(id: string): this {
-    this.serviceRequest.id = id;
     return this;
   }
 }

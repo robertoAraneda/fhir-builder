@@ -1,4 +1,4 @@
-import { IPatientContact } from 'fhirtypes/dist/r4';
+import { IOperationOutcomeIssue, IPatientContact } from 'fhirtypes/dist/r4';
 import { AdministrativeGenderEnum } from 'fhirtypes/dist/r4/enums';
 import { createBackboneDefinition } from '../base/definitions';
 import { ModelValidator } from '../base';
@@ -6,63 +6,26 @@ import { ModelValidator } from '../base';
 const administrativeGendersValues = Object.values(AdministrativeGenderEnum);
 
 const modelFields = createBackboneDefinition<IPatientContact>([
-  {
-    name: 'relationship',
-    type: 'CodeableConcept',
-    isArray: true,
-    isRequired: false,
-  },
-  {
-    name: 'name',
-    type: 'HumanName',
-    isArray: false,
-    isRequired: false,
-  },
-  {
-    name: 'telecom',
-    type: 'ContactPoint',
-    isArray: true,
-    isRequired: false,
-  },
-  {
-    name: 'address',
-    type: 'Address',
-    isArray: false,
-    isRequired: false,
-  },
-  {
-    name: 'gender',
-    type: 'code',
-    isArray: false,
-    isRequired: false,
-    enumValues: administrativeGendersValues,
-  },
-  {
-    name: 'organization',
-    type: 'Reference',
-    isArray: false,
-    isRequired: false,
-    referenceTypes: ['Organization'],
-  },
-  {
-    name: 'period',
-    type: 'Period',
-    isArray: false,
-    isRequired: false,
-  },
-  {
-    name: '_gender',
-    type: 'Element',
-    isArray: false,
-    isRequired: false,
-  },
+  { name: 'relationship', type: 'CodeableConcept', isArray: true, isRequired: false },
+  { name: 'name', type: 'HumanName', isArray: false, isRequired: false },
+  { name: 'telecom', type: 'ContactPoint', isArray: true, isRequired: false },
+  { name: 'address', type: 'Address', isArray: false, isRequired: false },
+  { name: 'gender', type: 'code', isArray: false, isRequired: false, enumValues: administrativeGendersValues },
+  { name: 'organization', type: 'Reference', isArray: false, isRequired: false, referenceTypes: ['Organization'] },
+  { name: 'period', type: 'Period', isArray: false, isRequired: false },
+  { name: '_gender', type: 'Element', isArray: false, isRequired: false },
 ]);
 
-export function PatientContactValidator(dataToValidate: IPatientContact, path = 'PatientContact'): void {
+export function PatientContactValidator(
+  dataToValidate: IPatientContact,
+  path = 'PatientContact',
+  errors: IOperationOutcomeIssue[],
+): void {
   ModelValidator<IPatientContact>({
     path,
     dataToValidate,
     modelDefinition: modelFields,
+    errors,
   });
 }
 

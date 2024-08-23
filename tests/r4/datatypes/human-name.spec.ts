@@ -1,10 +1,9 @@
 import { contextR4 } from '../../../src';
 import { IHumanName } from 'fhirtypes/dist/r4';
-
-import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../src/core/r4/validators/base';
 
 describe('HumanName FHIR R4', () => {
-  const { HumanName, Validator } = contextR4();
+  const { HumanName, HumanNameBuilder } = contextR4();
 
   it('should be able to create a new humanname and validate with correct data [new HumanName()]', async () => {
     const item = new HumanName({
@@ -27,8 +26,8 @@ describe('HumanName FHIR R4', () => {
 
     expect(item).toBeDefined();
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
   });
 
   it('should be able to create a new humanname and validate with correct data [IHumanName]', async () => {
@@ -50,8 +49,8 @@ describe('HumanName FHIR R4', () => {
       },
     };
 
-    const { error } = ConformanceValidator(item, 'HumanName');
-    expect(error).toBeNull();
+    const { isValid } = ConformanceValidator(item, 'HumanName');
+    expect(isValid).toBeTruthy();
   });
 
   it('should be able to validate a new humanname and validate with wrong data', async () => {
@@ -73,21 +72,33 @@ describe('HumanName FHIR R4', () => {
       },
     };
 
-    const { error } = ConformanceValidator(item, 'HumanName');
-    expect(error).toBe(
-      'Field must be one of [usual, official, temp, nickname, anonymous, old, maiden] in HumanName.use',
-    );
+    const { operationOutcome, isValid } = ConformanceValidator(item, 'HumanName');
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'code-invalid',
+          details: {
+            text: 'Path: HumanName.use; Value: wrong use',
+          },
+          diagnostics: 'Code must be one of [usual, official, temp, nickname, anonymous, old, maiden]',
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should be able to create a new identifier using builder methods [new HumanNameBuilder()]', async () => {
     // build() is a method that returns the object that was built
-    const item = HumanName.builder()
+    const items2 = new HumanNameBuilder().setUse('temp').build();
+
+    const item = new HumanNameBuilder()
       .setUse('official')
       .addGiven('Peter')
       .addGiven('James')
       .setFamily('Windsor')
       .setPeriod({ end: '2002' })
-      .addParamExtension('given', [
+      .addPrimitiveExtension('_given', [
         {
           extension: [
             {
@@ -97,7 +108,7 @@ describe('HumanName FHIR R4', () => {
           ],
         },
       ])
-      .addParamExtension('family', {
+      .addPrimitiveExtension('_family', {
         extension: [
           {
             url: 'http://hl7.org/fhir/StructureDefinition/humanname-mothers-family',
@@ -110,8 +121,8 @@ describe('HumanName FHIR R4', () => {
     expect(item).toBeDefined();
     expect(item).toBeInstanceOf(HumanName);
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
 
     expect(item).toEqual({
       _family: {

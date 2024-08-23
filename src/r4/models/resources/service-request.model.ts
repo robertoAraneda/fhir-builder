@@ -14,11 +14,20 @@ import {
   RequestPriorityType,
   RequestStatusType,
 } from 'fhirtypes/dist/r4';
-import { DomainResource } from './domain-resource.model';
+import { DomainResource } from '../base/domain-resource.model';
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { ServiceRequestBuilder } from '../../builders/resources/service-request.builder';
+import { ServiceRequestBuilder } from '../../builders';
+import { IValidatable } from '../base/validatable.interface';
+import { ISerializable } from '../base/serializable.interface';
 
-export class ServiceRequest extends DomainResource implements IServiceRequest {
+export class ServiceRequest extends DomainResource implements IServiceRequest, IValidatable, ISerializable {
+  protected builderInstance(): ServiceRequestBuilder {
+    return new ServiceRequestBuilder();
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
+  }
   resourceType = 'ServiceRequest' as const;
   identifier?: IIdentifier[];
   instantiatesCanonical?: string[];
@@ -67,7 +76,7 @@ export class ServiceRequest extends DomainResource implements IServiceRequest {
   _authoredOn?: IElement;
   _doNotPerform?: IElement;
 
-  toJson(): Record<keyof IServiceRequest, any> {
+  toJson() {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -79,12 +88,8 @@ export class ServiceRequest extends DomainResource implements IServiceRequest {
     return `ServiceRequest${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): { error: string | null } {
+  validate() {
     return ConformanceValidator(this, 'ServiceRequest');
-  }
-
-  static builder(): ServiceRequestBuilder {
-    return new ServiceRequestBuilder();
   }
 
   static builderFromJson(data: unknown): ServiceRequestBuilder {
@@ -95,54 +100,6 @@ export class ServiceRequest extends DomainResource implements IServiceRequest {
 
   constructor(args?: IServiceRequest) {
     super();
-    if (args) {
-      this.id = args.id;
-      this.identifier = args.identifier;
-      this.instantiatesCanonical = args.instantiatesCanonical;
-      this.instantiatesUri = args.instantiatesUri;
-      this.basedOn = args.basedOn;
-      this.replaces = args.replaces;
-      this.requisition = args.requisition;
-      this.status = args.status;
-      this.intent = args.intent;
-      this.category = args.category;
-      this.priority = args.priority;
-      this.doNotPerform = args.doNotPerform;
-      this.code = args.code;
-      this.orderDetail = args.orderDetail;
-      this.quantityQuantity = args.quantityQuantity;
-      this.quantityRatio = args.quantityRatio;
-      this.quantityRange = args.quantityRange;
-      this.subject = args.subject;
-      this.encounter = args.encounter;
-      this.occurrenceDateTime = args.occurrenceDateTime;
-      this.occurrencePeriod = args.occurrencePeriod;
-      this.occurrenceTiming = args.occurrenceTiming;
-      this.asNeededBoolean = args.asNeededBoolean;
-      this.asNeededCodeableConcept = args.asNeededCodeableConcept;
-      this.authoredOn = args.authoredOn;
-      this.requester = args.requester;
-      this.performerType = args.performerType;
-      this.performer = args.performer;
-      this.locationCode = args.locationCode;
-      this.locationReference = args.locationReference;
-      this.reasonCode = args.reasonCode;
-      this.reasonReference = args.reasonReference;
-      this.insurance = args.insurance;
-      this.supportingInfo = args.supportingInfo;
-      this.specimen = args.specimen;
-      this.bodySite = args.bodySite;
-      this.note = args.note;
-      this.patientInstruction = args.patientInstruction;
-      this.relevantHistory = args.relevantHistory;
-      this._instantiatesCanonical = args._instantiatesCanonical;
-      this._instantiatesUri = args._instantiatesUri;
-      this._status = args._status;
-      this._intent = args._intent;
-      this._priority = args._priority;
-      this._patientInstruction = args._patientInstruction;
-      this._authoredOn = args._authoredOn;
-      this._doNotPerform = args._doNotPerform;
-    }
+    if (args) Object.assign(this, args);
   }
 }

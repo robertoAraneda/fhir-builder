@@ -1,7 +1,9 @@
 import { ICodeableConcept, ICoding, IElement } from 'fhirtypes/dist/r4';
 import { CodeableConceptBuilder } from '../../builders';
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
+import { IValidatable } from '../base/validatable.interface';
+import { ISerializable } from '../base/serializable.interface';
 
 /**
  * @description Concept - reference to a terminology or just text.
@@ -12,7 +14,7 @@ import { Element } from './element.model';
  * @see https://www.hl7.org/fhir/datatypes.html#CodeableConcept CodeableConcept
  * @author Roberto Araneda
  */
-export class CodeableConcept extends Element implements ICodeableConcept {
+export class CodeableConcept extends Element implements ICodeableConcept, IValidatable, ISerializable {
   /**
    * @description Code defined by a terminology system
    */
@@ -28,7 +30,7 @@ export class CodeableConcept extends Element implements ICodeableConcept {
    */
   _text?: IElement;
 
-  toJson(): CodeableConcept {
+  toJson() {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -40,17 +42,20 @@ export class CodeableConcept extends Element implements ICodeableConcept {
     return `CodeableConcept${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): { error: string | null } {
-    const { error } = ConformanceValidator(this, 'CodeableConcept');
-    return { error };
-  }
-
-  static builder(): CodeableConceptBuilder {
-    return new CodeableConceptBuilder();
+  validate() {
+    return ConformanceValidator(this, 'CodeableConcept');
   }
 
   constructor(args?: ICodeableConcept) {
     super();
     Object.assign(this, args);
+  }
+
+  protected builderInstance(): CodeableConceptBuilder {
+    return new CodeableConceptBuilder();
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 }

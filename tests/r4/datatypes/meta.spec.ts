@@ -1,10 +1,9 @@
 import { contextR4 } from '../../../src';
 import { IMeta } from 'fhirtypes/dist/r4';
-
-import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../src/core/r4/validators/base';
 
 describe('Meta FHIR R4', () => {
-  const { Meta, Validator } = contextR4();
+  const { Meta, MetaBuilder } = contextR4();
 
   it('should be able to create a new meta and validate with correct data [new Meta()]', async () => {
     const item = new Meta({
@@ -23,8 +22,8 @@ describe('Meta FHIR R4', () => {
     });
 
     expect(item).toBeDefined();
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
   });
 
   it('should be able to create a new meta and validate with correct data [IMeta]', async () => {
@@ -42,8 +41,8 @@ describe('Meta FHIR R4', () => {
       versionId: 'test',
     };
 
-    const { error } = ConformanceValidator(item, 'Meta');
-    expect(error).toBeNull();
+    const { isValid } = ConformanceValidator(item, 'Meta');
+    expect(isValid).toBeTruthy();
   });
 
   it('should be able to validate a new meta and validate with wrong data', async () => {
@@ -62,13 +61,33 @@ describe('Meta FHIR R4', () => {
       wrongProperty: 'test', // wrong property
     };
 
-    const { error } = ConformanceValidator(item, 'Meta');
-    expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: Meta.");
+    const { isValid, operationOutcome } = ConformanceValidator(item, 'Meta');
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Meta. Additional fields: wrongProperty',
+          },
+          diagnostics: 'Invalid fields have been found.',
+          severity: 'error',
+        },
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Meta.lastUpdated. Value: 2030',
+          },
+          diagnostics: 'Invalid instant.',
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should be able to create a new meta using builder methods [new MetaBuilder()]', async () => {
     // build() is a method that returns the object that was built
-    const item = Meta.builder()
+    const item = new MetaBuilder()
       .addProfile('http://hl7.org/fhir/us/core/StructureDefinition/patient')
       .addSecurity({ system: 'test', code: 'test' })
       .addTag({ code: '123', system: 'http://hl7.org/fhir/sid/us-npi' })
@@ -80,8 +99,8 @@ describe('Meta FHIR R4', () => {
     expect(item).toBeDefined();
     expect(item).toBeInstanceOf(Meta);
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
 
     expect(item).toEqual({
       source: 'test',

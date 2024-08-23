@@ -1,27 +1,18 @@
 import { ICoding, IElement, IExtension } from 'fhirtypes/dist/r4';
-import { MetaParamsExtensionType } from '../../params-types';
 import { Meta } from '../../models';
+import { IElementBuilder } from '../base/element-builder.interface';
+import { IBuildable } from '../base/buildable.interface';
+import { UnderscoreKeys } from '../base/resource-type-map.interface';
 
-interface IMetaBuilder {
-  // Element properties
-  setId(id: string): this;
-  addExtension(extension: IExtension): this;
-  setMultipleExtension(extension: IExtension[]): this;
+type PrimitiveExtensionFields = keyof Pick<Meta, UnderscoreKeys<Meta>>;
 
-  // Meta properties
-  addParamExtension(param: MetaParamsExtensionType, extension: IElement): this;
+interface IMetaBuilder extends IElementBuilder, IBuildable<Meta> {
   setSource(source: string): this;
   setVersionId(versionId: string | number): this;
   setLastUpdated(lastUpdated: string): this;
   addTag(tag: ICoding): this;
   addProfile(profile: string): this;
   addSecurity(security: ICoding): this;
-  setMultipleTag(tag: ICoding[]): this;
-  setMultipleProfile(profile: string[]): this;
-  setMultipleSecurity(security: ICoding[]): this;
-
-  // Build
-  build(): Meta;
 }
 
 export class MetaBuilder implements IMetaBuilder {
@@ -36,30 +27,28 @@ export class MetaBuilder implements IMetaBuilder {
     return this;
   }
 
-  setMultipleExtension(extension: IExtension[]): this {
-    this.meta.extension = extension;
-    return this;
-  }
-
   addExtension(extension: IExtension): this {
     this.meta.extension = this.meta.extension || [];
     this.meta.extension.push(extension);
     return this;
   }
 
-  addParamExtension<T extends MetaParamsExtensionType>(param: T, extension: IElement): this {
-    this.meta[`_${param}`] = extension as IElement;
+  addPrimitiveExtension<T extends PrimitiveExtensionFields>(
+    param: T,
+    extension: T extends '_profile' ? IElement[] : IElement,
+  ): this {
+    if (param === '_profile') {
+      this.meta[param] = extension as IElement[];
+    } else {
+      const internalParam = param as Exclude<PrimitiveExtensionFields, '_profile'>;
+      this.meta[internalParam] = extension as IElement;
+    }
 
     return this;
   }
 
   setSource(source: string): this {
     this.meta.source = source;
-    return this;
-  }
-
-  setMultipleTag(tag: ICoding[]): this {
-    this.meta.tag = tag;
     return this;
   }
 
@@ -70,16 +59,6 @@ export class MetaBuilder implements IMetaBuilder {
 
   setLastUpdated(lastUpdated: string): this {
     this.meta.lastUpdated = lastUpdated;
-    return this;
-  }
-
-  setMultipleProfile(profile: string[]): this {
-    this.meta.profile = profile;
-    return this;
-  }
-
-  setMultipleSecurity(security: ICoding[]): this {
-    this.meta.security = security;
     return this;
   }
 

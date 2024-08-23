@@ -1,11 +1,7 @@
-import { contextR4 } from '../../../src';
 import { IElement } from 'fhirtypes/dist/r4';
+import { ConformanceValidator } from '../../../src/core/r4/validators/base';
 
-import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
-
-describe('Attachment FHIR R4', () => {
-  const { Validator } = contextR4();
-
+describe('Element FHIR R4', () => {
   it('should be able to validate a new attachment [IAttachment]', async () => {
     const item: IElement = {
       id: '123',
@@ -17,8 +13,8 @@ describe('Attachment FHIR R4', () => {
       ],
     };
 
-    const { error } = ConformanceValidator(item, 'Element');
-    expect(error).toBeNull();
+    const { isValid } = ConformanceValidator(item, 'Element');
+    expect(isValid).toBeTruthy();
   });
 
   it('should be get errors validators if new attachment has wrong data', async () => {
@@ -27,8 +23,19 @@ describe('Attachment FHIR R4', () => {
       wrongProperty: 'wrong',
     };
 
-    const { error } = ConformanceValidator(item, 'Element');
-    expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: Element.");
+    const { operationOutcome } = ConformanceValidator(item, 'Element');
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Element. Additional fields: wrongProperty',
+          },
+          diagnostics: 'Invalid fields have been found.',
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should get validation error if element has wrong data in extension', async () => {
@@ -42,7 +49,18 @@ describe('Attachment FHIR R4', () => {
       ],
     };
 
-    const { error } = ConformanceValidator(item, 'Element');
-    expect(error).toBe("RequiredFieldException. Field: 'url'. Path: Element.extension[0].url");
+    const { operationOutcome } = ConformanceValidator(item, 'Element');
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'required',
+          details: {
+            text: 'Path: Element.extension[0].url. Value: undefined',
+          },
+          diagnostics: 'Field url is required',
+          severity: 'error',
+        },
+      ],
+    });
   });
 });

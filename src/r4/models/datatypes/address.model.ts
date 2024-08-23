@@ -1,10 +1,11 @@
 import { AddressTypeType, AddressUseType, IAddress, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { ValReturnType } from '../../../core/r4/validators/base/datatype.validator';
 import { AddressBuilder } from '../../builders';
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
+import { ISerializable } from '../base/serializable.interface';
+import { IValidatable } from '../base/validatable.interface';
 
-export class Address extends Element implements IAddress {
+export class Address extends Element implements IAddress, ISerializable, IValidatable {
   constructor(args?: IAddress) {
     super();
     Object.assign(this, args);
@@ -22,13 +23,12 @@ export class Address extends Element implements IAddress {
     return `Address${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): ValReturnType {
-    const { error } = ConformanceValidator(this, 'Address');
-    return { error };
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 
-  static builder(): AddressBuilder {
-    return new AddressBuilder();
+  validate() {
+    return ConformanceValidator(this, 'Address');
   }
 
   /**
@@ -125,4 +125,8 @@ export class Address extends Element implements IAddress {
    * Extensions for country
    */
   _country?: IElement;
+
+  protected builderInstance(): AddressBuilder {
+    return new AddressBuilder();
+  }
 }

@@ -4,19 +4,18 @@ import {
   IElement,
   IEpisodeOfCareDiagnosis,
   IEpisodeOfCareStatusHistory,
-  IExtension,
   IIdentifier,
-  INarrative,
   IPeriod,
   IReference,
 } from 'fhirtypes/dist/r4';
 import { EpisodeOfCare } from '../../models';
-import { IBuildable } from '../base/IBuildable';
-import { DomainResourceBuilder } from '../base/DomainResourceBuilder';
+import { IBuildable } from '../base/buildable.interface';
+import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { DomainResourceBuilder } from '../base/domain-resource.builder';
+
+type PrimitiveExtensionFields = keyof Pick<EpisodeOfCare, UnderscoreKeys<EpisodeOfCare>>;
 
 interface IEpisodeOfCareBuilder extends IBuildable<EpisodeOfCare> {
-  // EpisodeOfCare properties
-  addParamExtension(param: 'status', extension: IElement): this;
   addIdentifier(identifier: IIdentifier): this;
   setStatus(status: EpisodeOfCareStatusType): this;
   addStatusHistory(statusHistory: IEpisodeOfCareStatusHistory): this;
@@ -39,49 +38,6 @@ export class EpisodeOfCareBuilder extends DomainResourceBuilder implements IEpis
     this.episodeOfCare = new EpisodeOfCare();
   }
 
-  setId(id: string): this {
-    this.episodeOfCare.id = id;
-    return this;
-  }
-
-  setMeta(meta: any): this {
-    this.episodeOfCare.meta = meta;
-    return this;
-  }
-
-  setImplicitRules(implicitRules: string): this {
-    this.episodeOfCare.implicitRules = implicitRules;
-    return this;
-  }
-
-  setLanguage(language: string): this {
-    this.episodeOfCare.language = language;
-    return this;
-  }
-
-  setText(text: INarrative): this {
-    this.episodeOfCare.text = text;
-    return this;
-  }
-
-  addContained(contained: any): this {
-    this.episodeOfCare.contained = this.episodeOfCare.contained || [];
-    this.episodeOfCare.contained.push(contained);
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.episodeOfCare.extension = this.episodeOfCare.extension || [];
-    this.episodeOfCare.extension.push(extension);
-    return this;
-  }
-
-  addModifierExtension(modifierExtension: IExtension): this {
-    this.episodeOfCare.modifierExtension = this.episodeOfCare.modifierExtension || [];
-    this.episodeOfCare.modifierExtension.push(modifierExtension);
-    return this;
-  }
-
   fromJSON(json: unknown): this {
     const incomingJson = typeof json === 'string' ? JSON.parse(json) : json;
 
@@ -89,8 +45,8 @@ export class EpisodeOfCareBuilder extends DomainResourceBuilder implements IEpis
     return this;
   }
 
-  addParamExtension(param: 'status', extension: IElement): this {
-    this.episodeOfCare[`_${param}`] = extension;
+  addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
+    this.episodeOfCare[param] = extension;
     return this;
   }
 
@@ -162,6 +118,6 @@ export class EpisodeOfCareBuilder extends DomainResourceBuilder implements IEpis
   }
 
   build(): EpisodeOfCare {
-    return this.episodeOfCare;
+    return Object.assign(this.episodeOfCare, super.build());
   }
 }

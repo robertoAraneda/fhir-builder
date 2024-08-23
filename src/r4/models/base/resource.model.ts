@@ -1,7 +1,8 @@
 import { IElement, IMeta, IResource } from 'fhirtypes/dist/r4';
+import { Buildable } from './buildable.model';
 
-export abstract class Resource implements IResource {
-  id?: number | string;
+export abstract class Resource extends Buildable<any> implements IResource {
+  id?: string;
 
   language?: string;
   implicitRules?: string;
@@ -10,8 +11,4 @@ export abstract class Resource implements IResource {
 
   _implicitRules?: IElement;
   _language?: IElement;
-
-  abstract toJson(): any;
-  abstract toString(): string;
-  abstract toPrettyString(): string;
 }
