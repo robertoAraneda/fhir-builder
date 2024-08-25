@@ -2,9 +2,11 @@ import { IElement, IIdentifier, IReference } from 'fhirtypes/dist/r4';
 import { ReferenceBuilder } from '../../builders';
 
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
+import { IValidatable } from '../base/validatable.interface';
+import { ISerializable } from '../base/serializable.interface';
 
-export class Reference extends Element implements IReference {
+export class Reference extends Element implements IReference, IValidatable, ISerializable {
   // Reference attributes
   reference: string;
   type: string;
@@ -16,7 +18,7 @@ export class Reference extends Element implements IReference {
   _reference: IElement;
   _type: IElement;
 
-  toJson(): Reference {
+  toJson() {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -28,17 +30,20 @@ export class Reference extends Element implements IReference {
     return `Reference${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): { error: string | null } {
-    const { error } = ConformanceValidator(this, 'Reference');
-    return { error };
-  }
-
-  static builder(): ReferenceBuilder {
-    return new ReferenceBuilder();
+  validate() {
+    return ConformanceValidator(this, 'Reference');
   }
 
   constructor(args?: IReference) {
     super();
     Object.assign(this, args);
+  }
+
+  protected builderInstance(): ReferenceBuilder {
+    return new ReferenceBuilder();
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 }

@@ -1,10 +1,8 @@
-import { IAddress } from 'fhirtypes/dist/r4';
 import { contextR4 } from '../../../src';
-
-import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../src/core/r4/validators/base';
 
 describe('Address FHIR R4', () => {
-  const { Address, Validator } = contextR4();
+  const { Address, AddressBuilder } = contextR4();
 
   it('should be able create a new address [new Address()]', async () => {
     const item = new Address({
@@ -31,8 +29,8 @@ describe('Address FHIR R4', () => {
 
     expect(item).toBeDefined();
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const result = item.validate();
+    expect(result.isValid).toBeTruthy();
   });
 
   it('should be able to validate a new address and validate with wrong data', async () => {
@@ -41,8 +39,8 @@ describe('Address FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { error } = ConformanceValidator(item, 'Address');
-    expect(error).toBe("InvalidFieldException. Field(s): 'test'. Path: Address.");
+    const results = ConformanceValidator(item, 'Address');
+    expect(results.isValid).toBeFalsy();
   });
 
   it('should throw an error if line is not an array', async () => {
@@ -51,8 +49,8 @@ describe('Address FHIR R4', () => {
       line: 'not an array', // wrong property
     };
 
-    const { error } = ConformanceValidator(item, 'Address');
-    expect(error).toBe('Field line must be an array in Address');
+    const results = ConformanceValidator(item, 'Address');
+    expect(results.isValid).toBeFalsy();
   });
 
   it('should throw an error if use has invalid code', async () => {
@@ -61,8 +59,8 @@ describe('Address FHIR R4', () => {
       use: 'invalid code',
     };
 
-    const { error } = ConformanceValidator(item, 'Address');
-    expect(error).toBe('Field must be one of [home, work, temp, old, billing] in Address.use');
+    const results = ConformanceValidator(item, 'Address');
+    expect(results.isValid).toBeFalsy();
   });
 
   it('should throw an error if type has invalid code', async () => {
@@ -71,18 +69,18 @@ describe('Address FHIR R4', () => {
       type: 'invalid code',
     };
 
-    const { error } = ConformanceValidator(item, 'Address');
-    expect(error).toBe('Field must be one of [postal, physical, both] in Address.type');
+    const results = ConformanceValidator(item, 'Address');
+    expect(results.isValid).toBeFalsy();
   });
 
   it('should be able to create a new address using builder methods [new Address()]', async () => {
-    const item = Address.builder()
+    const item = new AddressBuilder()
       .setId('123')
       .addLine('123 Main St')
       .setType('both')
       .setUse('old')
       .setCity('Anytown')
-      .addParamExtension('district', {
+      .addPrimitiveExtension('_district', {
         extension: [
           {
             url: 'district',
@@ -92,10 +90,11 @@ describe('Address FHIR R4', () => {
       })
       .build();
 
+    const result = item.validate();
+    expect(result.isValid).toBeTruthy();
+
     expect(item).toBeDefined();
     expect(item).toBeInstanceOf(Address);
-    const { error } = item.validate();
-    expect(error).toBeNull();
     expect(item).toEqual({
       _district: {
         extension: [
@@ -117,7 +116,7 @@ describe('Address FHIR R4', () => {
     const item = {
       id: '123',
       period: {
-        start: '2021-01-01',
+        start: '2021',
       },
       _use: {
         extension: [
@@ -137,7 +136,19 @@ describe('Address FHIR R4', () => {
       },
     };
 
-    const { error } = ConformanceValidator(item, 'Address');
-    expect(error).toBe('Invalid dateTime: wrong date at path: Address._use.extension[2].valueDateTime');
+    const result = ConformanceValidator(item, 'Address');
+    expect(result.isValid).toBeFalsy();
+    expect(result.operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Address._use.extension[2].valueDateTime. Value: wrong date',
+          },
+          diagnostics: 'Invalid dateTime.',
+          severity: 'error',
+        },
+      ],
+    });
   });
 });

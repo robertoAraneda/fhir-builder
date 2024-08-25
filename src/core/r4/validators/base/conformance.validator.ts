@@ -1,14 +1,20 @@
 import { fhirR4Types } from './internal.validator';
-import { ValReturnType } from './datatype.validator';
 import { parseValidator } from './base.validator';
+import { IOperationOutcome } from 'fhirtypes/dist/r4';
 
-export const ConformanceValidator = <T>(args: T, validatorName: fhirR4Types): ValReturnType => {
-  try {
-    const validator = parseValidator(validatorName);
+export const ConformanceValidator = <T>(
+  args: T,
+  validatorName: fhirR4Types,
+): { isValid: boolean; operationOutcome: IOperationOutcome } => {
+  const errors: any[] = [];
+  const validator = parseValidator(validatorName);
 
-    validator(args, `${validatorName}`);
-    return { error: null };
-  } catch (e: any) {
-    return { error: e.message };
-  }
+  validator(args, `${validatorName}`, errors);
+
+  return {
+    isValid: errors.length < 1,
+    operationOutcome: {
+      issue: errors,
+    },
+  };
 };

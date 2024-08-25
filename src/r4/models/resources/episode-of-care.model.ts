@@ -9,11 +9,12 @@ import {
   IPeriod,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { DomainResource } from './domain-resource.model';
+import { DomainResource } from '../base/domain-resource.model';
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { EpisodeOfCareBuilder } from '../../builders';
+import { IValidatable } from '../base/validatable.interface';
+import { ISerializable } from '../base/serializable.interface';
 
-export class EpisodeOfCare extends DomainResource implements IEpisodeOfCare {
+export class EpisodeOfCare extends DomainResource implements IEpisodeOfCare, IValidatable, ISerializable {
   resourceType? = 'EpisodeOfCare' as const;
   identifier?: IIdentifier[];
   status: EpisodeOfCareStatusType;
@@ -31,7 +32,7 @@ export class EpisodeOfCare extends DomainResource implements IEpisodeOfCare {
   // extensions
   _status: IElement;
 
-  toJson(): EpisodeOfCare {
+  toJson() {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -43,23 +44,16 @@ export class EpisodeOfCare extends DomainResource implements IEpisodeOfCare {
     return `EpisodeOfCare${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): { error: string | null } {
-    const { error } = ConformanceValidator(this, 'EpisodeOfCare');
-    return { error };
-  }
-
-  static builder(): EpisodeOfCareBuilder {
-    return new EpisodeOfCareBuilder();
-  }
-
-  static builderFromJson(json: unknown | string): EpisodeOfCareBuilder {
-    const episodeOfCare = json as EpisodeOfCare;
-    const episodeOfCareBuilder = new EpisodeOfCareBuilder();
-    return episodeOfCareBuilder.fromJSON(episodeOfCare);
+  validate() {
+    return ConformanceValidator(this, 'EpisodeOfCare');
   }
 
   constructor(args?: IEpisodeOfCare) {
     super();
     if (args) Object.assign(this, args);
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 }

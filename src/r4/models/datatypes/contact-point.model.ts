@@ -2,7 +2,9 @@ import { ContactPointSystemType, ContactPointUseType, IContactPoint, IElement, I
 import { ContactPointBuilder } from '../../builders';
 
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
+import { IValidatable } from '../base/validatable.interface';
+import { ISerializable } from '../base/serializable.interface';
 
 /**
  * @description Details for all kinds of technology-mediated contact points for a person or organization, including telephone, email, etc.
@@ -20,7 +22,7 @@ import { Element } from './element.model';
  * @see https://www.hl7.org/fhir/datatypes.html#ContactPoint ContactPoint
  * @author Roberto Araneda
  */
-export class ContactPoint extends Element implements IContactPoint {
+export class ContactPoint extends Element implements IContactPoint, IValidatable, ISerializable {
   /**
    * @description phone | fax | email | pager | url | sms | other
    */
@@ -68,7 +70,7 @@ export class ContactPoint extends Element implements IContactPoint {
    */
   _rank?: IElement;
 
-  toJson(): ContactPoint {
+  toJson() {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -80,17 +82,20 @@ export class ContactPoint extends Element implements IContactPoint {
     return `ContactPoint${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): { error: string | null } {
-    const { error } = ConformanceValidator(this, 'ContactPoint');
-    return { error };
-  }
-
-  static builder(): ContactPointBuilder {
-    return new ContactPointBuilder();
+  validate() {
+    return ConformanceValidator(this, 'ContactPoint');
   }
 
   constructor(args?: IContactPoint) {
     super();
     Object.assign(this, args);
+  }
+
+  protected builderInstance(): ContactPointBuilder {
+    return new ContactPointBuilder();
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 }

@@ -8,6 +8,7 @@ export default {
   collectCoverage: true,
   collectCoverageFrom: ['./src/**'],
   coverageDirectory: 'coverage',
+  coverageReporters: ['lcov', 'text', 'json', 'text-summary'],
   coveragePathIgnorePatterns: ['<rootDir>/src/tests', '<rootDir>/src/library'],
   coverageThreshold: {
     global: {
@@ -22,4 +23,14 @@ export default {
   testEnvironment: 'node',
   testRegex: '.*\\.spec\\.ts$',
   verbose: false,
+  reporters: [
+    'default',
+    [
+      'jest-junit',
+      {
+        outputDirectory: 'coverage',
+        outputName: 'junit.xml',
+      },
+    ],
+  ],
 };

@@ -1,11 +1,10 @@
 import { contextR4 } from '../../../src';
 import { IPatientLink } from 'fhirtypes/dist/r4';
 import { LinkTypeEnum } from 'fhirtypes/dist/r4/enums';
-
-import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../src/core/r4/validators/base';
 
 describe('PatientLink FHIR R4', () => {
-  const { PatientLink, Validator } = contextR4();
+  const { PatientLink, PatientLinkBuilder } = contextR4();
 
   it('should be able to validate a new patient_link [new PatientLink()]', async () => {
     const item = new PatientLink({
@@ -19,8 +18,8 @@ describe('PatientLink FHIR R4', () => {
 
     expect(item).toBeDefined();
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
   });
 
   it('should be able to validate a new patient_link [IPatientLink]', async () => {
@@ -33,18 +32,18 @@ describe('PatientLink FHIR R4', () => {
       type: 'replaced-by',
     };
 
-    const { error } = ConformanceValidator(item, 'PatientLink');
-    expect(error).toBeNull();
+    const { isValid } = ConformanceValidator(item, 'PatientLink');
+    expect(isValid).toBeTruthy();
   });
 
   it('should be able to create a new patient_link using builder methods [new PatientLink()]', async () => {
-    const item = PatientLink.builder()
+    const item = new PatientLinkBuilder()
       .setId('123')
       .setType('replaces')
       .setOther({
         reference: 'Patient/123',
       })
-      .addParamExtension('type', {
+      .addPrimitiveExtension('_type', {
         extension: [
           {
             url: 'preferred',
@@ -57,8 +56,8 @@ describe('PatientLink FHIR R4', () => {
     expect(item).toBeDefined();
     expect(item).toBeInstanceOf(PatientLink);
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
 
     expect(item).toEqual({
       _type: {
@@ -87,7 +86,19 @@ describe('PatientLink FHIR R4', () => {
       wrongProperty: 'wrongProperty',
     };
 
-    const { error } = ConformanceValidator(item, 'PatientLink');
-    expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: PatientLink.");
+    const { isValid, operationOutcome } = ConformanceValidator(item, 'PatientLink');
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: PatientLink. Additional fields: wrongProperty',
+          },
+          diagnostics: 'Invalid fields have been found.',
+          severity: 'error',
+        },
+      ],
+    });
   });
 });

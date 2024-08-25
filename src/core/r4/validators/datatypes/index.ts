@@ -1,4 +1,5 @@
 export { AddressValidator } from './address.validator';
+export { AnnotationValidator } from './annotation.validator';
 export { AttachmentValidator } from './attachment.validator';
 export { CodeableConceptValidator } from './codeable-concept.validator';
 export { CodingValidator } from './coding.validator';
@@ -13,3 +14,7 @@ export { PeriodValidator } from './period.validator';
 export { QuantityValidator } from './quantity.validator';
 export { ReferenceValidator } from './reference.validator';
 export { ResourceValidator } from './resource.validator';
+export { RepeatValidator } from './repeat.validator';
+export { DurationValidator } from './duration.validator';
+export { RangeValidator } from './range.validator';
+export { SimpleQuantityValidator } from './simple-quantity.validator';

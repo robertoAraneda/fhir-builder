@@ -4,7 +4,6 @@ import {
   ICodeableConcept,
   ICoding,
   IContactPoint,
-  IDuration,
   IElement,
   IExtension,
   IHumanName,
@@ -19,9 +18,12 @@ import {
 import { ExtensionBuilder } from '../../builders';
 
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
+import { IValidatable } from '../base/validatable.interface';
+import { ISerializable } from '../base/serializable.interface';
+import { IDuration } from 'fhirtypes/dist/r4/datatypes';
 
-export class Extension extends Element implements IExtension {
+export class Extension extends Element implements IExtension, IValidatable, ISerializable {
   url: string;
 
   valueAddress?: IAddress;
@@ -61,7 +63,7 @@ export class Extension extends Element implements IExtension {
   // Extensions for url
   _url?: IElement;
 
-  toJson(): Extension {
+  toJson() {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -73,17 +75,20 @@ export class Extension extends Element implements IExtension {
     return `Extension${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): { error: string | null } {
-    const { error } = ConformanceValidator(this, 'Extension');
-    return { error };
-  }
-
-  static builder(): ExtensionBuilder {
-    return new ExtensionBuilder();
+  validate() {
+    return ConformanceValidator(this, 'Extension');
   }
 
   constructor(args?: IExtension) {
     super();
     Object.assign(this, args);
+  }
+
+  protected builderInstance(): ExtensionBuilder {
+    return new ExtensionBuilder();
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 }

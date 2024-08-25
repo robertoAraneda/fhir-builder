@@ -1,9 +1,8 @@
 import { contextR4 } from '../../../src';
-
-import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../src/core/r4/validators/base';
 
 describe('Period FHIR R4', () => {
-  const { Period, Validator } = contextR4();
+  const { Period, PeriodBuilder } = contextR4();
 
   it('should be able to create a new period and validate with correct data [new Period()]', async () => {
     const item = new Period({
@@ -23,16 +22,16 @@ describe('Period FHIR R4', () => {
 
     expect(item).toBeDefined();
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
   });
 
   it('should return a Period with builder methods [new PeriodBuilder()]', async () => {
-    const item = Period.builder()
+    const item = new PeriodBuilder()
       .setId('id')
       .setStart('2020-01-01')
       .setEnd('2020-01-02')
-      .addParamExtension('start', {
+      .addPrimitiveExtension('_start', {
         id: 'start',
         extension: [
           {
@@ -41,7 +40,7 @@ describe('Period FHIR R4', () => {
           },
         ],
       })
-      .addParamExtension('end', {
+      .addPrimitiveExtension('_end', {
         extension: [
           {
             url: 'test',
@@ -54,8 +53,8 @@ describe('Period FHIR R4', () => {
     expect(item).toBeDefined();
     expect(item).toBeInstanceOf(Period);
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
 
     expect(item).toEqual({
       end: '2020-01-02',
@@ -88,8 +87,20 @@ describe('Period FHIR R4', () => {
       notExist: 'not exist',
     };
 
-    const { error } = ConformanceValidator(item, 'Period');
-    expect(error).toBe("InvalidFieldException. Field(s): 'notExist'. Path: Period.");
+    const { isValid, operationOutcome } = ConformanceValidator(item, 'Period');
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Period. Additional fields: notExist',
+          },
+          diagnostics: 'Invalid fields have been found.',
+          severity: 'error',
+        },
+      ],
+    });
   });
 
   it('should return an error if has a invalid data', async () => {
@@ -98,7 +109,41 @@ describe('Period FHIR R4', () => {
       end: 'wrong date', // wrong date
     };
 
-    const { error } = ConformanceValidator(item, 'Period');
-    expect(error).toBe('Invalid dateTime: wrong date at path: Period.end');
+    const { isValid, operationOutcome } = ConformanceValidator(item, 'Period');
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: Period.end. Value: wrong date',
+          },
+          diagnostics: 'Invalid dateTime.',
+          severity: 'error',
+        },
+      ],
+    });
+  });
+
+  it('should return an error if start date is greater than end date', async () => {
+    const item = {
+      start: '2020-01-01',
+      end: '2019-01-01', // wrong date
+    };
+
+    const { isValid, operationOutcome } = ConformanceValidator(item, 'Period');
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invariant',
+          details: {
+            text: 'Path: Period',
+          },
+          diagnostics: '+ Rule (per-1). If present, start SHALL have a lower value than end',
+          severity: 'error',
+        },
+      ],
+    });
   });
 });

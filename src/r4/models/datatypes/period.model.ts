@@ -2,7 +2,9 @@ import { IElement, IPeriod } from 'fhirtypes/dist/r4';
 import { PeriodBuilder } from '../../builders';
 
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
+import { ISerializable } from '../base/serializable.interface';
+import { IValidatable } from '../base/validatable.interface';
 
 /**
  * @description Time range defined by start and end date/time.
@@ -16,7 +18,7 @@ import { Element } from './element.model';
  * @see {@link https://www.hl7.org/fhir/datatypes.html#Period Period}
  * @author Roberto Araneda
  */
-export class Period extends Element implements IPeriod {
+export class Period extends Element implements IPeriod, IValidatable, ISerializable {
   /**
    * @description Starting time with inclusive boundary
    * @description A date, date-time or partial date (e.g. just year or year + month) as used in human communication. The format is YYYY, YYYY-MM, YYYY-MM-DD or YYYY-MM-DDThh:mm:ss+zz:zz
@@ -42,7 +44,7 @@ export class Period extends Element implements IPeriod {
    */
   _end?: IElement;
 
-  toJson(): Period {
+  toJson() {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -54,17 +56,20 @@ export class Period extends Element implements IPeriod {
     return `Period${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): { error: string | null } {
-    const { error } = ConformanceValidator(this, 'Period');
-    return { error };
-  }
-
-  static builder(): PeriodBuilder {
-    return new PeriodBuilder();
+  validate() {
+    return ConformanceValidator(this, 'Period');
   }
 
   constructor(args?: IPeriod) {
     super();
     Object.assign(this, args);
+  }
+
+  protected builderInstance(): PeriodBuilder {
+    return new PeriodBuilder();
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 }

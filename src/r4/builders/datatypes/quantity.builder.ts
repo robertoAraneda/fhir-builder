@@ -1,56 +1,35 @@
-import { IElement, IExtension, QuantityComparatorType } from 'fhirtypes/dist/r4';
-import { QuantityParamExtensionType } from '../../params-types';
+import { IElement, QuantityComparatorType } from 'fhirtypes/dist/r4';
 import { Quantity } from '../../models';
+import { IBuildable } from '../base/buildable.interface';
+import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
-interface IQuantityBuilder {
-  // Element properties
-  setId(id: string): this;
-  addExtension(extension: IExtension): this;
-  setMultipleExtension(extension: IExtension[]): this;
+type PrimitiveExtensionFields = keyof Pick<Quantity, UnderscoreKeys<Quantity>>;
 
-  // Quantity properties
-  addParamExtension(param: QuantityParamExtensionType, extension: IElement): this;
+interface IQuantityBuilder extends IBuildable<Quantity> {
   setCode(value: string): this;
   setSystem(value: string): this;
   setUnit(value: string): this;
   setValue(value: number): this;
   setComparator(value: QuantityComparatorType): this;
-
-  // Build
-  build(): Quantity;
 }
 
-export class QuantityBuilder implements IQuantityBuilder {
+export class QuantityBuilder extends ElementBuilder implements IQuantityBuilder {
   private readonly quantity: Quantity;
 
   constructor() {
+    super();
     this.quantity = new Quantity();
   }
 
-  setId(id: string): this {
-    this.quantity.id = id;
-    return this;
-  }
-
-  setMultipleExtension(extension: IExtension[]): this {
-    this.quantity.extension = extension;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.quantity.extension = this.quantity.extension || [];
-    this.quantity.extension.push(extension);
-    return this;
-  }
-
-  addParamExtension<T extends QuantityParamExtensionType>(param: T, extension: IElement): this {
-    this.quantity[`_${param}`] = extension;
+  addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
+    this.quantity[param] = extension;
 
     return this;
   }
 
   build(): Quantity {
-    return this.quantity;
+    return Object.assign(this.quantity, super.build());
   }
 
   setCode(value: string): this {

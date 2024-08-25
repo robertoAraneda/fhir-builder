@@ -13,32 +13,15 @@ import {
   PeriodValidator,
   QuantityValidator,
   ReferenceValidator,
+  RepeatValidator,
   ResourceValidator,
+  AnnotationValidator,
+  DurationValidator,
+  RangeValidator,
+  SimpleQuantityValidator,
 } from '../datatypes';
 
-export interface ValReturnType {
-  error: string | null;
-}
-
-export interface InternalDatatypeValidatorType {
-  Period: typeof PeriodValidator;
-  Address: typeof AddressValidator;
-  Attachment: typeof AttachmentValidator;
-  Resource: typeof ResourceValidator;
-  CodeableConcept: typeof CodeableConceptValidator;
-  Coding: typeof CodingValidator;
-  HumanName: typeof HumanNameValidator;
-  Element: typeof ElementValidator;
-  Extension: typeof ExtensionValidator;
-  ContactPoint: typeof ContactPointValidator;
-  Identifier: typeof IdentifierValidator;
-  Reference: typeof ReferenceValidator;
-  Meta: typeof MetaValidator;
-  Narrative: typeof NarrativeValidator;
-  Quantity: typeof QuantityValidator;
-}
-
-export const InternalDataTypeValidator: InternalDatatypeValidatorType = {
+export const InternalDataTypeValidator = {
   Period: PeriodValidator,
   Address: AddressValidator,
   Attachment: AttachmentValidator,
@@ -54,4 +37,9 @@ export const InternalDataTypeValidator: InternalDatatypeValidatorType = {
   Meta: MetaValidator,
   Narrative: NarrativeValidator,
   Quantity: QuantityValidator,
+  Annotation: AnnotationValidator,
+  Repeat: RepeatValidator,
+  Duration: DurationValidator,
+  Range: RangeValidator,
+  SimpleQuantity: SimpleQuantityValidator,
 };

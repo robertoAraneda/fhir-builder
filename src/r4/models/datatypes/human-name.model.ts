@@ -1,7 +1,9 @@
 import { IElement, IHumanName, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
 import { HumanNameBuilder } from '../../builders';
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
+import { IValidatable } from '../base/validatable.interface';
+import { ISerializable } from '../base/serializable.interface';
 
 /**
  * @description Name of a human or other living entity - parts and usage
@@ -24,7 +26,7 @@ import { Element } from './element.model';
  * @see {@link https://www.hl7.org/fhir/datatypes.html#HumanName HumanName}
  * @author Roberto Araneda
  */
-export class HumanName extends Element implements IHumanName {
+export class HumanName extends Element implements IHumanName, IValidatable, ISerializable {
   /**
    * @description usual | official | temp | nickname | anonymous | old | maiden
    */
@@ -92,7 +94,7 @@ export class HumanName extends Element implements IHumanName {
    */
   _suffix?: IElement[];
 
-  toJson(): HumanName {
+  toJson() {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -104,17 +106,20 @@ export class HumanName extends Element implements IHumanName {
     return `HumanName${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): { error: string | null } {
-    const { error } = ConformanceValidator(this, 'HumanName');
-    return { error };
-  }
-
-  static builder(): HumanNameBuilder {
-    return new HumanNameBuilder();
+  validate() {
+    return ConformanceValidator(this, 'HumanName');
   }
 
   constructor(args?: IHumanName) {
     super();
     Object.assign(this, args);
+  }
+
+  protected builderInstance(): HumanNameBuilder {
+    return new HumanNameBuilder();
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 }

@@ -1,10 +1,9 @@
 import { contextR4 } from '../../../src';
 import { IPatientCommunication } from 'fhirtypes/dist/r4';
-
-import { ConformanceValidator } from '../../../src/core/r4/validators/base/conformance.validator';
+import { ConformanceValidator } from '../../../src/core/r4/validators/base';
 
 describe('PatientCommunication FHIR R4', () => {
-  const { PatientCommunication, Validator } = contextR4();
+  const { PatientCommunication, PatientCommunicationBuilder } = contextR4();
 
   it('should be able to validate a new patient_communication [new PatientCommunication()]', async () => {
     const item = new PatientCommunication({
@@ -21,8 +20,8 @@ describe('PatientCommunication FHIR R4', () => {
     });
 
     expect(item).toBeDefined();
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
   });
 
   it('should be able to validate a new patient_communication [IPatientCommunication]', async () => {
@@ -39,13 +38,17 @@ describe('PatientCommunication FHIR R4', () => {
       },
     };
 
-    const { error } = ConformanceValidator(item, 'PatientCommunication');
-    expect(error).toBeNull();
+    const { isValid } = ConformanceValidator(item, 'PatientCommunication');
+    expect(isValid).toBeTruthy();
   });
 
   it('should be able to create a new patient_communication using builder methods [new PatientCommunication()]', async () => {
-    const item = PatientCommunication.builder()
+    const item = new PatientCommunicationBuilder()
       .setId('123')
+      .addExtension({
+        url: 'preferred',
+        valueDate: '2020-01-01',
+      })
       .setPreferred(true)
       .setLanguage({
         coding: [
@@ -55,7 +58,7 @@ describe('PatientCommunication FHIR R4', () => {
           },
         ],
       })
-      .addParamExtension('preferred', {
+      .addPrimitiveExtension('_preferred', {
         extension: [
           {
             url: 'preferred',
@@ -68,8 +71,8 @@ describe('PatientCommunication FHIR R4', () => {
     expect(item).toBeDefined();
     expect(item).toBeInstanceOf(PatientCommunication);
 
-    const { error } = item.validate();
-    expect(error).toBeNull();
+    const { isValid } = item.validate();
+    expect(isValid).toBeTruthy();
 
     expect(item).toEqual({
       _preferred: {
@@ -80,6 +83,12 @@ describe('PatientCommunication FHIR R4', () => {
           },
         ],
       },
+      extension: [
+        {
+          url: 'preferred',
+          valueDate: '2020-01-01',
+        },
+      ],
       id: '123',
       language: {
         coding: [
@@ -107,7 +116,19 @@ describe('PatientCommunication FHIR R4', () => {
       wrongProperty: 'wrongProperty',
     };
 
-    const { error } = ConformanceValidator(item, 'PatientCommunication');
-    expect(error).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: PatientCommunication.");
+    const { isValid, operationOutcome } = ConformanceValidator(item, 'PatientCommunication');
+    expect(isValid).toBeFalsy();
+    expect(operationOutcome).toEqual({
+      issue: [
+        {
+          code: 'invalid',
+          details: {
+            text: 'Path: PatientCommunication. Additional fields: wrongProperty',
+          },
+          diagnostics: 'Invalid fields have been found.',
+          severity: 'error',
+        },
+      ],
+    });
   });
 });

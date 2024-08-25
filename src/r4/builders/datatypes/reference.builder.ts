@@ -1,48 +1,28 @@
-import type { IElement, IExtension, IIdentifier, ResourceType } from 'fhirtypes/dist/r4';
+import type { IElement, IIdentifier, ResourceType } from 'fhirtypes/dist/r4';
 import { Reference } from '../../models';
+import { IBuildable } from '../base/buildable.interface';
+import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
-interface IReferenceBuilder {
-  // Element properties
-  setId(id: string): this;
-  addExtension(extension: IExtension): this;
-  setMultipleExtension(extension: IExtension[]): this;
+type PrimitiveExtensionFields = keyof Pick<Reference, UnderscoreKeys<Reference>>;
 
-  // Reference properties
-  addParamExtension(param: 'display' | 'type' | 'reference', extension: IElement): this;
+interface IReferenceBuilder extends IBuildable<Reference> {
   setReference(value: { resourceType: ResourceType; id: string | number } | string): this;
   setDisplay(value: string): this;
   setIdentifier(value: IIdentifier): this;
   setType(value: string): this;
-
-  // Build
-  build(): Reference;
 }
 
-export class ReferenceBuilder implements IReferenceBuilder {
+export class ReferenceBuilder extends ElementBuilder implements IReferenceBuilder {
   private readonly reference: Reference;
 
   constructor() {
+    super();
     this.reference = new Reference();
   }
 
-  setId(id: string): this {
-    this.reference.id = id;
-    return this;
-  }
-
-  setMultipleExtension(extension: IExtension[]): this {
-    this.reference.extension = extension;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.reference.extension = this.reference.extension || [];
-    this.reference.extension.push(extension);
-    return this;
-  }
-
-  addParamExtension(param: 'display' | 'type' | 'reference', extension: IElement): this {
-    this.reference[`_${param}`] = extension;
+  addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
+    this.reference[param] = extension;
 
     return this;
   }
@@ -72,13 +52,13 @@ export class ReferenceBuilder implements IReferenceBuilder {
   }
 
   build(): Reference {
-    return this.reference;
+    return Object.assign(this.reference, super.build());
   }
 }
 
-const transformReference = <T extends { resourceType: ResourceType; id: string | number }>(item: T): string => {
+function transformReference<T extends { resourceType: ResourceType; id: string | number }>(item: T): string {
   if (!item.resourceType) throw new Error('Reference must have a resourceType');
   if (!item.id) throw new Error('Reference must have an id');
 
   return `${item.resourceType}/${item.id}`;
-};
+}

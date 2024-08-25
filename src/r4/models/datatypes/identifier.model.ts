@@ -2,7 +2,9 @@ import { ICodeableConcept, IdentifierUseType, IElement, IIdentifier, IPeriod, IR
 import { IdentifierBuilder } from '../../builders';
 
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
+import { IValidatable } from '../base/validatable.interface';
+import { ISerializable } from '../base/serializable.interface';
 
 /**
  * @description An identifier intended for computation
@@ -20,7 +22,7 @@ import { Element } from './element.model';
  * @see {@link https://www.hl7.org/fhir/datatypes.html#Identifier Identifier}
  * @author Roberto Araneda
  */
-export class Identifier extends Element implements IIdentifier {
+export class Identifier extends Element implements IIdentifier, IValidatable, ISerializable {
   /**
    * @description usual | official | temp | secondary | old (If known)
    */
@@ -66,7 +68,7 @@ export class Identifier extends Element implements IIdentifier {
    */
   _value?: IElement;
 
-  toJson(): Identifier {
+  toJson() {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -78,17 +80,20 @@ export class Identifier extends Element implements IIdentifier {
     return `Identifier${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): { error: string | null } {
-    const { error } = ConformanceValidator(this, 'Identifier');
-    return { error };
-  }
-
-  static builder(): IdentifierBuilder {
-    return new IdentifierBuilder();
+  validate() {
+    return ConformanceValidator(this, 'Identifier');
   }
 
   constructor(args?: IIdentifier) {
     super();
     Object.assign(this, args);
+  }
+
+  protected builderInstance(): IdentifierBuilder {
+    return new IdentifierBuilder();
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 }

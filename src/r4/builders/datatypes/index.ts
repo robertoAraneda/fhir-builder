@@ -1,4 +1,5 @@
 export { AddressBuilder } from './address.builder';
+export { AnnotationBuilder } from './annotation.builder';
 export { AttachmentBuilder } from './attachment.builder';
 export { CodeableConceptBuilder } from './codeable-concept.builder';
 export { CodingBuilder } from './coding.builder';
@@ -11,3 +12,7 @@ export { NarrativeBuilder } from './narrative.builder';
 export { PeriodBuilder } from './period.builder';
 export { QuantityBuilder } from './quantity.builder';
 export { ReferenceBuilder } from './reference.builder';
+export { RepeatBuilder } from './repeat.builder';
+export { DurationBuilder } from './duration.builder';
+export { RangeBuilder } from './range.builder';
+export { SimpleQuantityBuilder } from './simple-quantity.builder';

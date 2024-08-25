@@ -13,15 +13,15 @@ import {
   IPatientLink,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { PatientBuilder } from '../../builders';
-
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { DomainResource } from './domain-resource.model';
+import { DomainResource } from '../base/domain-resource.model';
+import { IValidatable } from '../base/validatable.interface';
+import { ISerializable } from '../base/serializable.interface';
 
 /**
  * @description FHIR R4
  */
-export class Patient extends DomainResource implements IPatient {
+export class Patient extends DomainResource implements IPatient, IValidatable, ISerializable {
   resourceType?: 'Patient' = 'Patient' as const;
 
   // Patient attributes
@@ -56,7 +56,7 @@ export class Patient extends DomainResource implements IPatient {
   _birthDate?: IElement;
   _gender?: IElement;
 
-  toJson(): unknown {
+  toJson() {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -68,23 +68,16 @@ export class Patient extends DomainResource implements IPatient {
     return `Patient${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): { error: string | null } {
-    const { error } = ConformanceValidator(this, 'Patient');
-    return { error };
-  }
-
-  static builder(): PatientBuilder {
-    return new PatientBuilder();
-  }
-
-  static builderFromJson(json: unknown | string): PatientBuilder {
-    const patient = json as Patient;
-    const patientBuilder = new PatientBuilder();
-    return patientBuilder.fromJSON(patient);
+  validate() {
+    return ConformanceValidator(this, 'Patient');
   }
 
   constructor(args?: IPatient) {
     super();
     if (args) Object.assign(this, args);
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 }

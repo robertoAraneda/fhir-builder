@@ -8,7 +8,7 @@ import {
 } from '../../src/core/r4/validators/base/base.validator';
 import { InvalidFieldException } from '../../src/core/commons/exceptions/invalid-field.exception';
 import { RequiredException } from '../../src/core/commons/exceptions/required.exception';
-import { contextR4 } from '../../lib';
+import { contextR4 } from '../../src';
 
 describe('BaseValidator', () => {
   it('lib', () => {
@@ -39,8 +39,8 @@ describe('BaseValidator', () => {
     ];
 
     const path = 'PatientCommunication';
-
-    expect(() => validateAdditionalFields(data, definitions as any, path)).not.toThrow();
+    const errors: any[] = [];
+    expect(() => validateAdditionalFields(data, definitions as any, path, errors)).not.toThrow();
   });
 
   it('should validate additionalFields with wrong data', () => {
@@ -68,7 +68,8 @@ describe('BaseValidator', () => {
     const path = 'Path';
 
     try {
-      validateAdditionalFields(data, definitions as any, path);
+      const errors: any[] = [];
+      validateAdditionalFields(data, definitions as any, path, errors);
     } catch (e: any) {
       expect(e).toBeInstanceOf(InvalidFieldException);
       expect(e.message).toBe("InvalidFieldException. Field(s): 'wrongProperty'. Path: Path.");
@@ -98,7 +99,8 @@ describe('BaseValidator', () => {
 
     const path = 'PatientCommunication';
 
-    expect(() => validateRequiredFieldByDefinition(data, definitions as any, path)).not.toThrow();
+    const errors: any[] = [];
+    expect(() => validateRequiredFieldByDefinition(data, definitions as any, path, errors)).not.toThrow();
   });
 
   it('should validate required fields with wrong data', () => {
@@ -124,7 +126,8 @@ describe('BaseValidator', () => {
     const path = 'PatientCommunication';
 
     try {
-      validateRequiredFieldByDefinition(data, definitions as any, path);
+      const errors: any[] = [];
+      validateRequiredFieldByDefinition(data, definitions as any, path, errors);
     } catch (e: any) {
       expect(e).toBeInstanceOf(RequiredException);
       expect(e.message).toBe("RequiredFieldException. Field: 'id'. Path: PatientCommunication.id");
@@ -143,7 +146,8 @@ describe('BaseValidator', () => {
     };
     const path = 'PatientCommunication';
 
-    expect(() => validateEnumValues(data, definition as any, path)).not.toThrow();
+    const errors: any[] = [];
+    expect(() => validateEnumValues(data, definition as any, path, errors)).not.toThrow();
   });
 
   it('should validate enum values with wrong data', () => {
@@ -158,7 +162,8 @@ describe('BaseValidator', () => {
     const path = 'PatientCommunication';
 
     try {
-      validateEnumValues(data, definition as any, path);
+      const errors: any[] = [];
+      validateEnumValues(data, definition as any, path, errors);
     } catch (e: any) {
       expect(e).toBeInstanceOf(Error);
       expect(e.message).toBe('Field must be one of [value] in PatientCommunication.id');
@@ -175,8 +180,8 @@ describe('BaseValidator', () => {
       isRequired: true,
     };
     const path = 'PatientCommunication';
-
-    expect(() => validateArray(data, definition as any, path)).not.toThrow();
+    const errors: any[] = [];
+    expect(() => validateArray(data, definition as any, path, errors)).not.toThrow();
   });
 
   it('should validate array with wrong data', () => {
@@ -190,7 +195,8 @@ describe('BaseValidator', () => {
     const path = 'PatientCommunication';
 
     try {
-      validateArray(data, definition as any, path);
+      const errors: any[] = [];
+      validateArray(data, definition as any, path, errors);
     } catch (e: any) {
       expect(e).toBeInstanceOf(Error);
       expect(e.message).toBe('Field id must be an array in PatientCommunication');
@@ -209,8 +215,8 @@ describe('BaseValidator', () => {
       isRequired: true,
     };
     const path = 'PatientCommunication';
-
-    expect(() => validateObject(data.id, definition as any, path)).not.toThrow();
+    const errors: any[] = [];
+    expect(() => validateObject(data.id, definition as any, path, errors)).not.toThrow();
   });
 
   it('should validate object with wrong unknown type', () => {
@@ -225,12 +231,18 @@ describe('BaseValidator', () => {
     };
     const path = 'PatientCommunication';
 
-    try {
-      validateObject(data.id, definition as any, path);
-    } catch (e: any) {
-      expect(e).toBeInstanceOf(Error);
-      expect(e.message).toEqual('No validator found for unknown');
-    }
+    const errors: any[] = [];
+    validateObject(data.id, definition as any, path, errors);
+    expect(errors).toEqual([
+      {
+        code: 'exception',
+        details: {
+          text: 'Path: PatientCommunication.id. Value: 123',
+        },
+        diagnostics: 'No validator found for unknown',
+        severity: 'fatal',
+      },
+    ]);
   });
 
   it('should validate object with wrong data', () => {
@@ -246,7 +258,8 @@ describe('BaseValidator', () => {
     const path = 'PatientCommunication';
 
     try {
-      validateObject(data.id, definition as any, path);
+      const errors: any[] = [];
+      validateObject(data.id, definition as any, path, errors);
     } catch (e: any) {
       expect(e).toBeInstanceOf(Error);
       expect(e.message).toEqual('Invalid oid: wrong at path: PatientCommunication.id');
@@ -260,8 +273,8 @@ describe('BaseValidator', () => {
     };
     const resources = ['Patient'];
     const path = 'PatientCommunication';
-
-    expect(() => ValidateReferenceFormat(value, resources as any[], path)).not.toThrow();
+    const errors: any[] = [];
+    expect(() => ValidateReferenceFormat(value, resources as any[], path, errors)).not.toThrow();
   });
 
   it('should validate reference format with wrong data', () => {
@@ -272,7 +285,8 @@ describe('BaseValidator', () => {
     const path = 'PatientCommunication';
 
     try {
-      ValidateReferenceFormat(value, resources as any[], path);
+      const errors: any[] = [];
+      ValidateReferenceFormat(value, resources as any[], path, errors);
     } catch (e: any) {
       expect(e.message).toEqual(
         "ReferenceException. Value: 'Patient'. ResourceType must be one of the following: 'Observation'. Path: PatientCommunication.reference",
@@ -285,8 +299,8 @@ describe('BaseValidator', () => {
       reference: 'Patient/123',
     };
     const path = 'PatientCommunication';
-
-    expect(() => ValidateReferenceFormat(value, null, path)).not.toThrow();
+    const errors: any[] = [];
+    expect(() => ValidateReferenceFormat(value, null, path, errors)).not.toThrow();
   });
 
   it('should validate reference format with no reference', () => {
@@ -294,7 +308,7 @@ describe('BaseValidator', () => {
       reference: '',
     };
     const path = 'PatientCommunication';
-
-    expect(() => ValidateReferenceFormat(value, null, path)).not.toThrow();
+    const errors: any[] = [];
+    expect(() => ValidateReferenceFormat(value, null, path, errors)).not.toThrow();
   });
 });

@@ -1,58 +1,26 @@
-import { IElement, IExtension, IReference, LinkTypeType } from 'fhirtypes/dist/r4';
+import { IElement, IPatientLink, IReference, LinkTypeType } from 'fhirtypes/dist/r4';
 import { PatientLink } from '../../models';
+import { IBuildable } from '../base/buildable.interface';
+import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { BackboneBuilder } from '../base/backbone.builder';
 
-interface IPatientLinkBuilder {
-  // Element properties
-  setId(id: string): this;
-  addExtension(extension: IExtension): this;
-  setMultipleExtension(extension: IExtension[]): this;
+type PrimitiveExtensionFields = keyof Pick<IPatientLink, UnderscoreKeys<IPatientLink>>;
 
-  // BackboneElement properties
-  addModifierExtension(modifierExtension: IExtension): this;
-  setMultipleModifierExtension(modifierExtension: IExtension[]): this;
-
-  // PatientLink properties
-  addParamExtension(param: 'type', extension: IElement): this;
+interface IPatientLinkBuilder extends IBuildable<PatientLink> {
   setOther(other: IReference): this;
   setType(type: LinkTypeType): this;
 }
 
-export class PatientLinkBuilder implements IPatientLinkBuilder {
+export class PatientLinkBuilder extends BackboneBuilder implements IPatientLinkBuilder {
   private readonly patientLink: PatientLink;
 
   constructor() {
+    super();
     this.patientLink = new PatientLink();
   }
 
-  setId(id: string): this {
-    this.patientLink.id = id;
-    return this;
-  }
-
-  setMultipleExtension(extension: IExtension[]): this {
-    this.patientLink.extension = extension;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.patientLink.extension = this.patientLink.extension || [];
-    this.patientLink.extension.push(extension);
-    return this;
-  }
-
-  setMultipleModifierExtension(modifierExtension: IExtension[]): this {
-    this.patientLink.modifierExtension = modifierExtension;
-    return this;
-  }
-
-  addModifierExtension(modifierExtension: IExtension): this {
-    this.patientLink.modifierExtension = this.patientLink.modifierExtension || [];
-    this.patientLink.modifierExtension.push(modifierExtension);
-    return this;
-  }
-
-  addParamExtension(param: 'type', extension: IElement): this {
-    this.patientLink[`_${param}`] = extension;
+  addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
+    this.patientLink[param] = extension;
     return this;
   }
 
@@ -67,6 +35,6 @@ export class PatientLinkBuilder implements IPatientLinkBuilder {
   }
 
   build(): PatientLink {
-    return this.patientLink;
+    return Object.assign(this.patientLink, super.build());
   }
 }

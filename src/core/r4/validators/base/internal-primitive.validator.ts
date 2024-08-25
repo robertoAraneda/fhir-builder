@@ -1,8 +1,20 @@
-export const Base64BinaryValidator = (value: string, path: string) => {
+import { OperationOutcomeIssueException } from '../../../commons/exceptions/operation-outcome.exception';
+import { IOperationOutcomeIssue } from 'fhirtypes/dist/r4';
+
+export const Base64BinaryValidator = (value: string, path: string, errors: IOperationOutcomeIssue[]) => {
   // regex for /^(\s*([0-9a-zA-Z\+\=]){4}\s*)+$/
   const regex = /^(\s*([0-9a-zA-Z+=]){4}\s*)+$/;
   if (!regex.test(value)) {
-    throw new Error(`Invalid base64Binary: ${value} at path: ${path}`);
+    errors.push(
+      new OperationOutcomeIssueException({
+        severity: 'error',
+        code: 'invalid',
+        diagnostics: `Invalid base64Binary.`,
+        details: {
+          text: `Path: ${path}. Value: ${value}`,
+        },
+      }),
+    );
   }
 };
 
@@ -38,12 +50,22 @@ export const DateValidator = (value: string, path: string) => {
   }
 };
 
-export const DateTimeValidator = (value: string, path: string) => {
+export const DateTimeValidator = (value: string, path: string, errors: any[]) => {
   // regex for ^([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?$
   const regex =
     /^([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\.[0-9]+)?(Z|(\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?$/;
   if (!regex.test(value)) {
-    throw new Error(`Invalid dateTime: ${value} at path: ${path}`);
+    errors.push(
+      new OperationOutcomeIssueException({
+        severity: 'error',
+        code: 'invalid',
+        diagnostics: `Invalid dateTime.`,
+        details: {
+          text: `Path: ${path}. Value: ${value}`,
+        },
+      }),
+    );
+    // throw new Error(`Invalid dateTime: ${value} at path: ${path}`);
   }
 };
 
@@ -63,12 +85,22 @@ export const IdValidator = (value: string, path: string) => {
   }
 };
 
-export const InstantValidator = (value: string, path: string) => {
+export const InstantValidator = (value: string, path: string, errors: IOperationOutcomeIssue[]) => {
   // regex for ^([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))$
   const regex =
     /^([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\.[0-9]+)?(Z|(\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))$/;
   if (!regex.test(value)) {
-    throw new Error(`Invalid instant: ${value} at path: ${path}`);
+    errors.push(
+      new OperationOutcomeIssueException({
+        severity: 'error',
+        code: 'invalid',
+        diagnostics: `Invalid instant.`,
+        details: {
+          text: `Path: ${path}. Value: ${value}`,
+        },
+      }),
+    );
+    //throw new Error(`Invalid instant: ${value} at path: ${path}`);
   }
 };
 
@@ -139,11 +171,20 @@ export const PositiveIntValidator = (value: number, path: string) => {
   }
 };
 
-export const TimeValidator = (value: string, path: string) => {
+export const TimeValidator = (value: string, path: string, errors: IOperationOutcomeIssue[]) => {
   // regex for ^([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?$
   const regex = /^([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\.[0-9]+)?$/;
   if (!regex.test(value)) {
-    throw new Error(`Invalid time: ${value} at path: ${path}`);
+    errors.push(
+      new OperationOutcomeIssueException({
+        severity: 'error',
+        code: 'invalid',
+        diagnostics: `Invalid time`,
+        details: {
+          text: `Path: ${path}. Value: ${value}`,
+        },
+      }),
+    );
   }
 };
 
@@ -186,30 +227,7 @@ export const UuidValidator = (value: string, path: string) => {
   }
 };
 
-export interface InternalPrimitiveValidatorType {
-  base64Binary: typeof Base64BinaryValidator;
-  boolean: typeof BooleanValidator;
-  canonical: typeof CanonicalValidator;
-  code: typeof CodeValidator;
-  date: typeof DateValidator;
-  dateTime: typeof DateTimeValidator;
-  decimal: typeof DecimalValidator;
-  id: typeof IdValidator;
-  instant: typeof InstantValidator;
-  integer: typeof IntegerValidator;
-  integer64: typeof Integer64Validator;
-  markdown: typeof MarkdownValidator;
-  oid: typeof OidValidator;
-  positiveInt: typeof PositiveIntValidator;
-  string: typeof StringValidator;
-  time: typeof TimeValidator;
-  unsignedInt: typeof UnsignedIntValidator;
-  uri: typeof UriValidator;
-  url: typeof UrlValidator;
-  uuid: typeof UuidValidator;
-}
-
-export const InternalPrimitiveValidator: InternalPrimitiveValidatorType = {
+export const InternalPrimitiveValidator = {
   base64Binary: Base64BinaryValidator,
   boolean: BooleanValidator,
   canonical: CanonicalValidator,

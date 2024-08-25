@@ -16,6 +16,8 @@
 
 ```shell
 npm i fhirbuilder
+# for fhirtypes
+npm i fhirtypes
 ```
 
 ## Use
@@ -67,9 +69,9 @@ For complex object you can use a builders
 ```ts
 import { contextR4 } from 'fhirbuilder';
 import { AdministrativeGenderEnum } from 'fhirtypes/dist/r4/enums';
-const { Patient, HumanName, Address } = contextR4();
+const { Patient, HumanName, Address, PatientBuilder } = contextR4();
 
-const patient = Patient.builder()
+const patient = new PatientBuilder()
   .setId('123')
   .setActive(true)
   .addName(
@@ -136,18 +138,27 @@ const patient = new Patient({
   identifier: [identifier],
 });
 
-const { error } = patient.validate();
+const result = patient.validate();
 
-console.log(errors);
+console.log(result);
 ```
 
 Output error
 
 ```json
 {
-  "error": "ReferenceException",
-  "message": "ResourceType must be one of the following: 'Organization'",
-  "path": "identifier[0].assigner.reference",
-  "value": "Acme Healthcare"
+  "isValid": false,
+  "operationOutcome": {
+    "issue": [
+      {
+        "code": "invalid",
+        "details": {
+          "text": "Path: Patient.identifier[0].assigner.reference. Value: Acme Healthcare"
+        },
+        "diagnostics": "Invalid reference format. Reference must be in the format 'ResourceType/ResourceId'.",
+        "severity": "error"
+      }
+    ]
+  }
 }
 ```

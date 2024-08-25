@@ -1,49 +1,29 @@
-import { IElement, IExtension } from 'fhirtypes/dist/r4';
-import { CodingParamExtensionType } from '../../params-types';
+import { IElement } from 'fhirtypes/dist/r4';
 import { Coding } from '../../models';
+import { IBuildable } from '../base/buildable.interface';
+import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
-interface ICodingBuilder {
-  // Element properties
-  setId(id: string): this;
-  addExtension(extension: IExtension): this;
-  setMultipleExtension(extension: IExtension[]): this;
+type PrimitiveExtensionFields = keyof Pick<Coding, UnderscoreKeys<Coding>>;
 
-  // Coding properties
-  addParamExtension(param: CodingParamExtensionType, extension: IElement): this;
+interface ICodingBuilder extends IBuildable<Coding> {
   setSystem(value: string): this;
   setVersion(value: string): this;
   setCode(value: string): this;
   setDisplay(value: string): this;
   setUserSelected(value: boolean): this;
-
-  // Build
-  build(): Coding;
 }
 
 /**
  * @description Coding builder
  *
  */
-export class CodingBuilder implements ICodingBuilder {
+export class CodingBuilder extends ElementBuilder implements ICodingBuilder {
   private readonly coding: Coding;
 
   constructor() {
+    super();
     this.coding = new Coding();
-  }
-  setId(id: string): this {
-    this.coding.id = id;
-    return this;
-  }
-
-  setMultipleExtension(extension: IExtension[]): this {
-    this.coding.extension = extension;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.coding.extension = this.coding.extension || [];
-    this.coding.extension.push(extension);
-    return this;
   }
 
   /**
@@ -51,8 +31,8 @@ export class CodingBuilder implements ICodingBuilder {
    * @param param
    * @param extension
    */
-  addParamExtension(param: CodingParamExtensionType, extension: IElement): this {
-    this.coding[`_${param}`] = extension;
+  addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
+    this.coding[param] = extension;
     return this;
   }
 
@@ -108,9 +88,9 @@ export class CodingBuilder implements ICodingBuilder {
 
   /**
    * @description Return the coding as a ICoding object
-   * @returns {ICoding} The coding
+   * @returns {Coding} The coding
    */
   build(): Coding {
-    return this.coding;
+    return Object.assign(this.coding, super.build());
   }
 }

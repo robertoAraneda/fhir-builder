@@ -1,9 +1,11 @@
 import { ICoding, IElement, IMeta } from 'fhirtypes/dist/r4';
 import { MetaBuilder } from '../../builders';
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { Element } from './element.model';
+import { Element } from '../base/element.model';
+import { IValidatable } from '../base/validatable.interface';
+import { ISerializable } from '../base/serializable.interface';
 
-export class Meta extends Element implements IMeta {
+export class Meta extends Element implements IMeta, IValidatable, ISerializable {
   // Meta Properties
   versionId?: string | number;
   lastUpdated?: string;
@@ -18,7 +20,7 @@ export class Meta extends Element implements IMeta {
   _source?: IElement;
   _profile?: IElement[];
 
-  toJson(): Meta {
+  toJson() {
     return JSON.parse(JSON.stringify(this));
   }
 
@@ -30,17 +32,20 @@ export class Meta extends Element implements IMeta {
     return `Meta${JSON.stringify(this.toJson())}`;
   }
 
-  validate(): { error: string | null } {
-    const { error } = ConformanceValidator(this, 'Meta');
-    return { error };
-  }
-
-  static builder(): MetaBuilder {
-    return new MetaBuilder();
+  validate() {
+    return ConformanceValidator(this, 'Meta');
   }
 
   constructor(args?: IMeta) {
     super();
     Object.assign(this, args);
+  }
+
+  protected builderInstance(): MetaBuilder {
+    return new MetaBuilder();
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.toJson());
   }
 }

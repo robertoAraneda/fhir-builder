@@ -1,4 +1,5 @@
 export { Address } from './address.model';
+export { Annotation } from './annotation.model';
 export { Attachment } from './attachment.model';
 export { CodeableConcept } from './codeable-concept.model';
 export { Coding } from './coding.model';
@@ -11,3 +12,7 @@ export { Narrative } from './narrative.model';
 export { Period } from './period.model';
 export { Quantity } from './quantity.model';
 export { Reference } from './reference.model';
+export { Repeat } from './repeat.model';
+export { Duration } from './duration.model';
+export { Range } from './range.model';
+export { SimpleQuantity } from './simple-quantity.model';

@@ -1,5 +1,5 @@
 import { createResourceDefinition } from '../base/definitions';
-import { IEpisodeOfCare } from 'fhirtypes/dist/r4';
+import { IEpisodeOfCare, IOperationOutcomeIssue } from 'fhirtypes/dist/r4';
 import { ModelValidator } from '../base';
 
 const modelFields = createResourceDefinition<IEpisodeOfCare>([
@@ -38,14 +38,14 @@ const modelFields = createResourceDefinition<IEpisodeOfCare>([
     type: 'Reference',
     isRequired: true,
     isArray: false,
-    referenceValues: ['Patient'],
+    referenceTypes: ['Patient'],
   },
   {
     name: 'managingOrganization',
     type: 'Reference',
     isRequired: false,
     isArray: false,
-    referenceValues: ['Organization'],
+    referenceTypes: ['Organization'],
   },
   {
     name: 'period',
@@ -58,7 +58,7 @@ const modelFields = createResourceDefinition<IEpisodeOfCare>([
     type: 'Reference',
     isRequired: false,
     isArray: true,
-    referenceValues: ['ServiceRequest'],
+    referenceTypes: ['ServiceRequest'],
   },
   {
     name: 'careManager',
@@ -80,10 +80,15 @@ const modelFields = createResourceDefinition<IEpisodeOfCare>([
   },
 ]);
 
-export function EpisodeOfCareValidator<T extends IEpisodeOfCare>(dataToValidate: T, path = 'EpisodeOfCare'): void {
+export function EpisodeOfCareValidator<T extends IEpisodeOfCare>(
+  dataToValidate: T,
+  path = 'EpisodeOfCare',
+  errors: IOperationOutcomeIssue[] = [],
+): void {
   ModelValidator<T>({
     path,
     dataToValidate,
     modelDefinition: modelFields,
+    errors,
   });
 }
