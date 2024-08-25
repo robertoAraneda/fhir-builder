@@ -1,12 +1,12 @@
-import { ICodeableConcept, IdentifierUseType, IElement, IExtension, IPeriod, IReference } from 'fhirtypes/dist/r4';
+import { ICodeableConcept, IdentifierUseType, IElement, IPeriod, IReference } from 'fhirtypes/dist/r4';
 import { Identifier } from '../../models';
-import { IElementBuilder } from '../base/element-builder.interface';
 import { IBuildable } from '../base/buildable.interface';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
 type PrimitiveExtensionFields = keyof Pick<Identifier, UnderscoreKeys<Identifier>>;
 
-interface IIdentifierBuilder extends IElementBuilder, IBuildable<Identifier> {
+interface IIdentifierBuilder extends IBuildable<Identifier> {
   setType(value: ICodeableConcept): this;
   setUse(value: IdentifierUseType): this;
   setSystem(value: string): this;
@@ -15,21 +15,12 @@ interface IIdentifierBuilder extends IElementBuilder, IBuildable<Identifier> {
   setAssigner(value: IReference): this;
 }
 
-export class IdentifierBuilder implements IIdentifierBuilder {
+export class IdentifierBuilder extends ElementBuilder implements IIdentifierBuilder {
   private readonly identifier: Identifier;
 
   constructor() {
+    super();
     this.identifier = new Identifier();
-  }
-  setId(id: string): this {
-    this.identifier.id = id;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.identifier.extension = this.identifier.extension || [];
-    this.identifier.extension.push(extension);
-    return this;
   }
 
   addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
@@ -75,6 +66,6 @@ export class IdentifierBuilder implements IIdentifierBuilder {
   }
 
   build(): Identifier {
-    return this.identifier;
+    return Object.assign(this.identifier, super.build());
   }
 }

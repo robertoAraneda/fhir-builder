@@ -26,6 +26,20 @@ const modelFields = createDatatypeDefinition<IRepeat>([
   { name: 'timeOfDay', type: 'time', isArray: true, isRequired: false },
   { name: 'when', type: 'code', isArray: true, isRequired: false, enumValues: eventTimingValues },
   { name: 'offset', type: 'unsignedInt', isArray: false, isRequired: false },
+  { name: '_count', type: 'Element', isArray: false, isRequired: false },
+  { name: '_countMax', type: 'Element', isArray: false, isRequired: false },
+  { name: '_duration', type: 'Element', isArray: false, isRequired: false },
+  { name: '_durationMax', type: 'Element', isArray: false, isRequired: false },
+  { name: '_durationUnit', type: 'Element', isArray: false, isRequired: false },
+  { name: '_frequency', type: 'Element', isArray: false, isRequired: false },
+  { name: '_frequencyMax', type: 'Element', isArray: false, isRequired: false },
+  { name: '_period', type: 'Element', isArray: false, isRequired: false },
+  { name: '_periodMax', type: 'Element', isArray: false, isRequired: false },
+  { name: '_periodUnit', type: 'Element', isArray: false, isRequired: false },
+  { name: '_dayOfWeek', type: 'Element', isArray: true, isRequired: false },
+  { name: '_timeOfDay', type: 'Element', isArray: true, isRequired: false },
+  { name: '_when', type: 'Element', isArray: true, isRequired: false },
+  { name: '_offset', type: 'Element', isArray: false, isRequired: false },
 ]);
 
 // TODO: Refactor errors to be more specific

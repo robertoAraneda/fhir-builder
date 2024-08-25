@@ -1,12 +1,12 @@
-import { AddressTypeType, AddressUseType, IAddress, IElement, IExtension, IPeriod } from 'fhirtypes/dist/r4';
+import { AddressTypeType, AddressUseType, IAddress, IElement, IPeriod } from 'fhirtypes/dist/r4';
 import { Address } from '../../models';
 import { IBuildable } from '../base/buildable.interface';
-import { IElementBuilder } from '../base/element-builder.interface';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
 type PrimitiveExtensionFields = keyof Pick<IAddress, UnderscoreKeys<IAddress>>;
 
-interface IAddressBuilder extends IElementBuilder, IBuildable<Address> {
+interface IAddressBuilder extends IBuildable<Address> {
   setUse(value: AddressUseType): this;
   setType(value: AddressTypeType): this;
   setText(value: string): this;
@@ -19,22 +19,12 @@ interface IAddressBuilder extends IElementBuilder, IBuildable<Address> {
   setPeriod(value: IPeriod): this;
 }
 
-export class AddressBuilder implements IAddressBuilder {
+export class AddressBuilder extends ElementBuilder implements IAddressBuilder {
   private readonly address: Address;
 
   constructor() {
+    super();
     this.address = new Address();
-  }
-
-  setId(id: string): this {
-    this.address.id = id;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.address.extension = this.address.extension || [];
-    this.address.extension.push(extension);
-    return this;
   }
 
   addPrimitiveExtension<T extends PrimitiveExtensionFields>(
@@ -103,6 +93,6 @@ export class AddressBuilder implements IAddressBuilder {
   }
 
   build(): Address {
-    return this.address;
+    return Object.assign(this.address, super.build());
   }
 }

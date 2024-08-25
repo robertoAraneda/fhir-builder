@@ -5,7 +5,6 @@ import {
   ICoding,
   IContactPoint,
   IElement,
-  IExtension,
   IHumanName,
   IIdentifier,
   IMeta,
@@ -14,7 +13,6 @@ import {
   IReference,
 } from 'fhirtypes/dist/r4';
 import { Extension } from '../../models';
-import { IElementBuilder } from '../base/element-builder.interface';
 import { IBuildable } from '../base/buildable.interface';
 import { ElementBuilder } from '../base/element.builder';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
@@ -54,7 +52,7 @@ interface TypeMap {
 type ExtensionValue<T extends keyof TypeMap> = TypeMap[T];
 type PrimitiveExtensionFields = keyof Pick<Extension, UnderscoreKeys<Extension>>;
 
-interface IExtensionBuilder extends IElementBuilder, IBuildable<Extension> {
+interface IExtensionBuilder extends IBuildable<Extension> {
   setUrl(url: string): this;
   setValue<T extends keyof TypeMap>(type: T, value: ExtensionValue<T>): this;
 }
@@ -65,17 +63,6 @@ export class ExtensionBuilder extends ElementBuilder implements IExtensionBuilde
   constructor() {
     super();
     this.extension = new Extension();
-  }
-
-  setId(id: string): this {
-    this.extension.id = id;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.extension.extension = this.extension.extension || [];
-    this.extension.extension.push(extension);
-    return this;
   }
 
   addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
@@ -89,7 +76,7 @@ export class ExtensionBuilder extends ElementBuilder implements IExtensionBuilde
   }
 
   build(): Extension {
-    return this.extension;
+    return Object.assign(this.extension, super.build());
   }
 
   setValue<T extends keyof TypeMap>(type: T, value: ExtensionValue<T>): this {

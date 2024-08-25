@@ -1,34 +1,24 @@
-import type { IElement, IExtension, IIdentifier, ResourceType } from 'fhirtypes/dist/r4';
+import type { IElement, IIdentifier, ResourceType } from 'fhirtypes/dist/r4';
 import { Reference } from '../../models';
-import { IElementBuilder } from '../base/element-builder.interface';
 import { IBuildable } from '../base/buildable.interface';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
 type PrimitiveExtensionFields = keyof Pick<Reference, UnderscoreKeys<Reference>>;
 
-interface IReferenceBuilder extends IElementBuilder, IBuildable<Reference> {
+interface IReferenceBuilder extends IBuildable<Reference> {
   setReference(value: { resourceType: ResourceType; id: string | number } | string): this;
   setDisplay(value: string): this;
   setIdentifier(value: IIdentifier): this;
   setType(value: string): this;
 }
 
-export class ReferenceBuilder implements IReferenceBuilder {
+export class ReferenceBuilder extends ElementBuilder implements IReferenceBuilder {
   private readonly reference: Reference;
 
   constructor() {
+    super();
     this.reference = new Reference();
-  }
-
-  setId(id: string): this {
-    this.reference.id = id;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.reference.extension = this.reference.extension || [];
-    this.reference.extension.push(extension);
-    return this;
   }
 
   addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
@@ -62,7 +52,7 @@ export class ReferenceBuilder implements IReferenceBuilder {
   }
 
   build(): Reference {
-    return this.reference;
+    return Object.assign(this.reference, super.build());
   }
 }
 

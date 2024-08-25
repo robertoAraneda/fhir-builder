@@ -1,12 +1,12 @@
-import { ICoding, IElement, IExtension } from 'fhirtypes/dist/r4';
+import { ICoding, IElement } from 'fhirtypes/dist/r4';
 import { Meta } from '../../models';
-import { IElementBuilder } from '../base/element-builder.interface';
 import { IBuildable } from '../base/buildable.interface';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
 type PrimitiveExtensionFields = keyof Pick<Meta, UnderscoreKeys<Meta>>;
 
-interface IMetaBuilder extends IElementBuilder, IBuildable<Meta> {
+interface IMetaBuilder extends IBuildable<Meta> {
   setSource(source: string): this;
   setVersionId(versionId: string | number): this;
   setLastUpdated(lastUpdated: string): this;
@@ -15,22 +15,12 @@ interface IMetaBuilder extends IElementBuilder, IBuildable<Meta> {
   addSecurity(security: ICoding): this;
 }
 
-export class MetaBuilder implements IMetaBuilder {
+export class MetaBuilder extends ElementBuilder implements IMetaBuilder {
   private readonly meta: Meta;
 
   constructor() {
+    super();
     this.meta = new Meta();
-  }
-
-  setId(id: string): this {
-    this.meta.id = id;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.meta.extension = this.meta.extension || [];
-    this.meta.extension.push(extension);
-    return this;
   }
 
   addPrimitiveExtension<T extends PrimitiveExtensionFields>(
@@ -81,6 +71,6 @@ export class MetaBuilder implements IMetaBuilder {
   }
 
   build(): Meta {
-    return this.meta;
+    return Object.assign(this.meta, super.build());
   }
 }

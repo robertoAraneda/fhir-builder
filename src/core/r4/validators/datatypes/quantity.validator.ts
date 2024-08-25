@@ -1,8 +1,8 @@
 import { IOperationOutcomeIssue, IQuantity } from 'fhirtypes/dist/r4';
 import { QuantityComparatorEnum } from 'fhirtypes/dist/r4/enums';
 import { createDatatypeDefinition } from '../base/definitions';
-import { ConstraintException } from '../../../commons/exceptions/constraint.exception';
 import { ModelValidator } from '../base';
+import { OperationOutcomeIssueException } from '../../../commons/exceptions/operation-outcome.exception';
 
 const quantityComparatorValues: readonly string[] = Object.values(QuantityComparatorEnum);
 
@@ -19,17 +19,26 @@ const modelFields = createDatatypeDefinition<IQuantity>([
   { name: '_code', type: 'Element', isRequired: false, isArray: false },
 ]);
 
-function ValidateConstraint(payload: IQuantity, path: string): void {
+function ValidateConstraint(payload: IQuantity, path: string, errors: IOperationOutcomeIssue[]): void {
   // qty-3: If a code for the unit is present, the system SHALL also be present
   if (payload.code && !payload.system) {
-    throw new ConstraintException(path, 'If a code for the unit is present, the system SHALL also be present (qty-3)');
+    errors.push(
+      new OperationOutcomeIssueException({
+        severity: 'error',
+        code: 'invariant',
+        diagnostics: `+ Rule (qty-3). If a code for the unit is present, the system SHALL also be present`,
+        details: {
+          text: `Path: ${path}. Value: code: ${payload.code} | system: ${payload.system}`,
+        },
+      }),
+    );
   }
 }
 
 export function QuantityValidator(
   dataToValidate: IQuantity,
   path = 'Quantity',
-  errors: IOperationOutcomeIssue[],
+  errors: IOperationOutcomeIssue[] = [],
 ): void {
   ModelValidator<IQuantity>({
     dataToValidate,

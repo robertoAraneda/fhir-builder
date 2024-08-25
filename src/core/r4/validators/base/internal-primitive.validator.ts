@@ -171,11 +171,20 @@ export const PositiveIntValidator = (value: number, path: string) => {
   }
 };
 
-export const TimeValidator = (value: string, path: string) => {
+export const TimeValidator = (value: string, path: string, errors: IOperationOutcomeIssue[]) => {
   // regex for ^([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?$
   const regex = /^([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\.[0-9]+)?$/;
   if (!regex.test(value)) {
-    throw new Error(`Invalid time: ${value} at path: ${path}`);
+    errors.push(
+      new OperationOutcomeIssueException({
+        severity: 'error',
+        code: 'invalid',
+        diagnostics: `Invalid time`,
+        details: {
+          text: `Path: ${path}. Value: ${value}`,
+        },
+      }),
+    );
   }
 };
 

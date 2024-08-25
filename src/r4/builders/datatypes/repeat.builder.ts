@@ -1,9 +1,9 @@
-import { IElementBuilder } from '../base/element-builder.interface';
 import { IBuildable } from '../base/buildable.interface';
 import { Repeat } from '../../models';
 import { IDuration, IElement, IPeriod, IRange } from 'fhirtypes/dist/r4';
 import { DaysOfWeekType, EventTimingType, UnitsOfTimeType } from 'fhirtypes/dist/r4/types';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
 interface TypeMap {
   boundsDuration: IDuration;
@@ -14,7 +14,7 @@ interface TypeMap {
 type BoundValue<T extends keyof TypeMap> = TypeMap[T];
 type PrimitiveExtensionFields = keyof Pick<Repeat, UnderscoreKeys<Repeat>>;
 
-interface IRepeatBuilder extends IElementBuilder, IBuildable<Repeat> {
+interface IRepeatBuilder extends IBuildable<Repeat> {
   setBounds<T extends keyof TypeMap>(type: T, bounds: BoundValue<T>): this;
   setCount(count: number): this;
   setCountMax(countMax: number): this;
@@ -32,26 +32,16 @@ interface IRepeatBuilder extends IElementBuilder, IBuildable<Repeat> {
   setOffset(offset: number): this;
 }
 
-export class RepeatBuilder implements IRepeatBuilder {
+export class RepeatBuilder extends ElementBuilder implements IRepeatBuilder {
   private readonly repeat: Repeat;
 
   constructor() {
+    super();
     this.repeat = new Repeat();
   }
 
   build(): Repeat {
-    return this.repeat;
-  }
-
-  setId(id: string): this {
-    this.repeat.id = id;
-    return this;
-  }
-
-  addExtension(extension: any): this {
-    this.repeat.extension = this.repeat.extension || [];
-    this.repeat.extension.push(extension);
-    return this;
+    return Object.assign(this.repeat, super.build());
   }
 
   setBounds<T extends keyof TypeMap>(type: T, bounds: BoundValue<T>): this {

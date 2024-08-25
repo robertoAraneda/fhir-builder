@@ -92,10 +92,15 @@ describe('Annotation FHIR R4', () => {
   it('should be able to create a new repeat using builder methods [new RepeatBuilder()]', async () => {
     // build() is a method that returns the object that was built
     const item = new RepeatBuilder()
+      .setId('id')
+      .addExtension({ url: 'url', valueString: 'value' })
       .setCount(1)
+      .setCountMax(1)
       .setDuration(1)
+      .setDurationMax(1)
       .setDurationUnit('a')
       .setPeriod(1)
+      .setPeriodMax(1)
       .setPeriodUnit('d')
       .setBounds('boundsRange', {
         low: {
@@ -109,10 +114,81 @@ describe('Annotation FHIR R4', () => {
           code: 'code',
         },
       })
+      .addDayOfWeek('mon')
+      .addTimeOfDay('20:00:00')
+      .setOffset(1)
+      .addPrimitiveExtension('_frequency', {
+        extension: [
+          {
+            url: 'url',
+            valueString: 'value',
+          },
+        ],
+      })
+      .addPrimitiveExtension('_when', [
+        {
+          extension: [
+            {
+              url: 'url',
+              valueString: 'value',
+            },
+          ],
+        },
+      ])
       .build();
 
     expect(item).toBeDefined();
     const { isValid } = item.validate();
     expect(isValid).toBeTruthy();
+    expect(item.toJson()).toEqual({
+      _frequency: {
+        extension: [
+          {
+            url: 'url',
+            valueString: 'value',
+          },
+        ],
+      },
+      _when: [
+        {
+          extension: [
+            {
+              url: 'url',
+              valueString: 'value',
+            },
+          ],
+        },
+      ],
+      boundsRange: {
+        high: {
+          code: 'code',
+          unit: 'unit',
+          value: 1,
+        },
+        low: {
+          code: 'code',
+          unit: 'unit',
+          value: 1,
+        },
+      },
+      count: 1,
+      countMax: 1,
+      dayOfWeek: ['mon'],
+      duration: 1,
+      durationMax: 1,
+      durationUnit: 'a',
+      extension: [
+        {
+          url: 'url',
+          valueString: 'value',
+        },
+      ],
+      id: 'id',
+      offset: 1,
+      period: 1,
+      periodMax: 1,
+      periodUnit: 'd',
+      timeOfDay: ['20:00:00'],
+    });
   });
 });

@@ -1,31 +1,22 @@
-import { ICoding, IElement, IExtension } from 'fhirtypes/dist/r4';
+import { ICoding, IElement } from 'fhirtypes/dist/r4';
 import { CodeableConcept } from '../../models';
-import { IElementBuilder } from '../base/element-builder.interface';
 import { IBuildable } from '../base/buildable.interface';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
 type PrimitiveExtensionFields = keyof Pick<CodeableConcept, UnderscoreKeys<CodeableConcept>>;
 
-interface ICodeableConceptBuilder extends IElementBuilder, IBuildable<CodeableConcept> {
+interface ICodeableConceptBuilder extends IBuildable<CodeableConcept> {
   addCoding(coding: ICoding): this;
   setText(text: string): this;
 }
 
-export class CodeableConceptBuilder implements ICodeableConceptBuilder {
+export class CodeableConceptBuilder extends ElementBuilder implements ICodeableConceptBuilder {
   private readonly codeableConcept: CodeableConcept;
 
   constructor() {
+    super();
     this.codeableConcept = new CodeableConcept();
-  }
-  setId(id: string): this {
-    this.codeableConcept.id = id;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.codeableConcept.extension = this.codeableConcept.extension || [];
-    this.codeableConcept.extension.push(extension);
-    return this;
   }
 
   /**
@@ -53,6 +44,6 @@ export class CodeableConceptBuilder implements ICodeableConceptBuilder {
   }
 
   build(): CodeableConcept {
-    return this.codeableConcept;
+    return Object.assign(this.codeableConcept, super.build());
   }
 }

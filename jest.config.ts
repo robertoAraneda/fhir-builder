@@ -8,7 +8,7 @@ export default {
   collectCoverage: true,
   collectCoverageFrom: ['./src/**'],
   coverageDirectory: 'coverage',
-  coverageReporters: ['text-summary', 'lcov', 'text', 'json', 'clover'],
+  coverageReporters: ['lcov', 'text', 'json', 'text-summary'],
   coveragePathIgnorePatterns: ['<rootDir>/src/tests', '<rootDir>/src/library'],
   coverageThreshold: {
     global: {

@@ -1,12 +1,12 @@
-import { IElement, IExtension } from 'fhirtypes/dist/r4';
+import { IElement } from 'fhirtypes/dist/r4';
 import { Coding } from '../../models';
-import { IElementBuilder } from '../base/element-builder.interface';
 import { IBuildable } from '../base/buildable.interface';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
 type PrimitiveExtensionFields = keyof Pick<Coding, UnderscoreKeys<Coding>>;
 
-interface ICodingBuilder extends IElementBuilder, IBuildable<Coding> {
+interface ICodingBuilder extends IBuildable<Coding> {
   setSystem(value: string): this;
   setVersion(value: string): this;
   setCode(value: string): this;
@@ -18,22 +18,12 @@ interface ICodingBuilder extends IElementBuilder, IBuildable<Coding> {
  * @description Coding builder
  *
  */
-export class CodingBuilder implements ICodingBuilder {
+export class CodingBuilder extends ElementBuilder implements ICodingBuilder {
   private readonly coding: Coding;
 
   constructor() {
+    super();
     this.coding = new Coding();
-  }
-
-  setId(id: string): this {
-    this.coding.id = id;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.coding.extension = this.coding.extension || [];
-    this.coding.extension.push(extension);
-    return this;
   }
 
   /**
@@ -101,6 +91,6 @@ export class CodingBuilder implements ICodingBuilder {
    * @returns {Coding} The coding
    */
   build(): Coding {
-    return this.coding;
+    return Object.assign(this.coding, super.build());
   }
 }

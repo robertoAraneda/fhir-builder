@@ -1,7 +1,6 @@
 import { IElement, IMeta, IResource } from 'fhirtypes/dist/r4';
-import { Buildable } from './buildable.model';
 
-export abstract class Resource extends Buildable<any> implements IResource {
+export abstract class Resource implements IResource {
   id?: string;
 
   language?: string;

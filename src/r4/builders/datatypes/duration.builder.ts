@@ -1,12 +1,12 @@
-import { IElementBuilder } from '../base/element-builder.interface';
 import { IBuildable } from '../base/buildable.interface';
 import { Duration } from '../../models';
-import { IElement, IExtension, QuantityComparatorType } from 'fhirtypes/dist/r4';
+import { IElement, QuantityComparatorType } from 'fhirtypes/dist/r4';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
 type PrimitiveExtensionFields = keyof Pick<Duration, UnderscoreKeys<Duration>>;
 
-interface IDurationBuilder extends IElementBuilder, IBuildable<Duration> {
+interface IDurationBuilder extends IBuildable<Duration> {
   setCode(value: string): this;
   setSystem(value: string): this;
   setUnit(value: string): this;
@@ -14,22 +14,12 @@ interface IDurationBuilder extends IElementBuilder, IBuildable<Duration> {
   setComparator(value: QuantityComparatorType): this;
 }
 
-export class DurationBuilder implements IDurationBuilder {
+export class DurationBuilder extends ElementBuilder implements IDurationBuilder {
   private readonly duration: Duration;
 
   constructor() {
+    super();
     this.duration = new Duration();
-  }
-
-  setId(id: string): this {
-    this.duration.id = id;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.duration.extension = this.duration.extension || [];
-    this.duration.extension.push(extension);
-    return this;
   }
 
   addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
@@ -38,7 +28,7 @@ export class DurationBuilder implements IDurationBuilder {
   }
 
   build(): Duration {
-    return this.duration;
+    return Object.assign(this.duration, super.build());
   }
 
   setCode(value: string): this {

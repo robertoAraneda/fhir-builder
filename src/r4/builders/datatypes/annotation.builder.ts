@@ -1,7 +1,6 @@
 import { IBuildable } from '../base/buildable.interface';
 import { Annotation } from '../../models';
-import { IAnnotation, IElement, IExtension, IReference } from 'fhirtypes/dist/r4';
-import { IElementBuilder } from '../base/element-builder.interface';
+import { IAnnotation, IElement, IReference } from 'fhirtypes/dist/r4';
 import { ElementBuilder } from '../base/element.builder';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
 
@@ -9,7 +8,7 @@ type PrimitiveExtensionFields = keyof Pick<IAnnotation, UnderscoreKeys<IAnnotati
 type ExtractAuthor<T> = Extract<{ [K in keyof T]: K extends `author${string}` ? K : never }[keyof T], keyof T>;
 type ExtractAuthorType = keyof Pick<IAnnotation, ExtractAuthor<IAnnotation>>;
 
-interface IAnnotationBuilder extends IElementBuilder, IBuildable<Annotation> {
+interface IAnnotationBuilder extends IBuildable<Annotation> {
   setAuthor<T extends ExtractAuthorType>(type: T, value: T extends 'authorReference' ? IReference : string): this;
   setTime(time: string): this;
   setText(text: string): this;
@@ -21,11 +20,6 @@ export class AnnotationBuilder extends ElementBuilder implements IAnnotationBuil
   constructor() {
     super();
     this.annotation = new Annotation();
-  }
-
-  setId(id: string): this {
-    this.annotation.id = id;
-    return this;
   }
 
   setAuthor<T extends ExtractAuthorType>(type: T, value: T extends 'authorReference' ? IReference : string): this {
@@ -48,12 +42,6 @@ export class AnnotationBuilder extends ElementBuilder implements IAnnotationBuil
     return this;
   }
 
-  addExtension(extension: IExtension): this {
-    this.annotation.extension = this.annotation.extension || [];
-    this.annotation.extension.push(extension);
-    return this;
-  }
-
   /**
    * @description Add a primitive extension to the element
    * @param param
@@ -65,6 +53,6 @@ export class AnnotationBuilder extends ElementBuilder implements IAnnotationBuil
   }
 
   build(): Annotation {
-    return this.annotation;
+    return Object.assign(this.annotation, super.build());
   }
 }

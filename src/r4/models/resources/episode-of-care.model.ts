@@ -11,7 +11,6 @@ import {
 } from 'fhirtypes/dist/r4';
 import { DomainResource } from '../base/domain-resource.model';
 import { ConformanceValidator } from '../../../core/r4/validators/base';
-import { EpisodeOfCareBuilder } from '../../builders';
 import { IValidatable } from '../base/validatable.interface';
 import { ISerializable } from '../base/serializable.interface';
 
@@ -49,13 +48,6 @@ export class EpisodeOfCare extends DomainResource implements IEpisodeOfCare, IVa
     return ConformanceValidator(this, 'EpisodeOfCare');
   }
 
-  // TODO: refactor this to use the builder pattern
-  static builderFromJson(json: unknown | string): EpisodeOfCareBuilder {
-    const episodeOfCare = json as EpisodeOfCare;
-    const episodeOfCareBuilder = new EpisodeOfCareBuilder();
-    return episodeOfCareBuilder.fromJSON(episodeOfCare);
-  }
-
   constructor(args?: IEpisodeOfCare) {
     super();
     if (args) Object.assign(this, args);
@@ -63,9 +55,5 @@ export class EpisodeOfCare extends DomainResource implements IEpisodeOfCare, IVa
 
   serialize(): string {
     return JSON.stringify(this.toJson());
-  }
-
-  protected builderInstance(): EpisodeOfCareBuilder {
-    return new EpisodeOfCareBuilder();
   }
 }

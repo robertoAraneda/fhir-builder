@@ -1,12 +1,12 @@
-import { IElement, IExtension, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
+import { IElement, IPeriod, NameUseType } from 'fhirtypes/dist/r4';
 import { HumanName } from '../../models';
-import { IElementBuilder } from '../base/element-builder.interface';
 import { IBuildable } from '../base/buildable.interface';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
 type PrimitiveExtensionFields = keyof Pick<HumanName, UnderscoreKeys<HumanName>>;
 
-interface IHumanNameBuilder extends IElementBuilder, IBuildable<HumanName> {
+interface IHumanNameBuilder extends IBuildable<HumanName> {
   setUse(value: NameUseType): this;
   setText(value: string): this;
   setFamily(value: string): this;
@@ -21,22 +21,12 @@ interface IHumanNameBuilder extends IElementBuilder, IBuildable<HumanName> {
   setPeriod(value: IPeriod): this;
 }
 
-export class HumanNameBuilder implements IHumanNameBuilder {
+export class HumanNameBuilder extends ElementBuilder implements IHumanNameBuilder {
   private readonly humanName: HumanName;
 
   constructor() {
+    super();
     this.humanName = new HumanName();
-  }
-
-  setId(id: string): this {
-    this.humanName.id = id;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.humanName.extension = this.humanName.extension || [];
-    this.humanName.extension.push(extension);
-    return this;
   }
 
   addPrimitiveExtension<T extends PrimitiveExtensionFields>(
@@ -97,6 +87,6 @@ export class HumanNameBuilder implements IHumanNameBuilder {
   }
 
   build(): HumanName {
-    return this.humanName;
+    return Object.assign(this.humanName, super.build());
   }
 }

@@ -24,6 +24,6 @@ export class ResourceBuilder implements IResourceBuilder {
   }
 
   build(): IResource {
-    return this.resource;
+    return JSON.parse(JSON.stringify(this.resource));
   }
 }

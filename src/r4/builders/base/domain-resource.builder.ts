@@ -32,6 +32,6 @@ export class DomainResourceBuilder extends ResourceBuilder implements IDomainRes
   }
 
   build(): IDomainResource {
-    return Object.assign(this.domainResource, super.build());
+    return JSON.parse(JSON.stringify(Object.assign(this.domainResource, super.build())));
   }
 }

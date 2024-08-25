@@ -1,12 +1,12 @@
-import { IElement, IExtension } from 'fhirtypes/dist/r4';
+import { IElement } from 'fhirtypes/dist/r4';
 import { Period } from '../../models';
-import { IElementBuilder } from '../base/element-builder.interface';
 import { IBuildable } from '../base/buildable.interface';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
 type PrimitiveExtensionFields = keyof Pick<Period, UnderscoreKeys<Period>>;
 
-interface IPeriodBuilder extends IElementBuilder, IBuildable<Period> {
+interface IPeriodBuilder extends IBuildable<Period> {
   setStart(value: string): this;
   setEnd(value: string): this;
 }
@@ -14,21 +14,12 @@ interface IPeriodBuilder extends IElementBuilder, IBuildable<Period> {
 /**
  * @description Class to build a Period instance with the builder pattern
  */
-export class PeriodBuilder implements IPeriodBuilder {
+export class PeriodBuilder extends ElementBuilder implements IPeriodBuilder {
   private readonly period: Period;
 
   constructor() {
+    super();
     this.period = new Period();
-  }
-  setId(id: string): this {
-    this.period.id = id;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.period.extension = this.period.extension || [];
-    this.period.extension.push(extension);
-    return this;
   }
 
   /**
@@ -70,6 +61,6 @@ export class PeriodBuilder implements IPeriodBuilder {
    * @returns The built Period instance
    */
   build(): Period {
-    return this.period;
+    return Object.assign(this.period, super.build());
   }
 }

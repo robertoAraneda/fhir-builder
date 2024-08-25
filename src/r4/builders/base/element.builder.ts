@@ -39,6 +39,6 @@ export class ElementBuilder implements IElementBuilder {
    * @description Returns the element
    */
   build(): IElement {
-    return this.element;
+    return JSON.parse(JSON.stringify(this.element));
   }
 }

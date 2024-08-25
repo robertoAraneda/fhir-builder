@@ -92,12 +92,6 @@ export class ServiceRequest extends DomainResource implements IServiceRequest, I
     return ConformanceValidator(this, 'ServiceRequest');
   }
 
-  static builderFromJson(data: unknown): ServiceRequestBuilder {
-    const serviceRequest = data as ServiceRequest;
-    const serviceRequestBuilder = new ServiceRequestBuilder();
-    return serviceRequestBuilder.fromJSON(serviceRequest);
-  }
-
   constructor(args?: IServiceRequest) {
     super();
     if (args) Object.assign(this, args);

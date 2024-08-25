@@ -13,7 +13,6 @@ import {
   IPatientLink,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { PatientBuilder } from '../../builders';
 import { ConformanceValidator } from '../../../core/r4/validators/base';
 import { DomainResource } from '../base/domain-resource.model';
 import { IValidatable } from '../base/validatable.interface';
@@ -73,20 +72,9 @@ export class Patient extends DomainResource implements IPatient, IValidatable, I
     return ConformanceValidator(this, 'Patient');
   }
 
-  // TODO: refactor this to use the builder pattern
-  static builderFromJson(json: unknown | string): PatientBuilder {
-    const patient = json as Patient;
-    const patientBuilder = new PatientBuilder();
-    return patientBuilder.fromJSON(patient);
-  }
-
   constructor(args?: IPatient) {
     super();
     if (args) Object.assign(this, args);
-  }
-
-  protected builderInstance(): PatientBuilder {
-    return new PatientBuilder();
   }
 
   serialize(): string {

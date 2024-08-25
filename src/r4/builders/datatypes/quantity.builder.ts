@@ -1,12 +1,12 @@
-import { IElement, IExtension, QuantityComparatorType } from 'fhirtypes/dist/r4';
+import { IElement, QuantityComparatorType } from 'fhirtypes/dist/r4';
 import { Quantity } from '../../models';
-import { IElementBuilder } from '../base/element-builder.interface';
 import { IBuildable } from '../base/buildable.interface';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
 type PrimitiveExtensionFields = keyof Pick<Quantity, UnderscoreKeys<Quantity>>;
 
-interface IQuantityBuilder extends IElementBuilder, IBuildable<Quantity> {
+interface IQuantityBuilder extends IBuildable<Quantity> {
   setCode(value: string): this;
   setSystem(value: string): this;
   setUnit(value: string): this;
@@ -14,22 +14,12 @@ interface IQuantityBuilder extends IElementBuilder, IBuildable<Quantity> {
   setComparator(value: QuantityComparatorType): this;
 }
 
-export class QuantityBuilder implements IQuantityBuilder {
+export class QuantityBuilder extends ElementBuilder implements IQuantityBuilder {
   private readonly quantity: Quantity;
 
   constructor() {
+    super();
     this.quantity = new Quantity();
-  }
-
-  setId(id: string): this {
-    this.quantity.id = id;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.quantity.extension = this.quantity.extension || [];
-    this.quantity.extension.push(extension);
-    return this;
   }
 
   addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
@@ -39,7 +29,7 @@ export class QuantityBuilder implements IQuantityBuilder {
   }
 
   build(): Quantity {
-    return this.quantity;
+    return Object.assign(this.quantity, super.build());
   }
 
   setCode(value: string): this {

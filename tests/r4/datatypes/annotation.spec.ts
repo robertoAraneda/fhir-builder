@@ -75,6 +75,7 @@ describe('Annotation FHIR R4', () => {
           },
         ],
       })
+      .setAuthor('authorReference', { display: 'author' })
       .setId('123')
       .setText('test')
       .build();
@@ -93,6 +94,9 @@ describe('Annotation FHIR R4', () => {
             valueDateTime: '2030-06-02T12:00:00.000Z',
           },
         ],
+      },
+      authorReference: {
+        display: 'author',
       },
       id: '123',
       text: 'test',

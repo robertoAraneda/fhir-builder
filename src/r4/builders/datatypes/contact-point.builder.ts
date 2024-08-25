@@ -1,12 +1,12 @@
-import { ContactPointSystemType, ContactPointUseType, IElement, IExtension, IPeriod } from 'fhirtypes/dist/r4';
+import { ContactPointSystemType, ContactPointUseType, IElement, IPeriod } from 'fhirtypes/dist/r4';
 import { ContactPoint } from '../../models';
-import { IElementBuilder } from '../base/element-builder.interface';
 import { IBuildable } from '../base/buildable.interface';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
 type PrimitiveExtensionFields = keyof Pick<ContactPoint, UnderscoreKeys<ContactPoint>>;
 
-interface IContactPointBuilder extends IElementBuilder, IBuildable<ContactPoint> {
+interface IContactPointBuilder extends IBuildable<ContactPoint> {
   setSystem(value: ContactPointSystemType): this;
   setValue(value: string): this;
   setUse(value: ContactPointUseType): this;
@@ -14,22 +14,12 @@ interface IContactPointBuilder extends IElementBuilder, IBuildable<ContactPoint>
   setPeriod(value: IPeriod): this;
 }
 
-export class ContactPointBuilder implements IContactPointBuilder {
+export class ContactPointBuilder extends ElementBuilder implements IContactPointBuilder {
   private readonly contactPoint: ContactPoint;
 
   constructor() {
+    super();
     this.contactPoint = new ContactPoint();
-  }
-
-  setId(id: string): this {
-    this.contactPoint.id = id;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.contactPoint.extension = this.contactPoint.extension || [];
-    this.contactPoint.extension.push(extension);
-    return this;
   }
 
   /**
@@ -104,6 +94,6 @@ export class ContactPointBuilder implements IContactPointBuilder {
    * @description Build a ContactPoint
    */
   build(): ContactPoint {
-    return this.contactPoint;
+    return Object.assign(this.contactPoint, super.build());
   }
 }

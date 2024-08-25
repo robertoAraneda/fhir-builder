@@ -62,6 +62,10 @@ describe('CodeableConcept FHIR R4', () => {
     const item = new CodeableConceptBuilder()
       .setId('123')
       .setText('test')
+      .addCoding({
+        code: '123',
+        display: 'test',
+      })
       .addPrimitiveExtension('_text', {
         extension: [
           {
@@ -78,7 +82,7 @@ describe('CodeableConcept FHIR R4', () => {
     const { isValid } = item.validate();
     expect(isValid).toBeTruthy();
 
-    expect(item).toEqual({
+    expect(item.toJson()).toEqual({
       _text: {
         extension: [
           {
@@ -87,6 +91,12 @@ describe('CodeableConcept FHIR R4', () => {
           },
         ],
       },
+      coding: [
+        {
+          code: '123',
+          display: 'test',
+        },
+      ],
       id: '123',
       text: 'test',
     });

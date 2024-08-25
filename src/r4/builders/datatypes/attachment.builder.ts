@@ -1,12 +1,12 @@
-import { IAttachment, IElement, IExtension } from 'fhirtypes/dist/r4';
+import { IAttachment, IElement } from 'fhirtypes/dist/r4';
 import { Attachment } from '../../models';
-import { IElementBuilder } from '../base/element-builder.interface';
 import { IBuildable } from '../base/buildable.interface';
 import { UnderscoreKeys } from '../base/resource-type-map.interface';
+import { ElementBuilder } from '../base/element.builder';
 
 type PrimitiveExtensionFields = keyof Pick<IAttachment, UnderscoreKeys<IAttachment>>;
 
-interface IAttachmentBuilder extends IElementBuilder, IBuildable<Attachment> {
+interface IAttachmentBuilder extends IBuildable<Attachment> {
   setContentType(contentType: string): this;
   setLanguage(language: string): this;
   setData(data: string): this;
@@ -17,22 +17,12 @@ interface IAttachmentBuilder extends IElementBuilder, IBuildable<Attachment> {
   setSize(size: number): this;
 }
 
-export class AttachmentBuilder implements IAttachmentBuilder {
+export class AttachmentBuilder extends ElementBuilder implements IAttachmentBuilder {
   private readonly attachment: Attachment;
 
   constructor() {
+    super();
     this.attachment = new Attachment();
-  }
-
-  setId(id: string): this {
-    this.attachment.id = id;
-    return this;
-  }
-
-  addExtension(extension: IExtension): this {
-    this.attachment.extension = this.attachment.extension || [];
-    this.attachment.extension.push(extension);
-    return this;
   }
 
   addPrimitiveExtension(param: PrimitiveExtensionFields, extension: IElement): this {
@@ -81,6 +71,6 @@ export class AttachmentBuilder implements IAttachmentBuilder {
   }
 
   build(): Attachment {
-    return this.attachment;
+    return Object.assign(this.attachment, super.build());
   }
 }
