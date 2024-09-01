@@ -39,7 +39,7 @@ describe('Address FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const results = ConformanceValidator(item, 'Address');
+    const results = ConformanceValidator('Address', item);
     expect(results.isValid).toBeFalsy();
   });
 
@@ -49,7 +49,7 @@ describe('Address FHIR R4', () => {
       line: 'not an array', // wrong property
     };
 
-    const results = ConformanceValidator(item, 'Address');
+    const results = ConformanceValidator('Address', item);
     expect(results.isValid).toBeFalsy();
   });
 
@@ -59,7 +59,7 @@ describe('Address FHIR R4', () => {
       use: 'invalid code',
     };
 
-    const results = ConformanceValidator(item, 'Address');
+    const results = ConformanceValidator('Address', item);
     expect(results.isValid).toBeFalsy();
   });
 
@@ -69,7 +69,7 @@ describe('Address FHIR R4', () => {
       type: 'invalid code',
     };
 
-    const results = ConformanceValidator(item, 'Address');
+    const results = ConformanceValidator('Address', item);
     expect(results.isValid).toBeFalsy();
   });
 
@@ -136,7 +136,7 @@ describe('Address FHIR R4', () => {
       },
     };
 
-    const result = ConformanceValidator(item, 'Address');
+    const result = ConformanceValidator('Address', item);
     expect(result.isValid).toBeFalsy();
     expect(result.operationOutcome).toEqual({
       issue: [

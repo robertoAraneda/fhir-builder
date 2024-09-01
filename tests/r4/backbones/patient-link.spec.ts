@@ -32,7 +32,7 @@ describe('PatientLink FHIR R4', () => {
       type: 'replaced-by',
     };
 
-    const { isValid } = ConformanceValidator(item, 'PatientLink');
+    const { isValid } = ConformanceValidator('PatientLink', item);
     expect(isValid).toBeTruthy();
   });
 
@@ -86,7 +86,7 @@ describe('PatientLink FHIR R4', () => {
       wrongProperty: 'wrongProperty',
     };
 
-    const { isValid, operationOutcome } = ConformanceValidator(item, 'PatientLink');
+    const { isValid, operationOutcome } = ConformanceValidator('PatientLink', item);
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({
       issue: [

@@ -28,7 +28,7 @@ describe('Coding FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { operationOutcome } = ConformanceValidator(item, 'Coding');
+    const { operationOutcome } = ConformanceValidator('Coding', item);
 
     expect(operationOutcome).toEqual({
       issue: [

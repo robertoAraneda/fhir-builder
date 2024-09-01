@@ -5,7 +5,7 @@ import {
   validateObject,
   ValidateReferenceFormat,
   validateRequiredFieldByDefinition,
-} from '../../src/core/r4/validators/base/base.validator';
+} from '../../src/core/r4/validators/base/BaseValidator';
 import { InvalidFieldException } from '../../src/core/commons/exceptions/invalid-field.exception';
 import { RequiredException } from '../../src/core/commons/exceptions/required.exception';
 import { contextR4 } from '../../src';

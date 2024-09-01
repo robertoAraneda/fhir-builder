@@ -22,7 +22,7 @@ describe('Narrative FHIR R4', () => {
       status: 'generated',
     };
 
-    const { isValid } = ConformanceValidator(item, 'Narrative');
+    const { isValid } = ConformanceValidator('Narrative', item);
     expect(isValid).toBeTruthy();
   });
 
@@ -33,7 +33,7 @@ describe('Narrative FHIR R4', () => {
       // not status attribute
     };
 
-    const { isValid, operationOutcome } = ConformanceValidator(item, 'Narrative');
+    const { isValid, operationOutcome } = ConformanceValidator('Narrative', item);
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({
       issue: [
