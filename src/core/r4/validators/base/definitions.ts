@@ -57,7 +57,7 @@ export function createBackboneDefinition<T extends IBackboneElement>(
 }
 
 interface IResourceDefinition extends IDomainResource {
-  resourceType?: ResourceType;
+  resourceType?: string;
 }
 
 export function createResourceDefinition<T extends IResourceDefinition>(
@@ -126,7 +126,7 @@ export function createResourceDefinition<T extends IResourceDefinition>(
     },
     {
       name: 'resourceType',
-      type: 'code',
+      type: 'string',
       isRequired: false,
       isArray: false,
     },

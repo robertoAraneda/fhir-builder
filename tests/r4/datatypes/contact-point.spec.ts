@@ -35,7 +35,7 @@ describe('ContactPoint FHIR R4', () => {
       use: 'home',
     };
 
-    const result = ConformanceValidator(item, 'ContactPoint');
+    const result = ConformanceValidator('ContactPoint', item);
     expect(result.isValid).toBeTruthy();
   });
 
@@ -49,7 +49,7 @@ describe('ContactPoint FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const result = ConformanceValidator(item, 'ContactPoint');
+    const result = ConformanceValidator('ContactPoint', item);
     expect(result.isValid).toBeFalsy();
     // TODO: expect(result.errors).toEqual([])
     expect(result.operationOutcome).toEqual({

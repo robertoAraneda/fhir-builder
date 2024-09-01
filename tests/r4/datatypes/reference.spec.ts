@@ -126,7 +126,11 @@ describe('Reference FHIR R4', () => {
             id: 'test',
             url: 'test',
             valueString: 'test',
-            extension: [],
+            extension: [
+              {
+                url: 'test',
+              },
+            ],
           },
         ],
       },
@@ -156,7 +160,11 @@ describe('Reference FHIR R4', () => {
             id: 'test',
             url: 'test',
             valueString: 'test',
-            extension: [],
+            extension: [
+              {
+                url: 'test',
+              },
+            ],
           },
         ],
       },
@@ -186,7 +194,11 @@ describe('Reference FHIR R4', () => {
             id: 'test',
             url: 'test',
             valueString: 'test',
-            extension: [],
+            extension: [
+              {
+                url: 'test',
+              },
+            ],
           },
         ],
       },
@@ -216,7 +228,7 @@ describe('Reference FHIR R4', () => {
       wrongProperty: 'wrongProperty', // wrong property
     };
 
-    const { isValid, operationOutcome } = ConformanceValidator(item, 'Reference');
+    const { isValid, operationOutcome } = ConformanceValidator('Reference', item);
     expect(isValid).toBeFalsy();
 
     expect(operationOutcome).toEqual({

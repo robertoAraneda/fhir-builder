@@ -1,6 +1,8 @@
-export { BaseValidator } from './base.validator';
-export { ConformanceValidator } from './conformance.validator';
+export { BackbonesValidator } from './BackbonesValidator';
+export { BaseValidator } from './BaseValidator';
+export { ConformanceValidator } from './ConformanceValidator';
+export { DatatypesValidator } from './DatatypesValidator';
+export { ModelValidator } from './ModelValidator';
+export { PrimitivesValidator } from './PrimitivesValidator';
+export { ResourcesValidator } from './ResourcesValidator';
 export { InternalValidator } from './internal.validator';
-export { InternalPrimitiveValidator } from './internal-primitive.validator';
-export { ModelValidator } from './model.validator';
-export { ResourceValidator } from './resource.validator';

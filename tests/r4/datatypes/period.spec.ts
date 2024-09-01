@@ -87,7 +87,7 @@ describe('Period FHIR R4', () => {
       notExist: 'not exist',
     };
 
-    const { isValid, operationOutcome } = ConformanceValidator(item, 'Period');
+    const { isValid, operationOutcome } = ConformanceValidator('Period', item);
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({
       issue: [
@@ -109,7 +109,7 @@ describe('Period FHIR R4', () => {
       end: 'wrong date', // wrong date
     };
 
-    const { isValid, operationOutcome } = ConformanceValidator(item, 'Period');
+    const { isValid, operationOutcome } = ConformanceValidator('Period', item);
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({
       issue: [
@@ -131,7 +131,7 @@ describe('Period FHIR R4', () => {
       end: '2019-01-01', // wrong date
     };
 
-    const { isValid, operationOutcome } = ConformanceValidator(item, 'Period');
+    const { isValid, operationOutcome } = ConformanceValidator('Period', item);
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({
       issue: [

@@ -41,7 +41,7 @@ describe('Identifier FHIR R4', () => {
       },
     };
 
-    const { isValid, operationOutcome } = ConformanceValidator(item, 'Identifier');
+    const { isValid, operationOutcome } = ConformanceValidator('Identifier', item);
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({
       issue: [
@@ -72,7 +72,7 @@ describe('Identifier FHIR R4', () => {
       },
     };
 
-    const { operationOutcome, isValid } = ConformanceValidator(item, 'Identifier');
+    const { operationOutcome, isValid } = ConformanceValidator('Identifier', item);
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({
       issue: [
@@ -104,7 +104,7 @@ describe('Identifier FHIR R4', () => {
       wrongProperty: 'wrongProperty', // wrong property
     };
 
-    const { isValid, operationOutcome } = ConformanceValidator(item, 'Identifier');
+    const { isValid, operationOutcome } = ConformanceValidator('Identifier', item);
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({
       issue: [

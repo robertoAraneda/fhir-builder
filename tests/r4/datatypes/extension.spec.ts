@@ -26,7 +26,7 @@ describe('Extension FHIR R4', () => {
     };
 
     expect(item).toBeDefined();
-    const { isValid } = ConformanceValidator(item, 'Extension');
+    const { isValid } = ConformanceValidator('Extension', item);
     expect(isValid).toBeTruthy();
   });
 
@@ -35,10 +35,14 @@ describe('Extension FHIR R4', () => {
       id: '123',
       url: 'url',
       valueBoolean: true,
-      extension: [], // extra property
+      extension: [
+        {
+          url: 'test',
+        },
+      ], // extra property
     };
 
-    const { operationOutcome, isValid } = ConformanceValidator(item, 'Extension');
+    const { operationOutcome, isValid } = ConformanceValidator('Extension', item);
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({
       issue: [
@@ -61,7 +65,7 @@ describe('Extension FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { operationOutcome, isValid } = ConformanceValidator(item, 'Extension');
+    const { operationOutcome, isValid } = ConformanceValidator('Extension', item);
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({
       issue: [
@@ -91,7 +95,7 @@ describe('Extension FHIR R4', () => {
 
     expect(item).toBeDefined();
 
-    const { operationOutcome, isValid } = ConformanceValidator(item, 'Extension');
+    const { operationOutcome, isValid } = ConformanceValidator('Extension', item);
     expect(isValid).toBeTruthy();
     expect(item).toBeInstanceOf(Extension);
 

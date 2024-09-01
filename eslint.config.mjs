@@ -22,7 +22,7 @@ export default tseslint.config({
       project: true,
     },
   },
-  ignores: ['**/node_modules/**', '**/library/**'],
+  ignores: ['**/node_modules/**', '**/library/**', "**/tests/**"],
   plugins: {
     '@typescript-eslint': tseslint.plugin,
     jest: jestPlugin,

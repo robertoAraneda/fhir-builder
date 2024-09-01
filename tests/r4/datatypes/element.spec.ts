@@ -13,7 +13,7 @@ describe('Element FHIR R4', () => {
       ],
     };
 
-    const { isValid } = ConformanceValidator(item, 'Element');
+    const { isValid } = ConformanceValidator('Element', item);
     expect(isValid).toBeTruthy();
   });
 
@@ -23,7 +23,7 @@ describe('Element FHIR R4', () => {
       wrongProperty: 'wrong',
     };
 
-    const { operationOutcome } = ConformanceValidator(item, 'Element');
+    const { operationOutcome } = ConformanceValidator('Element', item);
     expect(operationOutcome).toEqual({
       issue: [
         {
@@ -49,7 +49,7 @@ describe('Element FHIR R4', () => {
       ],
     };
 
-    const { operationOutcome } = ConformanceValidator(item, 'Element');
+    const { operationOutcome } = ConformanceValidator('Element', item);
     expect(operationOutcome).toEqual({
       issue: [
         {

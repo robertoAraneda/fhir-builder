@@ -38,7 +38,7 @@ describe('PatientCommunication FHIR R4', () => {
       },
     };
 
-    const { isValid } = ConformanceValidator(item, 'PatientCommunication');
+    const { isValid } = ConformanceValidator('PatientCommunication', item);
     expect(isValid).toBeTruthy();
   });
 
@@ -116,7 +116,7 @@ describe('PatientCommunication FHIR R4', () => {
       wrongProperty: 'wrongProperty',
     };
 
-    const { isValid, operationOutcome } = ConformanceValidator(item, 'PatientCommunication');
+    const { isValid, operationOutcome } = ConformanceValidator('PatientCommunication', item);
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({
       issue: [

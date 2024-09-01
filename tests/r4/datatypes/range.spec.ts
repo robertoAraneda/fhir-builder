@@ -44,7 +44,7 @@ describe('Annotation FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { operationOutcome } = ConformanceValidator(item, 'Range');
+    const { operationOutcome } = ConformanceValidator('Range', item);
     expect(operationOutcome).toEqual({
       issue: [
         {

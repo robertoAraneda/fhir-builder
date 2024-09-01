@@ -1,3 +1,9 @@
-export { EpisodeOfCareBuilder } from './episode-of-care.builder';
-export { PatientBuilder } from './patient.builder';
-export { ServiceRequestBuilder } from './service-request.builder';
+export { AllergyIntoleranceBuilder } from './AllergyIntoleranceBuilder';
+export { BundleBuilder } from './BundleBuilder';
+export { CareTeamBuilder } from './CareTeamBuilder';
+export { CoverageBuilder } from './CoverageBuilder';
+export { EpisodeOfCareBuilder } from './EpisodeOfCareBuilder';
+export { ObservationBuilder } from './ObservationBuilder';
+export { PatientBuilder } from './PatientBuilder';
+export { ProcedureBuilder } from './ProcedureBuilder';
+export { ServiceRequestBuilder } from './ServiceRequestBuilder';

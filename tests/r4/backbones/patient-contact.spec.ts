@@ -45,7 +45,7 @@ describe('PatientContact FHIR R4', () => {
       },
     };
 
-    const { isValid } = ConformanceValidator(item, 'PatientContact');
+    const { isValid } = ConformanceValidator('PatientContact', item);
     expect(isValid).toBeTruthy();
   });
 
@@ -113,7 +113,7 @@ describe('PatientContact FHIR R4', () => {
       wrongProperty: 'wrongProperty',
     };
 
-    const { isValid, operationOutcome } = ConformanceValidator(item, 'PatientContact');
+    const { isValid, operationOutcome } = ConformanceValidator('PatientContact', item);
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({
       issue: [

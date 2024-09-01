@@ -32,11 +32,12 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "fhirtypes": "^1.14.0",
+    "fhirtypes": "^1.19.4",
     "yaml": "^2.5.0"
   },
   "peerDependencies": {
-    "fhirtypes": "^1.14.0"
+    "fhirtypes": "^1.19.4",
+    "yaml": "^2.5.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.4.0",

@@ -49,7 +49,7 @@ describe('HumanName FHIR R4', () => {
       },
     };
 
-    const { isValid } = ConformanceValidator(item, 'HumanName');
+    const { isValid } = ConformanceValidator('HumanName', item);
     expect(isValid).toBeTruthy();
   });
 
@@ -72,7 +72,7 @@ describe('HumanName FHIR R4', () => {
       },
     };
 
-    const { operationOutcome, isValid } = ConformanceValidator(item, 'HumanName');
+    const { operationOutcome, isValid } = ConformanceValidator('HumanName', item);
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({
       issue: [

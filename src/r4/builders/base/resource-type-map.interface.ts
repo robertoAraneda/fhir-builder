@@ -11,6 +11,7 @@ import {
   IPractitionerRole,
   IRelatedPerson,
 } from 'fhirtypes/dist/r4';
+import { AttributeDefinition } from '../../../core/r4/validators/base/definitions';
 
 export interface ResourceTypeMap {
   Account: IAccount;
@@ -164,5 +165,31 @@ export type ResourceType = keyof ResourceTypeMap;
 export type ResourceValue<T extends keyof ResourceTypeMap> = ResourceTypeMap[T];
 export type ResourceTypesValues = ResourceTypeMap[keyof ResourceTypeMap];
 
+type IsArray<T> = T extends Array<any> ? T : never;
+type ExtractUnderscoreArrayKeys<T> = {
+  [K in keyof T]: K extends `_${string}` ? (IsArray<T[K]> extends never ? never : K) : never;
+}[keyof T];
+export type PickUnderscoreArrayProperties<T> = Pick<T, ExtractUnderscoreArrayKeys<T>>;
+
 export type NonUnderscoreKeys<T> = Extract<{ [K in keyof T]: K extends `_${string}` ? never : K }[keyof T], keyof T>;
 export type UnderscoreKeys<T> = Extract<{ [K in keyof T]: K extends `_${string}` ? K : never }[keyof T], keyof T>;
+
+type NonFunctionKeys<T> = {
+  [K in keyof T]: T[K] extends (...args: any[]) => any ? never : K;
+}[keyof T];
+
+function getNonFunctionKeys<T extends object>(obj: T): NonFunctionKeys<T>[] {
+  return Object.keys(obj).filter((key) => typeof obj[key as keyof T] !== 'function') as NonFunctionKeys<T>[];
+}
+
+export function validateFields<T extends object>(modelFields: readonly AttributeDefinition<T>[], instance: any): void {
+  const fieldsFromArray = modelFields.map((field) => field.name) as string[];
+
+  const fieldsFromModel = getNonFunctionKeys(instance);
+
+  const missingFields = fieldsFromModel.filter((field) => !fieldsFromArray.includes(field));
+
+  if (missingFields.length > 0) {
+    throw new Error(`Missing fields from model ${instance.constructor.name}: ${missingFields.join(', ')}`);
+  }
+}

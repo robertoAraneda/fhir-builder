@@ -33,7 +33,7 @@ describe('Annotation FHIR R4', () => {
       },
     };
 
-    const { isValid } = ConformanceValidator(item, 'Annotation');
+    const { isValid } = ConformanceValidator('Annotation', item);
     expect(isValid).toBeTruthy();
   });
 
@@ -47,7 +47,7 @@ describe('Annotation FHIR R4', () => {
       },
     };
 
-    const { isValid, operationOutcome } = ConformanceValidator(item, 'Annotation');
+    const { isValid, operationOutcome } = ConformanceValidator('Annotation', item);
 
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({

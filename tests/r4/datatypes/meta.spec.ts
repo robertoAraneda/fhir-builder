@@ -41,7 +41,7 @@ describe('Meta FHIR R4', () => {
       versionId: 'test',
     };
 
-    const { isValid } = ConformanceValidator(item, 'Meta');
+    const { isValid } = ConformanceValidator('Meta', item);
     expect(isValid).toBeTruthy();
   });
 
@@ -61,7 +61,7 @@ describe('Meta FHIR R4', () => {
       wrongProperty: 'test', // wrong property
     };
 
-    const { isValid, operationOutcome } = ConformanceValidator(item, 'Meta');
+    const { isValid, operationOutcome } = ConformanceValidator('Meta', item);
     expect(isValid).toBeFalsy();
     expect(operationOutcome).toEqual({
       issue: [

@@ -1,3 +1,9 @@
-export { EpisodeOfCareValidator } from './episode-of-care.validator';
-export { PatientValidator } from './patient.validator';
-export { ServiceRequestValidator } from './service-request.validator';
+export { AllergyIntoleranceValidator } from './AllergyIntoleranceValidator';
+export { BundleValidator } from './BundleValidator';
+export { CareTeamValidator } from './CareTeamValidator';
+export { CoverageValidator } from './CoverageValidator';
+export { EpisodeOfCareValidator } from './EpisodeOfCareValidator';
+export { ObservationValidator } from './ObservationValidator';
+export { PatientValidator } from './PatientValidator';
+export { ProcedureValidator } from './ProcedureValidator';
+export { ServiceRequestValidator } from './ServiceRequestValidator';

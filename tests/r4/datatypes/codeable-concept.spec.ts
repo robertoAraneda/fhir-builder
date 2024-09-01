@@ -42,7 +42,7 @@ describe('CodeableConcept FHIR R4', () => {
       test: 'test', // wrong property
     };
 
-    const { operationOutcome } = ConformanceValidator(item, 'CodeableConcept');
+    const { operationOutcome } = ConformanceValidator('CodeableConcept', item);
     expect(operationOutcome).toEqual({
       issue: [
         {
