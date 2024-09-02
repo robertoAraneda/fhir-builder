@@ -12,6 +12,18 @@
   <img alt="NPM Downloads" src="https://img.shields.io/npm/dw/fhirbuilder">
 </p>
 
+## Available Resources
+
+- [Patient](https://www.hl7.org/fhir/r4/patient.html)
+- [ServiceRequest](https://www.hl7.org/fhir/r4/servicerequest.html)
+- [Bundle](https://www.hl7.org/fhir/r4/bundle.html)
+- [Organization](https://www.hl7.org/fhir/r4/organization.html)
+- [Coverage](https://www.hl7.org/fhir/r4/coverage.html)
+- [Procedure](https://www.hl7.org/fhir/r4/procedure.html)
+- [EpisodeOfCare](https://www.hl7.org/fhir/r4/episodeofcare.html)
+- [Observation](https://www.hl7.org/fhir/r4/observation.html)
+- [AllergyIntolerance](https://www.hl7.org/fhir/r4/allerfyintolerance.html)
+
 ## Install
 
 ```shell

@@ -12,6 +12,7 @@ export { EpisodeOfCareDiagnosisValidator } from './EpisodeOfCareDiagnosisValidat
 export { EpisodeOfCareStatusHistoryValidator } from './EpisodeOfCareStatusHistoryValidator';
 export { ObservationComponentValidator } from './ObservationComponentValidator';
 export { ObservationReferenceRangeValidator } from './ObservationReferenceRangeValidator';
+export { OrganizationContactValidator } from './OrganizationContactValidator';
 export { PatientCommunicationValidator } from './PatientCommunicationValidator';
 export { PatientContactValidator } from './PatientContactValidator';
 export { PatientLinkValidator } from './PatientLinkValidator';

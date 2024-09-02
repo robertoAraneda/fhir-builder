@@ -12,6 +12,7 @@ export { EpisodeOfCareDiagnosis } from './EpisodeOfCareDiagnosis';
 export { EpisodeOfCareStatusHistory } from './EpisodeOfCareStatusHistory';
 export { ObservationComponent } from './ObservationComponent';
 export { ObservationReferenceRange } from './ObservationReferenceRange';
+export { OrganizationContact } from './OrganizationContact';
 export { PatientCommunication } from './PatientCommunication';
 export { PatientContact } from './PatientContact';
 export { PatientLink } from './PatientLink';

@@ -4,6 +4,7 @@ export { CareTeamBuilder } from './CareTeamBuilder';
 export { CoverageBuilder } from './CoverageBuilder';
 export { EpisodeOfCareBuilder } from './EpisodeOfCareBuilder';
 export { ObservationBuilder } from './ObservationBuilder';
+export { OrganizationBuilder } from './OrganizationBuilder';
 export { PatientBuilder } from './PatientBuilder';
 export { ProcedureBuilder } from './ProcedureBuilder';
 export { ServiceRequestBuilder } from './ServiceRequestBuilder';
