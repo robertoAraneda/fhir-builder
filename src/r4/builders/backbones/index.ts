@@ -12,6 +12,7 @@ export { EpisodeOfCareDiagnosisBuilder } from './EpisodeOfCareDiagnosisBuilder';
 export { EpisodeOfCareStatusHistoryBuilder } from './EpisodeOfCareStatusHistoryBuilder';
 export { ObservationComponentBuilder } from './ObservationComponentBuilder';
 export { ObservationReferenceRangeBuilder } from './ObservationReferenceRangeBuilder';
+export { OrganizationContactBuilder } from './OrganizationContactBuilder';
 export { PatientCommunicationBuilder } from './PatientCommunicationBuilder';
 export { PatientContactBuilder } from './PatientContactBuilder';
 export { PatientLinkBuilder } from './PatientLinkBuilder';

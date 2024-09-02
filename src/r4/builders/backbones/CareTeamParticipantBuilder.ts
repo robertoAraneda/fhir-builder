@@ -32,17 +32,6 @@ export class CareTeamParticipantBuilder extends BackboneBuilder implements ICare
   }
 
   /**
-   * @description Sets the resource type to CareTeamParticipant
-   * @param json - the json to parse
-   * @returns {this}
-   */
-  fromJSON(json: unknown): this {
-    const incomingData = typeof json === 'string' ? JSON.parse(json) : json;
-    Object.assign(this.careTeamParticipant, incomingData);
-    return this;
-  }
-
-  /**
    * @description Builds the model
    * @returns {CareTeamParticipant}
    */

@@ -6,6 +6,7 @@ import {
   CoverageValidator,
   EpisodeOfCareValidator,
   ObservationValidator,
+  OrganizationValidator,
   PatientValidator,
   ProcedureValidator,
 } from '../resources';
@@ -21,6 +22,7 @@ type ResourceType =
   | 'AllergyIntolerance'
   | 'Bundle'
   | 'CareTeam'
+  | 'Organization'
   | 'Observation';
 
 export const InternalResourceValidator: Record<
@@ -36,6 +38,7 @@ export const InternalResourceValidator: Record<
   CareTeam: CareTeamValidator,
   Observation: ObservationValidator,
   Procedure: ProcedureValidator,
+  Organization: OrganizationValidator,
 };
 
 const createConformanceValidator =
@@ -56,4 +59,5 @@ export const ResourcesValidator: Record<
   ProcedureValidator: createConformanceValidator('Procedure'),
   AllergyIntoleranceValidator: createConformanceValidator('AllergyIntolerance'),
   CareTeamValidator: createConformanceValidator('CareTeam'),
+  OrganizationValidator: createConformanceValidator('Organization'),
 };

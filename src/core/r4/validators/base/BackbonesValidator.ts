@@ -29,4 +29,5 @@ export const BackbonesValidator: Record<
   ObservationReferenceRange: BackboneValidators.ObservationReferenceRangeValidator,
   ProcedureFocalDevice: BackboneValidators.ProcedureFocalDeviceValidator,
   ProcedurePerformer: BackboneValidators.ProcedurePerformerValidator,
+  OrganizationContact: BackboneValidators.OrganizationContactValidator,
 };
