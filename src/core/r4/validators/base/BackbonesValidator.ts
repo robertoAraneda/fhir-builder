@@ -30,4 +30,7 @@ export const BackbonesValidator: Record<
   ProcedureFocalDevice: BackboneValidators.ProcedureFocalDeviceValidator,
   ProcedurePerformer: BackboneValidators.ProcedurePerformerValidator,
   OrganizationContact: BackboneValidators.OrganizationContactValidator,
+  HealthcareServiceAvailableTime: BackboneValidators.HealthcareServiceAvailableTimeValidator,
+  HealthcareServiceEligibility: BackboneValidators.HealthcareServiceEligibilityValidator,
+  HealthcareServiceNotAvailable: BackboneValidators.HealthcareServiceNotAvailableValidator,
 };

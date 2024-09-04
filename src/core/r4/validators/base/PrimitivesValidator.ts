@@ -18,11 +18,20 @@ const Base64BinaryValidator = (value: string, path: string, errors: IOperationOu
   }
 };
 
-const BooleanValidator = (value: string, path: string) => {
+const BooleanValidator = (value: string, path: string, errors: IOperationOutcomeIssue[]) => {
   // regex for ^true|false$
   const regex = /^true|false$/;
   if (!regex.test(value)) {
-    throw new Error(`Invalid boolean: ${value} at path: ${path}`);
+    errors.push(
+      new OperationOutcomeIssueException({
+        severity: 'error',
+        code: 'invalid',
+        diagnostics: `Invalid boolean`,
+        details: {
+          text: `Path: ${path}. Value: ${value}`,
+        },
+      }),
+    );
   }
 };
 

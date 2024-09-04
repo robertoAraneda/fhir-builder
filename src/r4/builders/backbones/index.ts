@@ -10,6 +10,9 @@ export { CoverageCostToBeneficiaryBuilder } from './CoverageCostToBeneficiaryBui
 export { CoverageExceptionBuilder } from './CoverageExceptionBuilder';
 export { EpisodeOfCareDiagnosisBuilder } from './EpisodeOfCareDiagnosisBuilder';
 export { EpisodeOfCareStatusHistoryBuilder } from './EpisodeOfCareStatusHistoryBuilder';
+export { HealthcareServiceAvailableTimeBuilder } from './HealthcareServiceAvailableTimeBuilder';
+export { HealthcareServiceEligibilityBuilder } from './HealthcareServiceEligibilityBuilder';
+export { HealthcareServiceNotAvailableBuilder } from './HealthcareServiceNotAvailableBuilder';
 export { ObservationComponentBuilder } from './ObservationComponentBuilder';
 export { ObservationReferenceRangeBuilder } from './ObservationReferenceRangeBuilder';
 export { OrganizationContactBuilder } from './OrganizationContactBuilder';

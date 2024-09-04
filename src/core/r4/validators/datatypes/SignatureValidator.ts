@@ -1,4 +1,4 @@
-import { createResourceDefinition } from '../base/definitions';
+import { createDatatypeDefinition } from '../base/definitions';
 import { ISignature, IOperationOutcomeIssue } from 'fhirtypes/dist/r4';
 import { ModelValidator } from '../base';
 import { AssertModelFieldsMatchAttributes } from '../../../commons/utils';
@@ -7,7 +7,7 @@ import { Signature } from '../../../../r4/models';
 /**
  * @description The model fields for the Signature model
  */
-const modelFields = createResourceDefinition<ISignature>([
+const modelFields = createDatatypeDefinition<ISignature>([
   { name: 'type', type: 'Coding', isArray: true, isRequired: true },
   { name: 'when', type: 'instant', isArray: false, isRequired: true },
   { name: '_when', type: 'Element', isArray: false, isRequired: false },

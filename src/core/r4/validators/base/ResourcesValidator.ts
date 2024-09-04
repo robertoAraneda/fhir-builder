@@ -1,53 +1,34 @@
 import { ConformanceValidator } from './ConformanceValidator';
-import {
-  AllergyIntoleranceValidator,
-  BundleValidator,
-  CareTeamValidator,
-  CoverageValidator,
-  EpisodeOfCareValidator,
-  ObservationValidator,
-  OrganizationValidator,
-  PatientValidator,
-  ProcedureValidator,
-} from '../resources';
-import { ServiceRequestValidator } from '../resources';
+import * as resources from '../resources';
 import { IOperationOutcome, IOperationOutcomeIssue } from 'fhirtypes/dist/r4';
 
-type ResourceType =
-  | 'Patient'
-  | 'EpisodeOfCare'
-  | 'ServiceRequest'
-  | 'Coverage'
-  | 'Procedure'
-  | 'AllergyIntolerance'
-  | 'Bundle'
-  | 'CareTeam'
-  | 'Organization'
-  | 'Observation';
+type RemoveValidatorSuffix<T extends string> = T extends `${infer U}Validator` ? U : T;
+type ValidatorTypes = RemoveValidatorSuffix<keyof typeof resources>;
 
 export const InternalResourceValidator: Record<
-  ResourceType,
+  ValidatorTypes,
   (dataToValidate: any, path: string, errors: IOperationOutcomeIssue[]) => void
 > = {
-  Patient: PatientValidator,
-  EpisodeOfCare: EpisodeOfCareValidator,
-  ServiceRequest: ServiceRequestValidator,
-  Coverage: CoverageValidator,
-  Bundle: BundleValidator,
-  AllergyIntolerance: AllergyIntoleranceValidator,
-  CareTeam: CareTeamValidator,
-  Observation: ObservationValidator,
-  Procedure: ProcedureValidator,
-  Organization: OrganizationValidator,
+  Patient: resources.PatientValidator,
+  EpisodeOfCare: resources.EpisodeOfCareValidator,
+  ServiceRequest: resources.ServiceRequestValidator,
+  Coverage: resources.CoverageValidator,
+  Bundle: resources.BundleValidator,
+  AllergyIntolerance: resources.AllergyIntoleranceValidator,
+  CareTeam: resources.CareTeamValidator,
+  Observation: resources.ObservationValidator,
+  Procedure: resources.ProcedureValidator,
+  Organization: resources.OrganizationValidator,
+  HealthcareService: resources.HealthcareServiceValidator,
 };
 
 const createConformanceValidator =
-  <T extends ResourceType>(resourceType: T) =>
+  <T extends ValidatorTypes>(resourceType: T) =>
   (args: unknown) =>
     ConformanceValidator(resourceType, args);
 
 export const ResourcesValidator: Record<
-  `${ResourceType}Validator`,
+  `${ValidatorTypes}Validator`,
   (args: unknown) => { isValid: boolean; operationOutcome: IOperationOutcome }
 > = {
   PatientValidator: createConformanceValidator('Patient'),
@@ -60,4 +41,5 @@ export const ResourcesValidator: Record<
   AllergyIntoleranceValidator: createConformanceValidator('AllergyIntolerance'),
   CareTeamValidator: createConformanceValidator('CareTeam'),
   OrganizationValidator: createConformanceValidator('Organization'),
+  HealthcareServiceValidator: createConformanceValidator('HealthcareService'),
 };

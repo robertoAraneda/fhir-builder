@@ -7,7 +7,6 @@ import { ConformanceValidator } from '../../../core/r4/validators/base';
  * @version R4 (v4.0.1)
  * @summary FHIR® Specification by HL7®
  * @description Class for Signature Resource
- * @property {string} resourceType
  * @property {ICoding[]} type
  * @property {string} when
  * @property {IElement} _when
