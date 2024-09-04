@@ -3,6 +3,7 @@ export { BundleValidator } from './BundleValidator';
 export { CareTeamValidator } from './CareTeamValidator';
 export { CoverageValidator } from './CoverageValidator';
 export { EpisodeOfCareValidator } from './EpisodeOfCareValidator';
+export { HealthcareServiceValidator } from './HealthcareServiceValidator';
 export { ObservationValidator } from './ObservationValidator';
 export { OrganizationValidator } from './OrganizationValidator';
 export { PatientValidator } from './PatientValidator';

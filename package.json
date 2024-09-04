@@ -32,11 +32,11 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "fhirtypes": "^1.19.4",
+    "fhirtypes": "^1.20.1",
     "yaml": "^2.5.0"
   },
   "peerDependencies": {
-    "fhirtypes": "^1.19.4",
+    "fhirtypes": "^1.20.1",
     "yaml": "^2.5.0"
   },
   "devDependencies": {

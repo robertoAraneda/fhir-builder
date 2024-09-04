@@ -10,6 +10,9 @@ export { CoverageCostToBeneficiaryValidator } from './CoverageCostToBeneficiaryV
 export { CoverageExceptionValidator } from './CoverageExceptionValidator';
 export { EpisodeOfCareDiagnosisValidator } from './EpisodeOfCareDiagnosisValidator';
 export { EpisodeOfCareStatusHistoryValidator } from './EpisodeOfCareStatusHistoryValidator';
+export { HealthcareServiceAvailableTimeValidator } from './HealthcareServiceAvailableTimeValidator';
+export { HealthcareServiceEligibilityValidator } from './HealthcareServiceEligibilityValidator';
+export { HealthcareServiceNotAvailableValidator } from './HealthcareServiceNotAvailableValidator';
 export { ObservationComponentValidator } from './ObservationComponentValidator';
 export { ObservationReferenceRangeValidator } from './ObservationReferenceRangeValidator';
 export { OrganizationContactValidator } from './OrganizationContactValidator';
