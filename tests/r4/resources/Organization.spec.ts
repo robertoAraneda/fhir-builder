@@ -365,19 +365,24 @@ describe('OrganizationValidator', () => {
   });
 
   it('should validate organization with name', () => {
-    const organization: IOrganization = { name: 'Test Organization' };
+    const organization: IOrganization = { name: 'Test Organization', resourceType: 'Organization' };
     OrganizationValidator(organization, 'Organization', errors);
     expect(errors.length).toBe(0);
   });
 
   it('should validate organization with identifier', () => {
-    const organization: IOrganization = { identifier: [{ system: 'http://example.com', value: '12345' }] };
+    const organization: IOrganization = {
+      identifier: [{ system: 'http://example.com', value: '12345' }],
+      resourceType: 'Organization',
+    };
     OrganizationValidator(organization, 'Organization', errors);
     expect(errors.length).toBe(0);
   });
 
   it('should add error if organization has no name or identifier', () => {
-    const organization: IOrganization = {};
+    const organization: IOrganization = {
+      resourceType: 'Organization',
+    };
     OrganizationValidator(organization, 'Organization', errors);
     expect(errors.length).toBe(1);
     expect(errors[0]).toBeInstanceOf(OperationOutcomeIssueException);
@@ -385,7 +390,11 @@ describe('OrganizationValidator', () => {
   });
 
   it('should add error if organization address has use "home"', () => {
-    const organization: IOrganization = { address: [{ use: 'home' }], name: 'Test Organization' };
+    const organization: IOrganization = {
+      address: [{ use: 'home' }],
+      name: 'Test Organization',
+      resourceType: 'Organization',
+    };
     OrganizationValidator(organization, 'Organization', errors);
     expect(errors.length).toBe(1);
     expect(errors[0]).toBeInstanceOf(OperationOutcomeIssueException);
@@ -393,7 +402,11 @@ describe('OrganizationValidator', () => {
   });
 
   it('should add error if organization telecom has use "home"', () => {
-    const organization: IOrganization = { telecom: [{ use: 'home' }], name: 'Test Organization' };
+    const organization: IOrganization = {
+      telecom: [{ use: 'home' }],
+      name: 'Test Organization',
+      resourceType: 'Organization',
+    };
     OrganizationValidator(organization, 'Organization', errors);
     expect(errors.length).toBe(1);
     expect(errors[0]).toBeInstanceOf(OperationOutcomeIssueException);
@@ -402,6 +415,7 @@ describe('OrganizationValidator', () => {
 
   it('should validate organization with valid address and telecom', () => {
     const organization: IOrganization = {
+      resourceType: 'Organization',
       address: [{ use: 'work' }],
       telecom: [{ use: 'work' }],
       name: 'Test Organization',

@@ -127,7 +127,7 @@ export function createResourceDefinition<T extends IResourceDefinition>(
     {
       name: 'resourceType',
       type: 'string',
-      isRequired: false,
+      isRequired: true,
       isArray: false,
     },
   ]);

@@ -434,9 +434,7 @@ describe('HealthcareServiceValidator', () => {
   });
 
   it('should add error if HealthcareService has missing required fields', () => {
-    const healthcareService: IHealthcareService = {
-      resourceType: 'HealthcareService',
-    };
+    const healthcareService: IHealthcareService = {};
     HealthcareServiceValidator(healthcareService, 'HealthcareService', errors);
     expect(errors.length).toBeGreaterThan(0);
   });

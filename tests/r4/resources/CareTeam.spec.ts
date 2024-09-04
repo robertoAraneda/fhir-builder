@@ -212,6 +212,7 @@ describe('CareTeamValidator', () => {
 
   it('should validate CareTeam with all fields set correctly', () => {
     const careTeam: ICareTeam = {
+      resourceType: 'CareTeam',
       identifier: [{ system: 'http://example.com', value: '12345' }],
       status: 'active',
       name: 'Test Care Team',
@@ -254,7 +255,9 @@ describe('CareTeamValidator', () => {
   });
 
   it('should validate CareTeam with only required fields', () => {
-    const careTeam: ICareTeam = {};
+    const careTeam: ICareTeam = {
+      resourceType: 'CareTeam',
+    };
     CareTeamValidator(careTeam, 'CareTeam', errors);
     expect(errors.length).toBe(0);
   });
