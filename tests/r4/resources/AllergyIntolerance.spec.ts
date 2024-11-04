@@ -1,4 +1,3 @@
-import { AllergyIntolerance } from '../../../src/r4/models/resources/AllergyIntolerance';
 import {
   IIdentifier,
   ICodeableConcept,
@@ -15,8 +14,7 @@ import {
   IOperationOutcomeIssue,
   AllergyIntoleranceSeverityType,
 } from 'fhirtypes/dist/r4';
-import { AllergyIntoleranceBuilder } from '../../../src/r4/builders';
-import { AllergyIntoleranceReactionValidator } from '../../../src/core/r4/validators/backbones';
+import { AllergyIntolerance, AllergyIntoleranceBuilder, AllergyIntoleranceReactionValidator } from '../../../src/r4';
 
 describe('AllergyIntolerance', () => {
   it('should create an AllergyIntolerance with default values', () => {

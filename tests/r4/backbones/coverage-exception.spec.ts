@@ -1,10 +1,7 @@
-import { contextR4 } from '../../../src';
 import { ICodeableConcept, IOperationOutcomeIssue, IPeriod } from 'fhirtypes/dist/r4';
-import { CoverageExceptionValidator } from '../../../src/core/r4/validators/backbones';
+import { CoverageException, CoverageExceptionBuilder, CoverageExceptionValidator } from '../../../src/r4';
 
 describe('CoverageException FHIR R4', () => {
-  const { CoverageException, CoverageExceptionBuilder } = contextR4();
-
   describe('CoverageException Model', () => {
     it('should initialize with default values', () => {
       const exception = new CoverageException();

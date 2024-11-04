@@ -1,4 +1,4 @@
-import { EpisodeOfCareStatusHistoryCodeType, IElement, IPeriod } from 'fhirtypes/dist/r4';
+import { EpisodeOfCareStatusType, IElement, IPeriod } from 'fhirtypes/dist/r4';
 import { IEpisodeOfCareStatusHistory, IOperationOutcome } from 'fhirtypes/dist/r4';
 import { BackboneElement, IValidatable, ISerializable } from '../base';
 import { ConformanceValidator } from '../../../core/r4/validators/base';
@@ -19,7 +19,7 @@ export class EpisodeOfCareStatusHistory
   /**
    * @description planned | waitlist | active | onhold | finished | cancelled.
    */
-  status: EpisodeOfCareStatusHistoryCodeType;
+  status: EpisodeOfCareStatusType;
 
   /**
    * @description Extensions for status

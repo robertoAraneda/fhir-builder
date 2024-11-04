@@ -1,10 +1,7 @@
-import { contextR4 } from '../../../src';
 import { IPatientContact } from 'fhirtypes/dist/r4';
-import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { ConformanceValidator, PatientContact, PatientContactBuilder } from '../../../src/r4';
 
 describe('PatientContact FHIR R4', () => {
-  const { PatientContact, PatientContactBuilder } = contextR4();
-
   it('should be able to validate a new patient_contact [new PatientContact()]', async () => {
     const item = new PatientContact({
       id: '123',

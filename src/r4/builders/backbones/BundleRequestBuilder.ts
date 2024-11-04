@@ -1,7 +1,8 @@
-import { BundleEntryRequestMethodType, IElement } from 'fhirtypes/dist/r4';
+import { IElement } from 'fhirtypes/dist/r4';
 import { BundleRequest } from '../../models';
 import { BackboneBuilder, IBuildable } from '../base';
 import { ExtractUnderscoreKeys } from '../../../core/commons/utils';
+import { HTTPVerbType } from 'fhirtypes/dist/r4/types';
 
 // Extract the keys that start with an underscore
 type PrimitiveExtensionFields = ExtractUnderscoreKeys<BundleRequest>;
@@ -12,7 +13,7 @@ type PrimitiveExtensionFields = ExtractUnderscoreKeys<BundleRequest>;
  * @extends {IBuildable<BundleRequest>}
  */
 interface IBundleRequestBuilder extends IBuildable<BundleRequest> {
-  setMethod(value: BundleEntryRequestMethodType): this;
+  setMethod(value: HTTPVerbType): this;
   setUrl(value: string): this;
   setIfNoneMatch(value: string): this;
   setIfModifiedSince(value: string): this;
@@ -64,7 +65,7 @@ GET | HEAD | POST | PUT | DELETE | PATCH.
     * @param value - the value to set
     * @returns {this}
     */
-  setMethod(value: BundleEntryRequestMethodType): this {
+  setMethod(value: HTTPVerbType): this {
     this.bundleRequest.method = value;
     return this;
   }

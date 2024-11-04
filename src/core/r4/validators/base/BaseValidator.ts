@@ -1,18 +1,18 @@
 import { AttributeDefinition } from './definitions';
-import { IReference, ResourceType } from 'fhirtypes/dist/r4';
+import { IReference, ResourceTypesType } from 'fhirtypes/dist/r4';
 import { resourceListUtil } from '../../../commons/utils/resource-list.util';
 import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 import { PeriodValidator } from '../datatypes';
 import { OperationOutcomeIssueException } from '../../../commons/exceptions/operation-outcome.exception';
-import type { BackboneElementType, DatatypeType } from 'fhirtypes/dist/r4/types';
+import type { BackboneElementType, DataTypeType } from 'fhirtypes/dist/r4/types';
 import { DatatypesValidator } from './DatatypesValidator';
 import { PrimitivesValidator } from './PrimitivesValidator';
 import { InternalResourceValidator } from './ResourcesValidator';
 import { BackbonesValidator } from './BackbonesValidator';
 
 export type fhirR4Types =
-  | DatatypeType
-  | ResourceType
+  | DataTypeType
+  | ResourceTypesType
   | BackboneElementType
   // TODO - this is a placeholder for now
   | 'EpisodeOfCareStatusHistory'
@@ -288,7 +288,7 @@ export const validateObject = <T>(
  */
 export const ValidateReferenceFormat = (
   value: IReference | IReference[],
-  resources: (ResourceType | 'Any')[] | null = null,
+  resources: (ResourceTypesType | 'Any')[] | null = null,
   path: string,
   errors: ValidationError[],
 ): void => {
@@ -306,13 +306,13 @@ export const ValidateReferenceFormat = (
   if (!reference || !resources) return;
 
   // Determine the valid resource params-types
-  const internalResources: ResourceType[] = resources.includes('Any')
-    ? (resourceListUtil as ResourceType[])
-    : (resources as ResourceType[]);
+  const internalResources: ResourceTypesType[] = resources.includes('Any')
+    ? (resourceListUtil as ResourceTypesType[])
+    : (resources as ResourceTypesType[]);
 
   if (reference.includes('?')) {
     const [resourceType, ...query] = reference.split('?');
-    const resourceTypeForCheck = resourceType as ResourceType;
+    const resourceTypeForCheck = resourceType as ResourceTypesType;
 
     // Check if the resource type is allowed
     if (!internalResources.includes(resourceTypeForCheck)) {
@@ -364,7 +364,7 @@ export const ValidateReferenceFormat = (
       return;
     }
 
-    const resourceTypeForCheck = resourceType as ResourceType;
+    const resourceTypeForCheck = resourceType as ResourceTypesType;
 
     // Check if the resource type is allowed
     if (!internalResources.includes(resourceTypeForCheck)) {

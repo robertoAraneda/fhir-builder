@@ -1,9 +1,7 @@
-import { contextR4 } from '../../../src';
 import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { Address, AddressBuilder } from '../../../src/r4';
 
 describe('Address FHIR R4', () => {
-  const { Address, AddressBuilder } = contextR4();
-
   it('should be able create a new address [new Address()]', async () => {
     const item = new Address({
       id: '123',
@@ -95,7 +93,7 @@ describe('Address FHIR R4', () => {
 
     expect(item).toBeDefined();
     expect(item).toBeInstanceOf(Address);
-    expect(item).toEqual({
+    expect(item.toJson()).toEqual({
       _district: {
         extension: [
           {

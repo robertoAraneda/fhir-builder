@@ -1,9 +1,7 @@
-import { contextR4 } from '../../../src';
 import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { CodeableConcept, CodeableConceptBuilder } from '../../../src/r4';
 
 describe('CodeableConcept FHIR R4', () => {
-  const { CodeableConcept, CodeableConceptBuilder } = contextR4();
-
   it('should be able to create a new codeable_concept and validate with correct data [new CodeableConcept]', async () => {
     const item = new CodeableConcept({
       id: '123',

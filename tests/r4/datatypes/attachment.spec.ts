@@ -1,10 +1,7 @@
-import { contextR4 } from '../../../src';
 import { IAttachment } from 'fhirtypes/dist/r4';
-import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { Attachment, AttachmentBuilder, ConformanceValidator } from '../../../src/r4';
 
 describe('Attachment FHIR R4', () => {
-  const { Attachment, AttachmentBuilder } = contextR4();
-
   it('should be able to validate a new attachment [new Attachment()]', async () => {
     const item = new Attachment({
       id: '123',

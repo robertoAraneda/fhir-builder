@@ -1,10 +1,8 @@
-import { contextR4 } from '../../../src';
 import { EpisodeOfCareStatusEnum } from 'fhirtypes/dist/r4/enums';
 import { ICodeableConcept, IElement, IIdentifier, IPeriod, IReference } from 'fhirtypes/dist/r4';
+import { EpisodeOfCare, EpisodeOfCareBuilder, EpisodeOfCareValidator } from '../../../src/r4';
 
 describe('Patient FHIR R4', () => {
-  const { EpisodeOfCare, EpisodeOfCareValidator, EpisodeOfCareBuilder } = contextR4();
-
   it('should validate EpisodeOfCare', async () => {
     const item = new EpisodeOfCare({
       resourceType: 'EpisodeOfCare',
@@ -109,7 +107,7 @@ describe('Patient FHIR R4', () => {
       ],
     });
 
-    const { isValid } = EpisodeOfCareValidator(item);
+    const { isValid } = item.validate();
 
     expect(isValid).toBeTruthy();
   });

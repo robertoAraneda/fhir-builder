@@ -1,4 +1,4 @@
-import { BundleEntryRequestMethodType, IElement } from 'fhirtypes/dist/r4';
+import { HTTPVerbType, IElement } from 'fhirtypes/dist/r4';
 import { IBundleRequest, IOperationOutcome } from 'fhirtypes/dist/r4';
 import { BackboneElement, IValidatable, ISerializable } from '../base';
 import { ConformanceValidator } from '../../../core/r4/validators/base';
@@ -26,7 +26,7 @@ export class BundleRequest extends BackboneElement implements IBundleRequest, IV
    * @description In a transaction or batch, this is the HTTP action to be executed for this entry. In a history bundle, this indicates the HTTP action that occurred.
 GET | HEAD | POST | PUT | DELETE | PATCH.
    */
-  method: BundleEntryRequestMethodType;
+  method: HTTPVerbType;
 
   /**
    * @description Extensions for method

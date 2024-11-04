@@ -2,11 +2,11 @@ import { DatatypesValidator } from './DatatypesValidator';
 import { PrimitivesValidator } from './PrimitivesValidator';
 import { InternalResourceValidator } from './ResourcesValidator';
 import { BackbonesValidator } from './BackbonesValidator';
-import type { DatatypeType, ResourceType, BackboneElementType } from 'fhirtypes/dist/r4/types';
+import type { DataTypeType, ResourceTypesType, BackboneElementType } from 'fhirtypes/dist/r4/types';
 
 export type fhirR4Types =
-  | DatatypeType
-  | ResourceType
+  | DataTypeType
+  | ResourceTypesType
   | BackboneElementType
   // TODO - this is a placeholder for now
   | 'EpisodeOfCareStatusHistory'

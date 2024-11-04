@@ -1,8 +1,8 @@
-import { contextR4 } from '../../../src';
 import {
   IAge,
   IAnnotation,
   ICodeableConcept,
+  IOperationOutcomeIssue,
   IPeriod,
   IProcedure,
   IProcedureFocalDevice,
@@ -10,8 +10,7 @@ import {
   IRange,
   IReference,
 } from 'fhirtypes/dist/r4';
-
-const { Procedure, ProcedureBuilder, ProcedureValidator } = contextR4();
+import { Procedure, ProcedureBuilder, ProcedureValidator } from '../../../src/r4';
 
 describe('Procedure Examples FHIR R4', () => {
   it('General Procedure Example', () => {
@@ -1484,14 +1483,21 @@ describe('ProcedureBuilder', () => {
 });
 
 describe('ProcedureValidator', () => {
+  let errors: IOperationOutcomeIssue[];
+
+  beforeEach(() => {
+    errors = [];
+  });
+
   it('should validate a valid Procedure object', () => {
     const procedure: IProcedure = {
       resourceType: 'Procedure',
       status: 'completed',
       subject: { reference: 'Patient/123' },
     };
-    const { operationOutcome } = ProcedureValidator(procedure);
-    expect(operationOutcome.issue.length).toBe(0);
+
+    ProcedureValidator(procedure, 'Procedure', errors);
+    expect(errors.length).toBe(0);
   });
 
   it('should add an error if status is missing', () => {
@@ -1499,9 +1505,9 @@ describe('ProcedureValidator', () => {
       resourceType: 'Procedure',
       subject: { reference: 'Patient/123' },
     };
-    const { operationOutcome } = ProcedureValidator(procedure);
-    expect(operationOutcome.issue.length).toBeGreaterThan(0);
-    expect(operationOutcome.issue[0].details?.text).toContain('status');
+    ProcedureValidator(procedure as any, 'Procedure', errors);
+    expect(errors.length).toBeGreaterThan(0);
+    expect(errors[0].details?.text).toContain('status');
   });
 
   it('should add an error if subject is missing', () => {
@@ -1509,9 +1515,9 @@ describe('ProcedureValidator', () => {
       resourceType: 'Procedure',
       status: 'completed',
     };
-    const { operationOutcome } = ProcedureValidator(procedure);
-    expect(operationOutcome.issue.length).toBeGreaterThan(0);
-    expect(operationOutcome.issue[0].details?.text).toContain('subject');
+    ProcedureValidator(procedure as any, 'Procedure', errors);
+    expect(errors.length).toBeGreaterThan(0);
+    expect(errors[0].details?.text).toContain('subject');
   });
 
   it('should add an error if status is not a valid enum value', () => {
@@ -1520,9 +1526,9 @@ describe('ProcedureValidator', () => {
       status: 'invalid-status' as any,
       subject: { reference: 'Patient/123' },
     };
-    const { operationOutcome } = ProcedureValidator(procedure);
-    expect(operationOutcome.issue.length).toBeGreaterThan(0);
-    expect(operationOutcome.issue[0].details?.text).toContain('status');
+    ProcedureValidator(procedure, 'Procedure', errors);
+    expect(errors.length).toBeGreaterThan(0);
+    expect(errors[0].details?.text).toContain('status');
   });
 
   it('should add an error if basedOn reference type is invalid', () => {
@@ -1532,9 +1538,9 @@ describe('ProcedureValidator', () => {
       subject: { reference: 'Patient/123' },
       basedOn: [{ reference: 'InvalidReference/123' }],
     };
-    const { operationOutcome } = ProcedureValidator(procedure);
-    expect(operationOutcome.issue.length).toBeGreaterThan(0);
-    expect(operationOutcome.issue[0].details?.text).toContain('basedOn');
+    ProcedureValidator(procedure, 'Procedure', errors);
+    expect(errors.length).toBeGreaterThan(0);
+    expect(errors[0].details?.text).toContain('basedOn');
   });
 
   it('should add an error if partOf reference type is invalid', () => {
@@ -1544,9 +1550,10 @@ describe('ProcedureValidator', () => {
       subject: { reference: 'Patient/123' },
       partOf: [{ reference: 'InvalidReference/123' }],
     };
-    const { operationOutcome } = ProcedureValidator(procedure);
-    expect(operationOutcome.issue.length).toBeGreaterThan(0);
-    expect(operationOutcome.issue[0].details?.text).toContain('partOf');
+
+    ProcedureValidator(procedure, 'Procedure', errors);
+    expect(errors.length).toBeGreaterThan(0);
+    expect(errors[0].details?.text).toContain('partOf');
   });
 
   it('should add an error if performedDateTime is not a valid string', () => {
@@ -1556,8 +1563,8 @@ describe('ProcedureValidator', () => {
       subject: { reference: 'Patient/123' },
       performedDateTime: 'invalid-date',
     };
-    const { operationOutcome } = ProcedureValidator(procedure);
-    expect(operationOutcome.issue.length).toBeGreaterThan(0);
-    expect(operationOutcome.issue[0].details?.text).toContain('performedDateTime');
+    ProcedureValidator(procedure, 'Procedure', errors);
+    expect(errors.length).toBeGreaterThan(0);
+    expect(errors[0].details?.text).toContain('performedDateTime');
   });
 });

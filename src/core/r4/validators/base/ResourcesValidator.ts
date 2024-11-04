@@ -20,6 +20,9 @@ export const InternalResourceValidator: Record<
   Procedure: resources.ProcedureValidator,
   Organization: resources.OrganizationValidator,
   HealthcareService: resources.HealthcareServiceValidator,
+  Encounter: resources.EncounterValidator,
+  Questionnaire: resources.QuestionnaireValidator,
+  QuestionnaireResponse: resources.QuestionnaireResponseValidator,
 };
 
 const createConformanceValidator =
@@ -42,4 +45,7 @@ export const ResourcesValidator: Record<
   CareTeamValidator: createConformanceValidator('CareTeam'),
   OrganizationValidator: createConformanceValidator('Organization'),
   HealthcareServiceValidator: createConformanceValidator('HealthcareService'),
+  EncounterValidator: createConformanceValidator('Encounter'),
+  QuestionnaireValidator: createConformanceValidator('Questionnaire'),
+  QuestionnaireResponseValidator: createConformanceValidator('QuestionnaireResponse'),
 };

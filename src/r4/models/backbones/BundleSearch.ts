@@ -2,6 +2,7 @@ import { IElement } from 'fhirtypes/dist/r4';
 import { IBundleSearch, IOperationOutcome } from 'fhirtypes/dist/r4';
 import { BackboneElement, IValidatable, ISerializable } from '../base';
 import { ConformanceValidator } from '../../../core/r4/validators/base';
+import { SearchEntryModeType } from 'fhirtypes/dist/r4/types';
 
 /**
  * @version R4 (v4.0.1)
@@ -18,7 +19,7 @@ export class BundleSearch extends BackboneElement implements IBundleSearch, IVal
    * @description Why this entry is in the result set - whether it's included as a match or because of an _include requirement, or to convey information or warning information about the search process.
 match | include | outcome.
    */
-  mode?: string;
+  mode?: SearchEntryModeType;
 
   /**
    * @description Extensions for mode

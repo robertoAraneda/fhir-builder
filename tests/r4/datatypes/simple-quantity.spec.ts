@@ -1,9 +1,6 @@
-import { contextR4 } from '../../../src';
-import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { ConformanceValidator, SimpleQuantity, SimpleQuantityBuilder } from '../../../src/r4';
 
 describe('Annotation FHIR R4', () => {
-  const { SimpleQuantity, SimpleQuantityBuilder } = contextR4();
-
   it('should be able to create a new simple_quantity and validate with correct data [new SimpleQuantity]', async () => {
     const item = new SimpleQuantity({
       id: '123',

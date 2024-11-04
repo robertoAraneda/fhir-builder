@@ -1,10 +1,7 @@
-import { contextR4 } from '../../../src';
 import { IIdentifier } from 'fhirtypes/dist/r4';
-import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { ConformanceValidator, Identifier, IdentifierBuilder, PeriodBuilder } from '../../../src/r4';
 
 describe('Identifier FHIR R4', () => {
-  const { Identifier, PeriodBuilder, IdentifierBuilder } = contextR4();
-
   it('should be able to create a new identifier and validate with correct data [new Identifier()]', async () => {
     const item = new Identifier({
       id: '123',

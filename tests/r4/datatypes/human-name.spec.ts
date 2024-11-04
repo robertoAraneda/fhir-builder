@@ -1,10 +1,7 @@
-import { contextR4 } from '../../../src';
 import { IHumanName } from 'fhirtypes/dist/r4';
-import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { ConformanceValidator, HumanName, HumanNameBuilder } from '../../../src/r4';
 
 describe('HumanName FHIR R4', () => {
-  const { HumanName, HumanNameBuilder } = contextR4();
-
   it('should be able to create a new humanname and validate with correct data [new HumanName()]', async () => {
     const item = new HumanName({
       use: 'maiden',

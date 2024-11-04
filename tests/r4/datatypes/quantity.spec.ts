@@ -1,9 +1,6 @@
-import { contextR4 } from '../../../src';
 import { QuantityComparatorEnum } from 'fhirtypes/dist/r4/enums';
 import { IElement, IOperationOutcomeIssue, IQuantity } from 'fhirtypes/dist/r4';
-import { QuantityValidator } from '../../../src/core/r4/validators/datatypes';
-
-const { QuantityBuilder, Quantity } = contextR4();
+import { Quantity, QuantityBuilder, QuantityValidator } from '../../../src/r4';
 
 describe('Quantity', () => {
   describe('QuantityBuilder', () => {

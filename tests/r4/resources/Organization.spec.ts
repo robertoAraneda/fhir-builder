@@ -1,4 +1,3 @@
-import { contextR4 } from '../../../src';
 import {
   IAddress,
   ICodeableConcept,
@@ -10,8 +9,8 @@ import {
   IOrganizationContact,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { OrganizationBuilder } from '../../../src/r4/builders';
-import { Organization } from '../../../src/r4/models';
+import { OrganizationBuilder } from '../../../src/r4';
+import { Organization } from '../../../src/r4';
 import { OrganizationValidator } from '../../../src/core/r4/validators/resources';
 import { OperationOutcomeIssueException } from '../../../src/core/commons/exceptions/operation-outcome.exception';
 

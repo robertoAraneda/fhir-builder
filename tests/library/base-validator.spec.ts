@@ -8,11 +8,10 @@ import {
 } from '../../src/core/r4/validators/base/BaseValidator';
 import { InvalidFieldException } from '../../src/core/commons/exceptions/invalid-field.exception';
 import { RequiredException } from '../../src/core/commons/exceptions/required.exception';
-import { contextR4 } from '../../src';
+import { Patient } from '../../src/r4';
 
 describe('BaseValidator', () => {
   it('lib', () => {
-    const { Patient } = contextR4();
     const patient = new Patient();
     patient.name = [{ given: ['John'] }];
     expect(patient).toBeDefined();

@@ -1,9 +1,6 @@
-import { contextR4 } from '../../../src';
-import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { ConformanceValidator, Range, RangeBuilder } from '../../../src/r4';
 
 describe('Annotation FHIR R4', () => {
-  const { Range, RangeBuilder } = contextR4();
-
   it('should be able to create a new range and validate with correct data [new Range]', async () => {
     const item = new Range({
       id: '123',

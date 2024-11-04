@@ -1,10 +1,7 @@
-import { contextR4 } from '../../../src';
-import { ConformanceValidator } from '../../../src/core/r4/validators/base';
 import { IRepeat } from 'fhirtypes/dist/r4';
+import { ConformanceValidator, Repeat, RepeatBuilder } from '../../../src/r4';
 
-describe('Annotation FHIR R4', () => {
-  const { Repeat, RepeatBuilder } = contextR4();
-
+describe('Repeat FHIR R4', () => {
   it('should be able to create a new repeat and validate with correct data [new Repeat()]', async () => {
     const item = new Repeat({
       count: 1,

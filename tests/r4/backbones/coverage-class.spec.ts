@@ -1,11 +1,7 @@
-import { contextR4 } from '../../../src';
-import { ICodeableConcept, IElement, IOperationOutcomeIssue } from 'fhirtypes/dist/r4';
-import { ICoverageClass } from 'fhirtypes/dist/r4/backbones';
-import { CoverageClassValidator } from '../../../src/core/r4/validators/backbones';
+import { ICodeableConcept, IElement, IOperationOutcomeIssue, ICoverageClass } from 'fhirtypes/dist/r4';
+import { CoverageClass, CoverageClassBuilder, CoverageClassValidator } from '../../../src/r4';
 
 describe('CoverageClass FHIR R4', () => {
-  const { CoverageClass, CoverageClassBuilder } = contextR4();
-
   describe('CoverageClass', () => {
     it('should initialize with default values', () => {
       const coverageClass = new CoverageClass();

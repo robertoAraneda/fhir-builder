@@ -1,9 +1,9 @@
-import { contextR4 } from '../../../src';
 import {
   IAnnotation,
   ICodeableConcept,
   IExtension,
   IIdentifier,
+  IOperationOutcomeIssue,
   IPeriod,
   IQuantity,
   IRange,
@@ -12,7 +12,7 @@ import {
   IServiceRequest,
   ITiming,
 } from 'fhirtypes/dist/r4';
-const { ServiceRequest, ServiceRequestValidator, ServiceRequestBuilder } = contextR4(); // Set the R4 context
+import { ServiceRequest, ServiceRequestBuilder, ServiceRequestValidator } from '../../../src/r4';
 
 describe('Examples FHIR R4', () => {
   it('should create an instance', () => {
@@ -1056,12 +1056,17 @@ describe('ServiceRequestBuilder', () => {
         extension: [extension],
       })
       .build();
-    console.log(JSON.stringify(serviceRequest, null, 2));
     expect(serviceRequest._instantiatesUri?.[0].extension?.[0].valueString).toBe('test');
   });
 });
 
 describe('ServiceRequestValidator', () => {
+  let errors: IOperationOutcomeIssue[];
+
+  beforeEach(() => {
+    errors = [];
+  });
+
   it('should validate a valid ServiceRequest model', () => {
     const validServiceRequest: IServiceRequest = {
       resourceType: 'ServiceRequest',
@@ -1070,8 +1075,8 @@ describe('ServiceRequestValidator', () => {
       subject: { reference: 'Patient/123' },
     };
 
-    const { operationOutcome } = ServiceRequestValidator(validServiceRequest);
-    expect(operationOutcome.issue).toHaveLength(0);
+    ServiceRequestValidator(validServiceRequest, 'ServiceRequest', errors);
+    expect(errors).toHaveLength(0);
   });
 
   it('should invalidate a ServiceRequest model with missing required fields', () => {
@@ -1079,8 +1084,8 @@ describe('ServiceRequestValidator', () => {
       resourceType: 'ServiceRequest',
       status: 'active',
     };
-    const { operationOutcome } = ServiceRequestValidator(invalidServiceRequest);
-    expect(operationOutcome.issue).not.toHaveLength(0);
+    ServiceRequestValidator(invalidServiceRequest as any, 'ServiceRequest', errors);
+    expect(errors).not.toHaveLength(0);
   });
 
   it('should invalidate a ServiceRequest model with orderDetail but no code', () => {
@@ -1092,9 +1097,9 @@ describe('ServiceRequestValidator', () => {
       orderDetail: [{ text: 'Order Detail' }],
     };
 
-    const { operationOutcome } = ServiceRequestValidator(invalidServiceRequest);
-    expect(operationOutcome.issue).toHaveLength(1);
-    expect(operationOutcome.issue[0].details?.text).toContain('orderDetail');
+    ServiceRequestValidator(invalidServiceRequest, 'ServiceRequest', errors);
+    expect(errors).toHaveLength(1);
+    expect(errors[0].details?.text).toContain('orderDetail');
   });
 
   it('should invalidate a ServiceRequest model with invalid status', () => {
@@ -1105,8 +1110,8 @@ describe('ServiceRequestValidator', () => {
       subject: { reference: 'Patient/123' },
     };
 
-    const { operationOutcome } = ServiceRequestValidator(invalidServiceRequest);
-    expect(operationOutcome.issue).not.toHaveLength(0);
+    ServiceRequestValidator(invalidServiceRequest as any, 'ServiceRequest', errors);
+    expect(errors).not.toHaveLength(0);
   });
 
   it('should invalidate a ServiceRequest model with invalid intent', () => {
@@ -1117,7 +1122,7 @@ describe('ServiceRequestValidator', () => {
       subject: { reference: 'Patient/123' },
     };
 
-    const { operationOutcome } = ServiceRequestValidator(invalidServiceRequest);
-    expect(operationOutcome.issue).not.toHaveLength(0);
+    ServiceRequestValidator(invalidServiceRequest as any, 'ServiceRequest', errors);
+    expect(errors).not.toHaveLength(0);
   });
 });

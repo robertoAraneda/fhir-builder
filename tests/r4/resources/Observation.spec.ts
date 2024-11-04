@@ -1,7 +1,5 @@
-import { contextR4 } from '../../../src';
-import { IElement, IExtension, IReference, ObservationStatusType } from 'fhirtypes/dist/r4';
-
-const { Observation, ObservationBuilder, ObservationValidator } = contextR4();
+import { IElement, IExtension, IOperationOutcomeIssue, IReference, ObservationStatusType } from 'fhirtypes/dist/r4';
+import { Observation, ObservationBuilder, ObservationValidator } from '../../../src/r4';
 
 describe('Example from FHIR Website', () => {
   test('Real-world patient - glucose', () => {
@@ -1153,22 +1151,28 @@ describe('ObservationBuilder', () => {
   });
 });
 describe('ObservationValidator', () => {
+  let errors: IOperationOutcomeIssue[];
+
+  beforeEach(() => {
+    errors = [];
+  });
+
   it('should validate a valid Observation model', () => {
     const validObservation = {
       resourceType: 'Observation',
       status: 'final',
       code: { text: 'Blood Pressure' },
     };
-    const { operationOutcome } = ObservationValidator(validObservation);
-    expect(operationOutcome.issue).toHaveLength(0);
+    ObservationValidator(validObservation as any, 'Observation', errors);
+    expect(errors).toHaveLength(0);
   });
 
   it('should invalidate an Observation model with missing required fields', () => {
     const invalidObservation = {
       resourceType: 'Observation',
     };
-    const { operationOutcome } = ObservationValidator(invalidObservation);
-    expect(operationOutcome.issue).not.toHaveLength(0);
+    ObservationValidator(invalidObservation as any, 'Observation', errors);
+    expect(errors).not.toHaveLength(0);
   });
 
   it('should invalidate an Observation model with invalid status', () => {
@@ -1177,8 +1181,8 @@ describe('ObservationValidator', () => {
       status: 'invalid-status',
       code: { text: 'Blood Pressure' },
     };
-    const { operationOutcome } = ObservationValidator(invalidObservation);
-    expect(operationOutcome.issue).not.toHaveLength(0);
+    ObservationValidator(invalidObservation as any, 'Observation', errors);
+    expect(errors).not.toHaveLength(0);
   });
 
   it('should validate an Observation model with all fields', () => {
@@ -1190,8 +1194,8 @@ describe('ObservationValidator', () => {
       effectiveDateTime: '2023-10-01T00:00:00Z',
       performer: [{ reference: 'Practitioner/1' }],
     };
-    const { operationOutcome } = ObservationValidator(validObservation);
-    expect(operationOutcome.issue).toHaveLength(0);
+    ObservationValidator(validObservation as any, 'Observation', errors);
+    expect(errors).toHaveLength(0);
   });
 
   it('should invalidate an Observation model with invalid code', () => {
@@ -1200,7 +1204,7 @@ describe('ObservationValidator', () => {
       status: 'final',
       code: { text: '' },
     };
-    const { operationOutcome } = ObservationValidator(invalidObservation);
-    expect(operationOutcome.issue).not.toHaveLength(0);
+    ObservationValidator(invalidObservation as any, 'Observation', errors);
+    expect(errors).not.toHaveLength(0);
   });
 });

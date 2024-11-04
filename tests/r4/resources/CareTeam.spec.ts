@@ -11,9 +11,7 @@ import {
   IPeriod,
   IReference,
 } from 'fhirtypes/dist/r4';
-import { CareTeam } from '../../../src/r4/models';
-import { CareTeamBuilder } from '../../../src/r4/builders';
-import { CareTeamValidator } from '../../../src/core/r4/validators/resources';
+import { CareTeam, CareTeamBuilder, CareTeamValidator } from '../../../src/r4';
 
 describe('CareTeam', () => {
   it('should create a CareTeam with default values', () => {
