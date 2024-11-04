@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/robertoAraneda/fhir-builder/compare/v1.6.1...v1.7.0) (2024-11-04)
+
+
+### Features
+
+* add Questionnaire, QuestionnaireResponse, HealthcareService FHIR resources ([5a21465](https://github.com/robertoAraneda/fhir-builder/commit/5a2146514bac363d25b220850459afd5dd94165d))
+
 ## [1.6.1](https://github.com/robertoAraneda/fhir-builder/compare/v1.6.0...v1.6.1) (2024-11-04)
 
 
