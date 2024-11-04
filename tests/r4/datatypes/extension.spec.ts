@@ -1,10 +1,7 @@
-import { contextR4 } from '../../../src';
 import { IExtension } from 'fhirtypes/dist/r4';
-import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { ConformanceValidator, Extension, ExtensionBuilder } from '../../../src/r4';
 
 describe('Extension FHIR R4', () => {
-  const { Extension, ExtensionBuilder } = contextR4();
-
   it('should be able to create a new extension and validate with correct data [new Extension()]', async () => {
     const item = new Extension({
       id: '123',

@@ -2,6 +2,7 @@ import { IElement } from 'fhirtypes/dist/r4';
 import { BundleSearch } from '../../models';
 import { BackboneBuilder, IBuildable } from '../base';
 import { ExtractUnderscoreKeys } from '../../../core/commons/utils';
+import { SearchEntryModeType } from 'fhirtypes/dist/r4/types';
 
 // Extract the keys that start with an underscore
 type PrimitiveExtensionFields = ExtractUnderscoreKeys<BundleSearch>;
@@ -12,7 +13,7 @@ type PrimitiveExtensionFields = ExtractUnderscoreKeys<BundleSearch>;
  * @extends {IBuildable<BundleSearch>}
  */
 interface IBundleSearchBuilder extends IBuildable<BundleSearch> {
-  setMode(value: string): this;
+  setMode(value: SearchEntryModeType): this;
   setScore(value: number): this;
 }
 
@@ -60,7 +61,7 @@ match | include | outcome.
     * @param value - the value to set
     * @returns {this}
     */
-  setMode(value: string): this {
+  setMode(value: SearchEntryModeType): this {
     this.bundleSearch.mode = value;
     return this;
   }

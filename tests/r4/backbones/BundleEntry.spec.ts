@@ -1,4 +1,3 @@
-import { contextR4 } from '../../../src';
 import {
   IBundleEntry,
   IBundleLink,
@@ -9,10 +8,7 @@ import {
   IOperationOutcomeIssue,
   IResource,
 } from 'fhirtypes/dist/r4';
-import { BundleEntryBuilder } from '../../../src/r4/builders';
-import { BundleEntryValidator } from '../../../src/core/r4/validators/backbones';
-
-const { BundleEntry } = contextR4();
+import { BundleEntry, BundleEntryBuilder, BundleEntryValidator } from '../../../src/r4';
 
 describe('BundleEntry', () => {
   it('should initialize with default values', () => {

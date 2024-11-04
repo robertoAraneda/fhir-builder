@@ -1,8 +1,6 @@
-import { contextR4 } from '../../../src';
+import { Timing, TimingBuilder } from '../../../src/r4';
 
 describe('Timing FHIR R4', () => {
-  const { Timing, TimingBuilder } = contextR4();
-
   it('should be able to validate a new timing [new Timing()]', async () => {
     const item = new Timing({
       id: '123',

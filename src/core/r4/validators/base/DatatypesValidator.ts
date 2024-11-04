@@ -31,4 +31,6 @@ export const DatatypesValidator: Record<
   SimpleQuantity: DataTypeValidators.SimpleQuantityValidator,
   Money: DataTypeValidators.MoneyValidator,
   Signature: DataTypeValidators.SignatureValidator,
+  ContactDetail: DataTypeValidators.ContactDetailValidator,
+  UsageContext: DataTypeValidators.UsageContextValidator,
 };

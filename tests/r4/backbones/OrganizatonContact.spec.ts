@@ -1,4 +1,3 @@
-import { OrganizationContact } from '../../../src/r4/models/backbones/OrganizationContact';
 import {
   ICodeableConcept,
   IHumanName,
@@ -7,8 +6,7 @@ import {
   IOrganizationContact,
   IOperationOutcomeIssue,
 } from 'fhirtypes/dist/r4';
-import { OrganizationContactBuilder } from '../../../src/r4/builders';
-import { OrganizationContactValidator } from '../../../src/core/r4/validators/backbones';
+import { OrganizationContact, OrganizationContactBuilder, OrganizationContactValidator } from '../../../src/r4';
 
 describe('OrganizationContact', () => {
   it('should create an OrganizationContact with default values', () => {

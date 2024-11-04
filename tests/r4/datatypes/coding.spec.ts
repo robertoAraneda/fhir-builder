@@ -1,9 +1,7 @@
-import { contextR4 } from '../../../src';
 import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { Coding, CodingBuilder } from '../../../src/r4';
 
 describe('Coding FHIR R4', () => {
-  const { Coding, CodingBuilder } = contextR4();
-
   it('should be able to create a new coding and validate with correct data [new Coding()]', async () => {
     const item = new Coding({
       id: '123',

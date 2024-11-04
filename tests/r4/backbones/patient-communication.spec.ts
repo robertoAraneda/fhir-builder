@@ -1,10 +1,7 @@
-import { contextR4 } from '../../../src';
 import { IPatientCommunication } from 'fhirtypes/dist/r4';
-import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { ConformanceValidator, PatientCommunication, PatientCommunicationBuilder } from '../../../src/r4';
 
 describe('PatientCommunication FHIR R4', () => {
-  const { PatientCommunication, PatientCommunicationBuilder } = contextR4();
-
   it('should be able to validate a new patient_communication [new PatientCommunication()]', async () => {
     const item = new PatientCommunication({
       id: '123',

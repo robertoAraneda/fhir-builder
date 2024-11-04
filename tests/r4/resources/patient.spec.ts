@@ -1,4 +1,3 @@
-import { contextR4 } from '../../../src';
 import {
   IAddress,
   IAttachment,
@@ -7,6 +6,7 @@ import {
   IElement,
   IHumanName,
   IIdentifier,
+  IOperationOutcomeIssue,
   IPatient,
   IPatientCommunication,
   IPatientContact,
@@ -14,8 +14,7 @@ import {
   IReference,
 } from 'fhirtypes/dist/r4';
 import { AdministrativeGenderEnum } from 'fhirtypes/dist/r4/enums';
-
-const { Patient, PatientValidator, PatientBuilder } = contextR4();
+import { Patient, PatientBuilder, PatientValidator } from '../../../src/r4';
 
 describe('FHIR examples', () => {
   it('should be able to create a new patient and validate with correct data [new Patient()]', async () => {
@@ -226,8 +225,9 @@ describe('FHIR examples', () => {
       },
     };
 
-    const { isValid } = PatientValidator(item);
-    expect(isValid).toBeTruthy();
+    let errors: IOperationOutcomeIssue[] = [];
+    PatientValidator(item, 'Patient', errors);
+    expect(errors.length).toBe(0);
   });
 
   it('should be able to create a new patient and validate with correct data [Patient-example-f001-pieter.json]', async () => {
@@ -340,8 +340,9 @@ describe('FHIR examples', () => {
       },
     };
 
-    const { isValid } = PatientValidator(item);
-    expect(isValid).toBeTruthy();
+    let errors: IOperationOutcomeIssue[] = [];
+    PatientValidator(item, 'Patient', errors);
+    expect(errors.length).toBe(0);
   });
 
   it('should be able to create a new patient and validate with correct data [Example Patient/dicom]', async () => {
@@ -404,8 +405,9 @@ describe('FHIR examples', () => {
       },
     };
 
-    const { isValid } = PatientValidator(item);
-    expect(isValid).toBeTruthy();
+    let errors: IOperationOutcomeIssue[] = [];
+    PatientValidator(item, 'Patient', errors);
+    expect(errors.length).toBe(0);
   });
 
   it('should throw an error if patient resource not contain at least a contact details or a reference to an organization', async () => {
@@ -516,28 +518,27 @@ describe('FHIR examples', () => {
       ],
     };
 
-    const { isValid, operationOutcome } = PatientValidator(item);
-    expect(isValid).toBeFalsy();
-    expect(operationOutcome).toEqual({
-      issue: [
-        {
-          code: 'invalid',
-          details: {
-            text: 'Path: Patient. Additional fields: managingPatient',
-          },
-          diagnostics: 'Invalid fields have been found.',
-          severity: 'error',
+    let errors: IOperationOutcomeIssue[] = [];
+    PatientValidator(item as any, 'Patient', errors);
+    expect(errors.length).toBeGreaterThan(0);
+    expect(errors).toEqual([
+      {
+        code: 'invalid',
+        details: {
+          text: 'Path: Patient. Additional fields: managingPatient',
         },
-        {
-          code: 'invalid',
-          details: {
-            text: 'Path: Patient.photo[0].data. Value: base64Data',
-          },
-          diagnostics: 'Invalid base64Binary.',
-          severity: 'error',
+        diagnostics: 'Invalid fields have been found.',
+        severity: 'error',
+      },
+      {
+        code: 'invalid',
+        details: {
+          text: 'Path: Patient.photo[0].data. Value: base64Data',
         },
-      ],
-    });
+        diagnostics: 'Invalid base64Binary.',
+        severity: 'error',
+      },
+    ]);
   });
 
   it('should create a new patient using BuilderFromJson method', async () => {
@@ -780,6 +781,12 @@ describe('PatientModel', () => {
   });
 });
 describe('PatientValidator', () => {
+  let errors: IOperationOutcomeIssue[];
+
+  beforeEach(() => {
+    errors = [];
+  });
+
   it('should validate a valid patient object', () => {
     const patient: IPatient = {
       resourceType: 'Patient',
@@ -788,8 +795,8 @@ describe('PatientValidator', () => {
       birthDate: '2000-01-01',
     };
 
-    const { isValid } = PatientValidator(patient);
-    expect(isValid).toBeTruthy();
+    PatientValidator(patient, 'Patient', errors);
+    expect(errors.length).toBe(0);
   });
 
   it('should add an error if contact details are missing', () => {
@@ -798,11 +805,9 @@ describe('PatientValidator', () => {
       contact: [{}],
     };
 
-    const { isValid, operationOutcome } = PatientValidator(patient);
-    expect(isValid).toBeFalsy();
-
-    expect(operationOutcome.issue.length).toBeGreaterThan(0);
-    expect(operationOutcome.issue[0].diagnostics).toContain(
+    PatientValidator(patient, 'Patient', errors);
+    expect(errors.length).toBeGreaterThan(0);
+    expect(errors[0].diagnostics).toContain(
       "+ Rule (pat-1). SHALL at least contain a contact's details or a reference to an organization",
     );
   });
@@ -816,8 +821,8 @@ describe('PatientValidator', () => {
       address: [{ city: 'New York' }],
     };
 
-    const { isValid, operationOutcome } = PatientValidator(patient);
-    expect(isValid).toBeTruthy();
+    PatientValidator(patient, 'Patient', errors);
+    expect(errors.length).toBe(0);
   });
 
   it('should add an error if gender is invalid', () => {
@@ -825,9 +830,8 @@ describe('PatientValidator', () => {
       resourceType: 'Patient',
       gender: 'invalid-gender',
     };
-    const { isValid, operationOutcome } = PatientValidator(patient);
-    expect(isValid).toBeFalsy();
-    expect(operationOutcome.issue.length).toBeGreaterThan(0);
-    expect(operationOutcome.issue[0].diagnostics).toContain('Code must be one of [male, female, other, unknown]');
+    PatientValidator(patient as any, 'Patient', errors);
+    expect(errors.length).toBeGreaterThan(0);
+    expect(errors[0].diagnostics).toContain('Code must be one of [male, female, other, unknown]');
   });
 });

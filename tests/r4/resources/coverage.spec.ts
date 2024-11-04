@@ -1,11 +1,16 @@
-import { contextR4 } from '../../../src';
-import { ICodeableConcept, IElement, IIdentifier, IPeriod, IReference } from 'fhirtypes/dist/r4';
+import {
+  ICodeableConcept,
+  IElement,
+  IIdentifier,
+  IOperationOutcomeIssue,
+  IPeriod,
+  IReference,
+} from 'fhirtypes/dist/r4';
 import { FinancialResourceStatusCodesEnum } from 'fhirtypes/dist/r4/enums';
 import { ICoverageClass, ICoverageCostToBeneficiary } from 'fhirtypes/dist/r4/backbones';
+import { Coverage, CoverageBuilder, CoverageValidator } from '../../../src/r4';
 
 describe('Coverage FHIR R4', () => {
-  const { Coverage, CoverageValidator, CoverageBuilder } = contextR4();
-
   describe('FHIR examples', () => {
     it('General Person Primary Coverage Example', () => {
       const item = new Coverage({
@@ -733,6 +738,12 @@ describe('Coverage FHIR R4', () => {
   });
 
   describe('CoverageValidator', () => {
+    let errors: IOperationOutcomeIssue[];
+
+    beforeEach(() => {
+      errors = [];
+    });
+
     it('should validate a valid Coverage object', () => {
       const coverage = {
         resourceType: 'Coverage',
@@ -741,8 +752,8 @@ describe('Coverage FHIR R4', () => {
         payor: [{ reference: 'Organization/456' }],
       };
 
-      const { operationOutcome } = CoverageValidator(coverage);
-      expect(operationOutcome.issue.length).toBe(0);
+      CoverageValidator(coverage as any, 'Coverage', errors);
+      expect(errors.length).toBe(0);
     });
 
     it('should add an error if status is missing', () => {
@@ -751,9 +762,9 @@ describe('Coverage FHIR R4', () => {
         beneficiary: { reference: 'Patient/123' },
         payor: [{ reference: 'Organization/456' }],
       };
-      const { operationOutcome } = CoverageValidator(coverage);
-      expect(operationOutcome.issue.length).toBeGreaterThan(0);
-      expect(operationOutcome.issue[0].details?.text).toContain('status');
+      CoverageValidator(coverage as any, 'Coverage', errors);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].details?.text).toContain('status');
     });
 
     it('should add an error if beneficiary is missing', () => {
@@ -762,9 +773,9 @@ describe('Coverage FHIR R4', () => {
         status: 'active',
         payor: [{ reference: 'Organization/456' }],
       };
-      const { operationOutcome } = CoverageValidator(coverage);
-      expect(operationOutcome.issue.length).toBeGreaterThan(0);
-      expect(operationOutcome.issue[0].details?.text).toContain('beneficiary');
+      CoverageValidator(coverage as any, 'Coverage', errors);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].details?.text).toContain('beneficiary');
     });
 
     it('should add an error if payor is missing', () => {
@@ -773,9 +784,9 @@ describe('Coverage FHIR R4', () => {
         status: 'active',
         beneficiary: { reference: 'Patient/123' },
       };
-      const { operationOutcome } = CoverageValidator(coverage);
-      expect(operationOutcome.issue.length).toBeGreaterThan(0);
-      expect(operationOutcome.issue[0].details?.text).toContain('payor');
+      CoverageValidator(coverage as any, 'Coverage', errors);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].details?.text).toContain('payor');
     });
 
     it('should add an error if period is not a valid Period object', () => {
@@ -786,9 +797,9 @@ describe('Coverage FHIR R4', () => {
         payor: [{ reference: 'Organization/456' }],
         period: { start: 'invalid-date', end: '2023-12-31' } as any,
       };
-      const { operationOutcome } = CoverageValidator(coverage);
-      expect(operationOutcome.issue.length).toBeGreaterThan(0);
-      expect(operationOutcome.issue[0].details?.text).toContain('period');
+      CoverageValidator(coverage as any, 'Coverage', errors);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].details?.text).toContain('period');
     });
   });
 });

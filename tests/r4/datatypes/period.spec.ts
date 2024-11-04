@@ -1,9 +1,6 @@
-import { contextR4 } from '../../../src';
-import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { ConformanceValidator, Period, PeriodBuilder } from '../../../src/r4';
 
 describe('Period FHIR R4', () => {
-  const { Period, PeriodBuilder } = contextR4();
-
   it('should be able to create a new period and validate with correct data [new Period()]', async () => {
     const item = new Period({
       start: '2020-01-01T00:00:00.000Z',

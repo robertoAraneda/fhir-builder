@@ -1,11 +1,8 @@
-import { contextR4 } from '../../../src';
 import { IElement, IOperationOutcomeIssue } from 'fhirtypes/dist/r4';
 import { IMoney } from 'fhirtypes/dist/r4/datatypes';
-import { MoneyValidator } from '../../../src/core/r4/validators/datatypes';
+import { Money, MoneyBuilder, MoneyValidator } from '../../../src/r4';
 
 describe('Money FHIR R4', () => {
-  const { Money, MoneyBuilder } = contextR4();
-
   describe('MoneyModel', () => {
     it('should initialize with default values', () => {
       const money = new Money();

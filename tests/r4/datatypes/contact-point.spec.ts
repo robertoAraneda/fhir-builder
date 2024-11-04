@@ -1,10 +1,7 @@
-import { contextR4 } from '../../../src';
 import { IContactPoint } from 'fhirtypes/dist/r4';
-import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { ConformanceValidator, ContactPoint, ContactPointBuilder } from '../../../src/r4';
 
 describe('ContactPoint FHIR R4', () => {
-  const { ContactPoint, ContactPointBuilder } = contextR4();
-
   it('should be able to create a new contact point and validate with correct data [new ContactPoint()]', async () => {
     const item = new ContactPoint({
       id: '123',

@@ -1,11 +1,8 @@
-import { contextR4 } from '../../../src';
 import { IPatientLink } from 'fhirtypes/dist/r4';
 import { LinkTypeEnum } from 'fhirtypes/dist/r4/enums';
-import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { ConformanceValidator, PatientLink, PatientLinkBuilder } from '../../../src/r4';
 
 describe('PatientLink FHIR R4', () => {
-  const { PatientLink, PatientLinkBuilder } = contextR4();
-
   it('should be able to validate a new patient_link [new PatientLink()]', async () => {
     const item = new PatientLink({
       id: '123',

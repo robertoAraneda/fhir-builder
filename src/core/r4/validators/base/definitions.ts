@@ -1,6 +1,6 @@
 import { IElement } from 'fhirtypes/dist/r4/base';
 import { fhirR4Types } from './internal.validator';
-import { IBackboneElement, IDomainResource, ResourceType } from 'fhirtypes/dist/r4';
+import { IBackboneElement, IDomainResource, ResourceTypesType } from 'fhirtypes/dist/r4';
 
 // TODO: fix type: fhirR4Types | 'Resource' | 'Repeat' | 'Timing';
 export interface AttributeDefinition<T> {
@@ -9,7 +9,7 @@ export interface AttributeDefinition<T> {
   isRequired: boolean;
   isArray: boolean;
   enumValues?: readonly string[];
-  referenceTypes?: (ResourceType | 'Any')[] | null;
+  referenceTypes?: (ResourceTypesType | 'Any')[] | null;
 }
 
 export function createDatatypeDefinition<T extends IElement>(

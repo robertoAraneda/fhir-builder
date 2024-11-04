@@ -1,7 +1,5 @@
-import { CareTeamParticipant } from '../../../src/r4/models/backbones/CareTeamParticipant';
 import { ICodeableConcept, IReference, IPeriod, IOperationOutcomeIssue, ICareTeamParticipant } from 'fhirtypes/dist/r4';
-import { CareTeamParticipantBuilder } from '../../../src/r4/builders';
-import { CareTeamParticipantValidator } from '../../../src/core/r4/validators/backbones';
+import { CareTeamParticipant, CareTeamParticipantBuilder, CareTeamParticipantValidator } from '../../../src/r4';
 
 describe('CareTeamParticipant', () => {
   it('should create a CareTeamParticipant with default values', () => {

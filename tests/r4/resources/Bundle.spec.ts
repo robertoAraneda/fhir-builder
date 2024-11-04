@@ -1,7 +1,5 @@
-import { contextR4 } from '../../../src';
-import { BundleTypeType, IBundle, IElement } from 'fhirtypes/dist/r4';
-
-const { Bundle, BundleValidator, BundleBuilder } = contextR4();
+import { BundleTypeType, IBundle, IElement, IOperationOutcomeIssue } from 'fhirtypes/dist/r4';
+import { Bundle, BundleBuilder, BundleValidator } from '../../../src/r4';
 
 describe('Examples for FHIR website', () => {
   test('An example of a search response', () => {
@@ -652,7 +650,6 @@ describe('Examples for FHIR website', () => {
     });
 
     const { operationOutcome } = bundle.validate();
-    console.log(operationOutcome.issue);
     expect(operationOutcome.issue).toHaveLength(0);
   });
 });
@@ -832,6 +829,12 @@ describe('BundleBuilder', () => {
 });
 
 describe('BundleValidator', () => {
+  let errors: IOperationOutcomeIssue[];
+
+  beforeEach(() => {
+    errors = [];
+  });
+
   it('should validate a valid Bundle model', () => {
     const validBundle: IBundle = {
       resourceType: 'Bundle',
@@ -839,16 +842,16 @@ describe('BundleValidator', () => {
       timestamp: '2023-10-01T00:00:00Z',
     };
 
-    const { operationOutcome } = BundleValidator(validBundle);
-    expect(operationOutcome.issue).toHaveLength(0);
+    BundleValidator(validBundle, 'Bundle', errors);
+    expect(errors).toHaveLength(0);
   });
 
   it('should invalidate a Bundle model with missing required fields', () => {
     const invalidBundle = {
       resourceType: 'Bundle',
     };
-    const { operationOutcome } = BundleValidator(invalidBundle);
-    expect(operationOutcome.issue).not.toHaveLength(0);
+    BundleValidator(invalidBundle as any, 'Bundle', errors);
+    expect(errors).not.toHaveLength(0);
   });
 
   it('should invalidate a Bundle model with invalid type', () => {
@@ -856,8 +859,8 @@ describe('BundleValidator', () => {
       resourceType: 'Bundle',
       type: 'invalid-type' as BundleTypeType,
     };
-    const { operationOutcome } = BundleValidator(invalidBundle);
-    expect(operationOutcome.issue).not.toHaveLength(0);
+    BundleValidator(invalidBundle, 'Bundle', errors);
+    expect(errors).not.toHaveLength(0);
   });
 
   it('should validate a Bundle model with all fields', () => {
@@ -875,8 +878,8 @@ describe('BundleValidator', () => {
       },
     };
 
-    const { operationOutcome } = BundleValidator(validBundle);
-    expect(operationOutcome.issue).toHaveLength(0);
+    BundleValidator(validBundle, 'Bundle', errors);
+    expect(errors).toHaveLength(0);
   });
 
   it('should invalidate a Bundle model with invalid timestamp', () => {
@@ -885,7 +888,7 @@ describe('BundleValidator', () => {
       type: 'document',
       timestamp: 'invalid-timestamp',
     };
-    const { operationOutcome } = BundleValidator(invalidBundle);
-    expect(operationOutcome.issue).not.toHaveLength(0);
+    BundleValidator(invalidBundle, 'Bundle', errors);
+    expect(errors).not.toHaveLength(0);
   });
 });

@@ -1,10 +1,7 @@
-import { contextR4 } from '../../../src';
 import { IAnnotation } from 'fhirtypes/dist/r4';
-import { ConformanceValidator } from '../../../src/core/r4/validators/base';
+import { Annotation, AnnotationBuilder, ConformanceValidator } from '../../../src/r4';
 
 describe('Annotation FHIR R4', () => {
-  const { Annotation, AnnotationBuilder } = contextR4();
-
   it('should be able to create a new meta and validate with correct data [new Annotation()]', async () => {
     const item = new Annotation({
       text: 'test',

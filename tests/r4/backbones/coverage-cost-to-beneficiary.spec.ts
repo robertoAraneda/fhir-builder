@@ -1,14 +1,15 @@
-import { contextR4 } from '../../../src';
 import { ICodeableConcept, IOperationOutcomeIssue } from 'fhirtypes/dist/r4';
 import { ISimpleQuantity } from 'fhirtypes/dist/r4/datatypes/ISimpleQuantity';
 import { IMoney } from 'fhirtypes/dist/r4/datatypes';
 import { ICoverageException } from 'fhirtypes/dist/r4/backbones';
-import { CoverageCostToBeneficiaryValidator } from '../../../src/core/r4/validators/backbones';
 import { ICoverageCostToBeneficiary } from 'fhirtypes/dist/r4/backbones';
+import {
+  CoverageCostToBeneficiary,
+  CoverageCostToBeneficiaryBuilder,
+  CoverageCostToBeneficiaryValidator,
+} from '../../../src/r4';
 
 describe('CoverageCostToBeneficiary FHIR R4', () => {
-  const { CoverageCostToBeneficiary, CoverageCostToBeneficiaryBuilder } = contextR4();
-
   describe('CoverageCostToBeneficiary', () => {
     it('should initialize with default values', () => {
       const coverageCostToBeneficiary = new CoverageCostToBeneficiary();

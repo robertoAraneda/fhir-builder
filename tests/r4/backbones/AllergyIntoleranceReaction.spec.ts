@@ -1,5 +1,8 @@
-import { contextR4 } from '../../../src';
-import { AllergyIntoleranceReactionBuilder } from '../../../src/r4/builders';
+import {
+  AllergyIntoleranceReaction,
+  AllergyIntoleranceReactionBuilder,
+  AllergyIntoleranceReactionValidator,
+} from '../../../src/r4';
 import {
   AllergyIntoleranceSeverityType,
   IAllergyIntoleranceReaction,
@@ -8,9 +11,6 @@ import {
   IElement,
   IOperationOutcomeIssue,
 } from 'fhirtypes/dist/r4';
-import { AllergyIntoleranceReactionValidator } from '../../../src/core/r4/validators/backbones';
-
-const { AllergyIntoleranceReaction } = contextR4();
 
 describe('AllergyIntoleranceReaction', () => {
   it('should initialize with default values', () => {
