@@ -57,6 +57,20 @@ describe('QuestionnaireResponse', () => {
       expect(prettyString).toContain(`"status": "${status}"`);
     });
 
+    it('returns a string representation of the model', () => {
+      const status: QuestionnaireAnswersStatusType = 'completed';
+      const response = new QuestionnaireResponse({ status });
+      const string = response.toString();
+      expect(string).toContain(`"status":"${status}"`);
+    });
+
+    it('returns a serialized string representation of the model', () => {
+      const status: QuestionnaireAnswersStatusType = 'completed';
+      const response = new QuestionnaireResponse({ status });
+      const serialized = response.serialize();
+      expect(serialized).toContain(`"status":"${status}"`);
+    });
+
     it('validates a valid QuestionnaireResponse model', () => {
       const validResponse = new QuestionnaireResponse({ status: 'completed' });
       const { isValid, operationOutcome } = validResponse.validate();
