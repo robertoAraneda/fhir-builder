@@ -1,6 +1,5 @@
 import { BaseValidator } from './BaseValidator';
 import { AttributeDefinition } from './definitions';
-import assert from 'node:assert';
 import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 import { IOperationOutcomeIssue } from 'fhirtypes/dist/r4';
 
@@ -22,10 +21,10 @@ export const ModelValidator = <T extends object>(options: {
   additionalValidation?: ((data: T, path: string, errors: IOperationOutcomeIssue[]) => void)[];
 }): void => {
   const { dataToValidate, path, modelDefinition, additionalValidation } = options;
-  assert(
-    typeof dataToValidate === 'object',
-    `Expected Attachment to be of type object, received ${typeof dataToValidate}`,
-  );
+
+  if (typeof dataToValidate !== 'object') {
+    throw new Error(`Expected data to be of type object, received ${typeof dataToValidate}`);
+  }
 
   const cleanData = RemoveUndefinedAttributes(dataToValidate);
 
