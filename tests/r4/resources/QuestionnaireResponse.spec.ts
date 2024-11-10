@@ -8,12 +8,6 @@ import {
   IQuestionnaireResponseItem,
   IReference,
 } from 'fhirtypes/dist/r4';
-import {
-  Coding,
-  QuestionnaireItem,
-  QuestionnaireResponseItem,
-  QuestionnaireResponseItemBuilder,
-} from '../../../lib/r4';
 
 describe('QuestionnaireResponse', () => {
   describe('QuestionnaireResponse model', () => {
