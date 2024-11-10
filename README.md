@@ -32,26 +32,11 @@ npm i fhirtypes
 
 ## Use
 
-### Create context
-
-```ts
-import { contextR4 } from 'fhirbuilder';
-
-const r4Context = contextR4();
-```
-
-From `r4Context` Object you can access to all FHIR Datatypes, Resources models and Validators
-
 ### Using models
 
 In this example we will use and Address model datatype
 
 ```ts
-import { contextR4 } from 'fhirbuilder';
-const { Address } = contextR4();
-
-//you can create a new Instance
-
 const address = new Address({
   use: 'home',
   type: 'postal',
@@ -77,10 +62,6 @@ Output
 For complex object you can use a builders
 
 ```ts
-import { contextR4 } from 'fhirbuilder';
-import { AdministrativeGenderEnum } from 'fhirtypes/dist/r4/enums';
-const { Patient, HumanName, Address, PatientBuilder } = contextR4();
-
 const patient = new PatientBuilder()
   .setId('123')
   .setActive(true)
@@ -134,8 +115,6 @@ Output
 ### Using Validators
 
 ```ts
-const { Patient } = contextR4();
-
 const identifier = new Identifier({
   assigner: {
     reference: 'Acme Healthcare', // ❌ invalid reference
@@ -171,4 +150,74 @@ Output error
     ]
   }
 }
+```
+
+# Examples
+
+This document provides examples of how to use the `Builders` class to create `Practitioner` instances with different levels of detail, based on the FHIR specification.
+
+## Practitioner
+
+A simple practitioner with basic information, such as name, contact details, and one qualification.
+
+```typescript
+const practitionerExample1 = new PractitionerBuilder()
+  .addIdentifier({ system: 'https://example.org', value: '12345' })
+  .setActive(true)
+  .addName({ use: 'official', family: 'Doe', given: ['John'] })
+  .addTelecom({ system: 'phone', value: '+123456789', use: 'work' })
+  .addAddress({ use: 'home', line: ['123 Main St'], city: 'Metropolis', postalCode: '12345' })
+  .setGender(AdministrativeGenderType.MALE)
+  .setBirthDate('1980-01-01')
+  .addPhoto({ contentType: 'image/jpeg', url: 'https://example.org/photos/practitioner123.jpg' })
+  .addQualification({
+    identifier: [{ system: 'https://example.org/licenses', value: 'MD12345' }],
+    code: { text: 'Medical Doctor' },
+  })
+  .addCommunication({ text: 'English' })
+  .build();
+
+console.log(practitionerExample1);
+```
+
+A practitioner with multiple identifiers, names, contact points, and addresses. This practitioner is also bilingual and has multiple qualifications.
+
+```typescript
+// Creating HumanName instances
+const officialName = new HumanName({
+  use: 'official',
+  family: 'Doe',
+  given: ['John'],
+});
+
+// Creating ContactPoint instances
+const workPhone = new ContactPoint({
+  system: 'phone',
+  value: '+123456789',
+  use: 'work',
+});
+
+const practitionerExample2 = new PractitionerBuilder()
+  .addIdentifier({ system: 'https://examplehospital.org', value: '67890' })
+  .addIdentifier({ system: 'https://nationalprovider.org', value: '123-456-7890' })
+  .setActive(true)
+  .addName(officialName) // Using the HumanName instance
+  .addName({ use: 'nickname', text: 'Dr. Jane' })
+  .addTelecom(workPhone) // Using the ContactPoint instance
+  .addTelecom({ system: 'phone', value: '+0987654321', use: 'mobile' })
+  .addAddress({ use: 'home', line: ['456 Oak Lane'], city: 'Gotham', postalCode: '54321' })
+  .addAddress({ use: 'work', line: ['789 Elm Street'], city: 'Metropolis', postalCode: '67890' })
+  .setGender(AdministrativeGenderEnum.FEMALE)
+  .setBirthDate('1975-05-15')
+  .addPhoto({ contentType: 'image/png', url: 'https://example.org/photos/practitioner456.png' })
+  .addQualification({
+    identifier: [{ system: 'https://example.org/licenses', value: 'PHD56789' }],
+    code: { text: 'Psychologist' },
+    period: { start: '2005-06-01' },
+  })
+  .addCommunication({ text: 'English' })
+  .addCommunication({ text: 'Spanish' })
+  .build();
+
+console.log(practitionerExample2);
 ```

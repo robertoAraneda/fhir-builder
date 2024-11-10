@@ -25,6 +25,7 @@ export { OrganizationContactBuilder } from './OrganizationContactBuilder';
 export { PatientCommunicationBuilder } from './PatientCommunicationBuilder';
 export { PatientContactBuilder } from './PatientContactBuilder';
 export { PatientLinkBuilder } from './PatientLinkBuilder';
+export { PractitionerQualificationBuilder } from './PractitionerQualificationBuilder';
 export { ProcedureFocalDeviceBuilder } from './ProcedureFocalDeviceBuilder';
 export { ProcedurePerformerBuilder } from './ProcedurePerformerBuilder';
 export { QuestionnaireAnswerOptionBuilder } from './QuestionnaireAnswerOptionBuilder';

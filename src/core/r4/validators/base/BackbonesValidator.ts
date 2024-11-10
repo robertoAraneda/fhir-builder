@@ -45,4 +45,5 @@ export const BackbonesValidator: Record<
   QuestionnaireItem: BackboneValidators.QuestionnaireItemValidator,
   QuestionnaireResponseAnswer: BackboneValidators.QuestionnaireResponseAnswerValidator,
   QuestionnaireResponseItem: BackboneValidators.QuestionnaireResponseItemValidator,
+  PractitionerQualification: BackboneValidators.PractitionerQualificationValidator,
 };

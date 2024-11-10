@@ -8,6 +8,7 @@ export { HealthcareServiceBuilder } from './HealthcareServiceBuilder';
 export { ObservationBuilder } from './ObservationBuilder';
 export { OrganizationBuilder } from './OrganizationBuilder';
 export { PatientBuilder } from './PatientBuilder';
+export { PractitionerBuilder } from './PractitionerBuilder';
 export { ProcedureBuilder } from './ProcedureBuilder';
 export { QuestionnaireBuilder } from './QuestionnaireBuilder';
 export { QuestionnaireResponseBuilder } from './QuestionnaireResponseBuilder';

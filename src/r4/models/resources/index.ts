@@ -8,6 +8,7 @@ export { HealthcareService } from './HealthcareService';
 export { Observation } from './Observation';
 export { Organization } from './Organization';
 export { Patient } from './Patient';
+export { Practitioner } from './Practitioner';
 export { Procedure } from './Procedure';
 export { Questionnaire } from './Questionnaire';
 export { QuestionnaireResponse } from './QuestionnaireResponse';
