@@ -23,6 +23,7 @@ export const InternalResourceValidator: Record<
   Encounter: resources.EncounterValidator,
   Questionnaire: resources.QuestionnaireValidator,
   QuestionnaireResponse: resources.QuestionnaireResponseValidator,
+  Practitioner: resources.PractitionerValidator,
 };
 
 const createConformanceValidator =
@@ -48,4 +49,5 @@ export const ResourcesValidator: Record<
   EncounterValidator: createConformanceValidator('Encounter'),
   QuestionnaireValidator: createConformanceValidator('Questionnaire'),
   QuestionnaireResponseValidator: createConformanceValidator('QuestionnaireResponse'),
+  PractitionerValidator: createConformanceValidator('Practitioner'),
 };

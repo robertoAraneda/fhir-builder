@@ -25,6 +25,7 @@ export { OrganizationContactValidator } from './OrganizationContactValidator';
 export { PatientCommunicationValidator } from './PatientCommunicationValidator';
 export { PatientContactValidator } from './PatientContactValidator';
 export { PatientLinkValidator } from './PatientLinkValidator';
+export { PractitionerQualificationValidator } from './PractitionerQualificationValidator';
 export { ProcedureFocalDeviceValidator } from './ProcedureFocalDeviceValidator';
 export { ProcedurePerformerValidator } from './ProcedurePerformerValidator';
 export { QuestionnaireAnswerOptionValidator } from './QuestionnaireAnswerOptionValidator';

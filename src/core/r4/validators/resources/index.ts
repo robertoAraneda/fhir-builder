@@ -8,6 +8,7 @@ export { HealthcareServiceValidator } from './HealthcareServiceValidator';
 export { ObservationValidator } from './ObservationValidator';
 export { OrganizationValidator } from './OrganizationValidator';
 export { PatientValidator } from './PatientValidator';
+export { PractitionerValidator } from './PractitionerValidator';
 export { ProcedureValidator } from './ProcedureValidator';
 export { QuestionnaireResponseValidator } from './QuestionnaireResponseValidator';
 export { QuestionnaireValidator } from './QuestionnaireValidator';

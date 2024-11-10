@@ -103,6 +103,23 @@ describe('QuestionnaireResponse', () => {
 
   describe('QuestionnaireResponseBuilder', () => {
     let builder: QuestionnaireResponseBuilder;
+    /*
+     "linkId": "enfermera",
+      "text": "Enfermera",
+      "item": [
+        {
+          "linkId": "tipo-paciente",
+          "text": "Tipo de paciente",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "2",
+                "display": "GES - CAEC - Convenios"
+              }
+            }
+          ]
+        },
+     */
 
     beforeEach(() => {
       builder = new QuestionnaireResponseBuilder();
@@ -169,8 +186,10 @@ describe('QuestionnaireResponse', () => {
     });
 
     it('adds items to the QuestionnaireResponse', () => {
-      const item: IQuestionnaireResponseItem = { linkId: '1', text: 'Question 1', answer: [] };
+      const item: IQuestionnaireResponseItem = { linkId: '1', text: 'Question 1', answer: [{ valueString: 'string' }] };
       const response = builder.addItem(item).build();
+      const { isValid, operationOutcome } = response.validate();
+      console.log('isValid', isValid);
       expect(response.item).toContain(item);
     });
 

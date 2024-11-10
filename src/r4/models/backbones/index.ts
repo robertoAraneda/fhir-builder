@@ -25,6 +25,7 @@ export { OrganizationContact } from './OrganizationContact';
 export { PatientCommunication } from './PatientCommunication';
 export { PatientContact } from './PatientContact';
 export { PatientLink } from './PatientLink';
+export { PractitionerQualification } from './PractitionerQualification';
 export { ProcedureFocalDevice } from './ProcedureFocalDevice';
 export { ProcedurePerformer } from './ProcedurePerformer';
 export { QuestionnaireAnswerOption } from './QuestionnaireAnswerOption';
