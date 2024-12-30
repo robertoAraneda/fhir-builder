@@ -1,5 +1,4 @@
 import { AddressTypeType, AddressUseType, IAddress, IElement, IPeriod } from 'fhirtypes/dist/r4';
-import { AddressBuilder } from '../../builders';
 import { ConformanceValidator } from '../../../core/r4/validators/base';
 import { Element } from '../base/Element';
 import { ISerializable } from '../base/ISerializable';
@@ -125,8 +124,4 @@ export class Address extends Element implements IAddress, ISerializable, IValida
    * Extensions for country
    */
   _country?: IElement;
-
-  protected builderInstance(): AddressBuilder {
-    return new AddressBuilder();
-  }
 }

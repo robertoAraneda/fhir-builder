@@ -14,7 +14,7 @@ import {
   IReference,
 } from 'fhirtypes/dist/r4';
 import { AdministrativeGenderEnum } from 'fhirtypes/dist/r4/enums';
-import { Patient, PatientBuilder, PatientValidator } from '../../../src/r4';
+import { HumanName, HumanNameBuilder, Patient, PatientBuilder, PatientValidator } from '../../../src/r4';
 
 describe('FHIR examples', () => {
   it('should be able to create a new patient and validate with correct data [new Patient()]', async () => {

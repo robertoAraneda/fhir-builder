@@ -60,7 +60,7 @@ describe('Repeat FHIR R4', () => {
         {
           code: 'code-invalid',
           details: {
-            text: 'Path: Repeat.durationUnit; Value: unit',
+            text: 'Path: Repeat.durationUnit',
           },
           diagnostics: 'Code must be one of [s, min, h, d, wk, mo, a]',
           severity: 'error',
@@ -68,7 +68,7 @@ describe('Repeat FHIR R4', () => {
         {
           code: 'code-invalid',
           details: {
-            text: 'Path: Repeat.periodUnit; Value: unit',
+            text: 'Path: Repeat.periodUnit',
           },
           diagnostics: 'Code must be one of [s, min, h, d, wk, mo, a]',
           severity: 'error',

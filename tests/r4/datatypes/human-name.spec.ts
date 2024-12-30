@@ -76,7 +76,7 @@ describe('HumanName FHIR R4', () => {
         {
           code: 'code-invalid',
           details: {
-            text: 'Path: HumanName.use; Value: wrong use',
+            text: 'Path: HumanName.use',
           },
           diagnostics: 'Code must be one of [usual, official, temp, nickname, anonymous, old, maiden]',
           severity: 'error',

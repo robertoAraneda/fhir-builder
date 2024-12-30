@@ -46,4 +46,8 @@ export const BackbonesValidator: Record<
   QuestionnaireResponseAnswer: BackboneValidators.QuestionnaireResponseAnswerValidator,
   QuestionnaireResponseItem: BackboneValidators.QuestionnaireResponseItemValidator,
   PractitionerQualification: BackboneValidators.PractitionerQualificationValidator,
+  PractitionerRoleAvailableTime: BackboneValidators.PractitionerRoleAvailableTimeValidator,
+  PractitionerRoleNotAvailable: BackboneValidators.PractitionerRoleNotAvailableValidator,
+  ConditionEvidence: BackboneValidators.ConditionEvidenceValidator,
+  ConditionStage: BackboneValidators.ConditionStageValidator,
 };

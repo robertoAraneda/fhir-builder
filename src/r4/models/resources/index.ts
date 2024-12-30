@@ -1,6 +1,7 @@
 export { AllergyIntolerance } from './AllergyIntolerance';
 export { Bundle } from './Bundle';
 export { CareTeam } from './CareTeam';
+export { Condition } from './Condition';
 export { Coverage } from './Coverage';
 export { Encounter } from './Encounter';
 export { EpisodeOfCare } from './EpisodeOfCare';
@@ -9,6 +10,7 @@ export { Observation } from './Observation';
 export { Organization } from './Organization';
 export { Patient } from './Patient';
 export { Practitioner } from './Practitioner';
+export { PractitionerRole } from './PractitionerRole';
 export { Procedure } from './Procedure';
 export { Questionnaire } from './Questionnaire';
 export { QuestionnaireResponse } from './QuestionnaireResponse';

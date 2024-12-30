@@ -1,6 +1,7 @@
 export { AllergyIntoleranceValidator } from './AllergyIntoleranceValidator';
 export { BundleValidator } from './BundleValidator';
 export { CareTeamValidator } from './CareTeamValidator';
+export { ConditionValidator } from './ConditionValidator';
 export { CoverageValidator } from './CoverageValidator';
 export { EncounterValidator } from './EncounterValidator';
 export { EpisodeOfCareValidator } from './EpisodeOfCareValidator';
@@ -8,6 +9,7 @@ export { HealthcareServiceValidator } from './HealthcareServiceValidator';
 export { ObservationValidator } from './ObservationValidator';
 export { OrganizationValidator } from './OrganizationValidator';
 export { PatientValidator } from './PatientValidator';
+export { PractitionerRoleValidator } from './PractitionerRoleValidator';
 export { PractitionerValidator } from './PractitionerValidator';
 export { ProcedureValidator } from './ProcedureValidator';
 export { QuestionnaireResponseValidator } from './QuestionnaireResponseValidator';

@@ -62,7 +62,7 @@ describe('ContactPoint FHIR R4', () => {
         {
           code: 'code-invalid',
           details: {
-            text: 'Path: ContactPoint.system; Value: wrong-system',
+            text: 'Path: ContactPoint.system',
           },
           diagnostics: 'Code must be one of [phone, fax, email, pager, url, sms, other]',
           severity: 'error',

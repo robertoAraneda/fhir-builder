@@ -1,5 +1,5 @@
 import { AttributeDefinition } from './definitions';
-import { IReference, ResourceTypesType } from 'fhirtypes/dist/r4';
+import { ICodeableConcept, IReference, ResourceTypesType } from 'fhirtypes/dist/r4';
 import { resourceListUtil } from '../../../commons/utils/resource-list.util';
 import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 import { PeriodValidator } from '../datatypes';
@@ -121,11 +121,15 @@ export const BaseValidator = <T extends Record<string, any>>(
       );
     }
 
-    // Check if the field is a valid enum value
-    validateEnumValues(cleanData[dataKey], definition, path, errors);
+    if (definition.enumValues && definition.enumValues.length > 0) {
+      // Check if the field is a valid enum value
+      validateEnumValues(cleanData[dataKey], definition, path, errors);
+    }
 
-    // check if the field is an array
-    validateArray(cleanData[dataKey], definition, path, errors);
+    if (definition.isArray) {
+      // check if the field is an array
+      validateArray(cleanData[dataKey], definition, path, errors);
+    }
 
     // check if the field is a datatype or backbone element
     validateObject(cleanData[dataKey], definition, path, errors);
@@ -197,18 +201,39 @@ export const validateEnumValues = <T>(
 ) => {
   if (!definition.enumValues || definition.isArray) return;
 
-  if (!definition.enumValues.includes(data)) {
-    errors.push(
-      new OperationOutcomeIssueException({
-        severity: 'error',
-        code: 'code-invalid',
-        diagnostics: `Code must be one of [${definition.enumValues.join(', ')}]`,
-        details: {
-          text: `Path: ${path}.${String(definition.name)}; Value: ${data}`,
-        },
-      }),
-    );
-    // throw new Error(`Field must be one of [${definition.enumValues.join(', ')}] in ${path}.${String(definition.name)}`);
+  if (definition.type === 'CodeableConcept') {
+    const cc = data as ICodeableConcept;
+
+    if (cc.coding && cc.coding?.length > 0) {
+      cc.coding.forEach((coding, index) => {
+        if (coding.code && !definition.enumValues?.includes(coding.code)) {
+          errors.push(
+            new OperationOutcomeIssueException({
+              severity: 'error',
+              code: 'code-invalid',
+              diagnostics: `Code must be one of [${definition.enumValues?.join(', ')}]`,
+              details: {
+                text: `Path: ${path}.${String(definition.name)}.coding[${index}].code`,
+              },
+            }),
+          );
+        }
+      });
+    }
+  } else {
+    if (!definition.enumValues.includes(data)) {
+      errors.push(
+        new OperationOutcomeIssueException({
+          severity: 'error',
+          code: 'code-invalid',
+          diagnostics: `Code must be one of [${definition.enumValues.join(', ')}]`,
+          details: {
+            text: `Path: ${path}.${String(definition.name)}`,
+          },
+        }),
+      );
+      // throw new Error(`Field must be one of [${definition.enumValues.join(', ')}] in ${path}.${String(definition.name)}`);
+    }
   }
 };
 

@@ -86,7 +86,9 @@ function createModelFields(keys: string[], globalKey: string, resource: any): Mo
         ? getEnumReference(globalKey, resource, key)
         : undefined,
     enumValues:
-      getOriginalType(globalKey, resource, key) === 'code' ? getEnumCodes(globalKey, resource, key) : undefined,
+      getOriginalType(globalKey, resource, key) === 'code' || 'CodeableConcept'
+        ? getEnumCodes(globalKey, resource, key)
+        : undefined,
   }));
 }
 

@@ -1,4 +1,5 @@
 export { Address } from './Address';
+export { Age } from './Age';
 export { Annotation } from './Annotation';
 export { Attachment } from './Attachment';
 export { CodeableConcept } from './CodeableConcept';

@@ -1,4 +1,5 @@
 export { AddressValidator } from './AddressValidator';
+export { AgeValidator } from './AgeValidator';
 export { AnnotationValidator } from './AnnotationValidator';
 export { AttachmentValidator } from './AttachmentValidator';
 export { CodeableConceptValidator } from './CodeableConceptValidator';

@@ -33,4 +33,5 @@ export const DatatypesValidator: Record<
   Signature: DataTypeValidators.SignatureValidator,
   ContactDetail: DataTypeValidators.ContactDetailValidator,
   UsageContext: DataTypeValidators.UsageContextValidator,
+  Age: DataTypeValidators.AgeValidator,
 };

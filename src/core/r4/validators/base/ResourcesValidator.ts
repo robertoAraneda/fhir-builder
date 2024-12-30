@@ -24,6 +24,8 @@ export const InternalResourceValidator: Record<
   Questionnaire: resources.QuestionnaireValidator,
   QuestionnaireResponse: resources.QuestionnaireResponseValidator,
   Practitioner: resources.PractitionerValidator,
+  PractitionerRole: resources.PractitionerRoleValidator,
+  Condition: resources.ConditionValidator,
 };
 
 const createConformanceValidator =
@@ -50,4 +52,6 @@ export const ResourcesValidator: Record<
   QuestionnaireValidator: createConformanceValidator('Questionnaire'),
   QuestionnaireResponseValidator: createConformanceValidator('QuestionnaireResponse'),
   PractitionerValidator: createConformanceValidator('Practitioner'),
+  PractitionerRoleValidator: createConformanceValidator('PractitionerRole'),
+  ConditionValidator: createConformanceValidator('Condition'),
 };

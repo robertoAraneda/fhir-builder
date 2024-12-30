@@ -2,6 +2,7 @@ import { BaseValidator } from './BaseValidator';
 import { AttributeDefinition } from './definitions';
 import { RemoveUndefinedAttributes } from '../../utils/remove-undefined-attributes.util';
 import { IOperationOutcomeIssue } from 'fhirtypes/dist/r4';
+import { OperationOutcomeIssueException } from '../../../commons/exceptions/operation-outcome.exception';
 
 /**
  * @description Validates a model based on the model definition
@@ -23,7 +24,16 @@ export const ModelValidator = <T extends object>(options: {
   const { dataToValidate, path, modelDefinition, additionalValidation } = options;
 
   if (typeof dataToValidate !== 'object') {
-    throw new Error(`Expected data to be of type object, received ${typeof dataToValidate}`);
+    options.errors.push(
+      new OperationOutcomeIssueException({
+        severity: 'error',
+        code: 'invalid',
+        diagnostics: `Expected data to be of type object, received ${typeof dataToValidate}`,
+        details: {
+          text: `Path: ${path}`,
+        },
+      }),
+    );
   }
 
   const cleanData = RemoveUndefinedAttributes(dataToValidate);
