@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/robertoAraneda/fhir-builder/compare/v1.8.0...v1.9.0) (2024-12-30)
+
+
+### Features
+
+* add condition, PractitionerRole ([4d58717](https://github.com/robertoAraneda/fhir-builder/commit/4d58717a91d014623a4fe585ac654a85f46fd6e8))
+
 # [1.8.0](https://github.com/robertoAraneda/fhir-builder/compare/v1.7.0...v1.8.0) (2024-11-10)
 
 
