@@ -1,5 +1,6 @@
 export { AllergyIntoleranceValidator } from './AllergyIntoleranceValidator';
 export { BundleValidator } from './BundleValidator';
+export { CarePlanValidator } from './CarePlanValidator';
 export { CareTeamValidator } from './CareTeamValidator';
 export { ConditionValidator } from './ConditionValidator';
 export { CoverageValidator } from './CoverageValidator';
@@ -14,4 +15,5 @@ export { PractitionerValidator } from './PractitionerValidator';
 export { ProcedureValidator } from './ProcedureValidator';
 export { QuestionnaireResponseValidator } from './QuestionnaireResponseValidator';
 export { QuestionnaireValidator } from './QuestionnaireValidator';
+export { RelatedPersonValidator } from './RelatedPersonValidator';
 export { ServiceRequestValidator } from './ServiceRequestValidator';

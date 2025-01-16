@@ -26,6 +26,8 @@ export const InternalResourceValidator: Record<
   Practitioner: resources.PractitionerValidator,
   PractitionerRole: resources.PractitionerRoleValidator,
   Condition: resources.ConditionValidator,
+  CarePlan: resources.CarePlanValidator,
+  RelatedPerson: resources.RelatedPersonValidator,
 };
 
 const createConformanceValidator =
@@ -54,4 +56,6 @@ export const ResourcesValidator: Record<
   PractitionerValidator: createConformanceValidator('Practitioner'),
   PractitionerRoleValidator: createConformanceValidator('PractitionerRole'),
   ConditionValidator: createConformanceValidator('Condition'),
+  CarePlanValidator: createConformanceValidator('CarePlan'),
+  RelatedPersonValidator: createConformanceValidator('RelatedPerson'),
 };

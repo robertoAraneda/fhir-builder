@@ -610,6 +610,21 @@ for (const globalKey of globalsKeys) {
     console.log(`stdout: ${stdout}`);
     console.error(`stderr: ${stderr}`);
   });
+
+  console.log('Formatted files');
+
+  setTimeout(() => {
+    exec('ts-node make-readme.ts', (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+      console.error(`stderr: ${stderr}`);
+    });
+
+    console.log('Generated README');
+  }, 8000);
 }
 
 export { resource };

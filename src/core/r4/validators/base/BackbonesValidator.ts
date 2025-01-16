@@ -50,4 +50,7 @@ export const BackbonesValidator: Record<
   PractitionerRoleNotAvailable: BackboneValidators.PractitionerRoleNotAvailableValidator,
   ConditionEvidence: BackboneValidators.ConditionEvidenceValidator,
   ConditionStage: BackboneValidators.ConditionStageValidator,
+  CarePlanActivity: BackboneValidators.CarePlanActivityValidator,
+  CarePlanDetail: BackboneValidators.CarePlanDetailValidator,
+  RelatedPersonCommunication: BackboneValidators.RelatedPersonCommunicationValidator,
 };

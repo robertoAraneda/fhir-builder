@@ -1,5 +1,6 @@
 export { AllergyIntolerance } from './AllergyIntolerance';
 export { Bundle } from './Bundle';
+export { CarePlan } from './CarePlan';
 export { CareTeam } from './CareTeam';
 export { Condition } from './Condition';
 export { Coverage } from './Coverage';
@@ -14,4 +15,5 @@ export { PractitionerRole } from './PractitionerRole';
 export { Procedure } from './Procedure';
 export { Questionnaire } from './Questionnaire';
 export { QuestionnaireResponse } from './QuestionnaireResponse';
+export { RelatedPerson } from './RelatedPerson';
 export { ServiceRequest } from './ServiceRequest';

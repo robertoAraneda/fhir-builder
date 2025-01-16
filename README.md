@@ -1,14 +1,10 @@
+# FHIR builder, models and validators
+
 <h1 align="center" style="border-bottom: none;">FHIR builder, models and validators</h1>
 <h3 align="center">R5 is comming :P</h3>
 <p align="center">
-<!--
-  <a href="https://github.com/semantic-release/semantic-release/actions/workflows/test.yml">
-    <img alt="Build states" src="https://github.com/semantic-release/semantic-release/actions/workflows/test.yml/badge.svg">
-  </a>
-  -->
-
   <img alt="GitHub Release" src="https://img.shields.io/github/v/release/robertoAraneda/fhir-builder">
-<img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/robertoAraneda/fhir-builder/publish.yml">
+  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/robertoAraneda/fhir-builder/publish.yml">
   <img alt="NPM Downloads" src="https://img.shields.io/npm/dw/fhirbuilder">
 </p>
 
@@ -16,11 +12,25 @@
 
 Resources available in this package
 
-| Resource                                                                  | Resource                                                      | Resource                                                          |
-| ------------------------------------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [EpisodeOfCare](https://www.hl7.org/fhir/r4/episodeofcare.html)           | [Organization](https://www.hl7.org/fhir/r4/organization.html) | [Patient](https://www.hl7.org/fhir/r4/patient.html)               |
-| [Observation](https://www.hl7.org/fhir/r4/observation.html)               | [Coverage](https://www.hl7.org/fhir/r4/coverage.html)         | [ServiceRequest](https://www.hl7.org/fhir/r4/servicerequest.html) |
-| [AllergyIntolerance](https://www.hl7.org/fhir/r4/allerfyintolerance.html) | [Procedure](https://www.hl7.org/fhir/r4/procedure.html)       | [Bundle](https://www.hl7.org/fhir/r4/bundle.html)                 |
+#### Foundation
+
+[Bundle](https://www.hl7.org/fhir/r4/bundle.html)
+
+#### Base
+
+[Patient](https://www.hl7.org/fhir/r4/patient.html), [Practitioner](https://www.hl7.org/fhir/r4/practitioner.html), [PractitionerRole](https://www.hl7.org/fhir/r4/practitionerrole.html), [RelatedPerson](https://www.hl7.org/fhir/r4/relatedperson.html), [Organization](https://www.hl7.org/fhir/r4/organization.html), [HealthcareService](https://www.hl7.org/fhir/r4/healthcareservice.html), [Encounter](https://www.hl7.org/fhir/r4/encounter.html), [EpisodeOfCare](https://www.hl7.org/fhir/r4/episodeofcare.html)
+
+#### Clinical
+
+[AllergyIntolerance](https://www.hl7.org/fhir/r4/allergyintolerance.html), [Condition](https://www.hl7.org/fhir/r4/condition.html), [Procedure](https://www.hl7.org/fhir/r4/procedure.html), [Observation](https://www.hl7.org/fhir/r4/observation.html), [QuestionnaireResponse](https://www.hl7.org/fhir/r4/questionnaireresponse.html), [CarePlan](https://www.hl7.org/fhir/r4/careplan.html), [CareTeam](https://www.hl7.org/fhir/r4/careteam.html), [ServiceRequest](https://www.hl7.org/fhir/r4/servicerequest.html)
+
+#### Financial
+
+[Coverage](https://www.hl7.org/fhir/r4/coverage.html)
+
+#### Specialized
+
+[Questionnaire](https://www.hl7.org/fhir/r4/questionnaire.html)
 
 ## Install
 
