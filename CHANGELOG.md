@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/robertoAraneda/fhir-builder/compare/v1.9.0...v1.10.0) (2025-01-16)
+
+
+### Features
+
+* add RelatedPerson resource ([1bcab2d](https://github.com/robertoAraneda/fhir-builder/commit/1bcab2d5e08aa5f95051fdabc39d8ccbef0f5904))
+
 # [1.9.0](https://github.com/robertoAraneda/fhir-builder/compare/v1.8.0...v1.9.0) (2024-12-30)
 
 
