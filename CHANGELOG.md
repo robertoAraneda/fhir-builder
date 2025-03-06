@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/robertoAraneda/fhir-builder/compare/v1.10.0...v1.10.1) (2025-03-06)
+
+
+### Bug Fixes
+
+* change target ts config compiler options ([dd8ab88](https://github.com/robertoAraneda/fhir-builder/commit/dd8ab88877c7e737852f6bff7a038bb57c462900))
+
 # [1.10.0](https://github.com/robertoAraneda/fhir-builder/compare/v1.9.0...v1.10.0) (2025-01-16)
 
 
