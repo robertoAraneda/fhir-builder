@@ -3,7 +3,8 @@
   "display": "Node 18",
   "compilerOptions": {
     "target": "ES2023",
-    "module": "CommonJS",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "declaration": true,
     "outDir": "./lib",
     "strict": true,
