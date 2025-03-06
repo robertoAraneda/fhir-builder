@@ -1,3 +1,10 @@
+## [1.10.2](https://github.com/robertoAraneda/fhir-builder/compare/v1.10.1...v1.10.2) (2025-03-06)
+
+
+### Bug Fixes
+
+* change module and module resolution to esm ([3bb1875](https://github.com/robertoAraneda/fhir-builder/commit/3bb187590f1ac08e1b7f54634666ec4d9bf6947e))
+
 ## [1.10.1](https://github.com/robertoAraneda/fhir-builder/compare/v1.10.0...v1.10.1) (2025-03-06)
 
 
