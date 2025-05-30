@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/robertoAraneda/fhir-builder/compare/v1.10.2...v1.11.0) (2025-05-30)
+
+
+### Features
+
+* add Location and Appointment resources ([b5d6949](https://github.com/robertoAraneda/fhir-builder/commit/b5d69499a96533e3d282180d63dec7f8f85e71f6))
+
 ## [1.10.2](https://github.com/robertoAraneda/fhir-builder/compare/v1.10.1...v1.10.2) (2025-03-06)
 
 
