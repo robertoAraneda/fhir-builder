@@ -1,4 +1,6 @@
 import { Appointment } from '../../../src/r4';
+import { AppointmentBuilder } from '../../../src/r4';
+import { IAppointmentParticipant, IIdentifier, IPeriod } from 'fhirtypes/dist/r4';
 
 describe('Appointment Examples FHIR R4', () => {
   it('should create a General Person Example', () => {
@@ -321,5 +323,88 @@ describe('Appointment Examples FHIR R4', () => {
     const { isValid, operationOutcome } = appointment.validate();
     expect(isValid).toBeTruthy();
     expect(operationOutcome.issue).toHaveLength(0);
+  });
+});
+
+describe('AppointmentBuilder', () => {
+  it('builds an Appointment with all required fields', () => {
+    const builder = new AppointmentBuilder();
+    const appointment = builder
+      .setStatus('booked')
+      .setDescription('Annual check-up')
+      .setStart('2023-10-01T10:00:00Z')
+      .setEnd('2023-10-01T11:00:00Z')
+      .build();
+
+    expect(appointment.status).toBe('booked');
+    expect(appointment.description).toBe('Annual check-up');
+    expect(appointment.start).toBe('2023-10-01T10:00:00Z');
+    expect(appointment.end).toBe('2023-10-01T11:00:00Z');
+  });
+
+  it('adds multiple identifiers to the Appointment', () => {
+    const builder = new AppointmentBuilder();
+    const identifier1: IIdentifier = { system: 'http://example.com', value: '123' };
+    const identifier2: IIdentifier = { system: 'http://example.com', value: '456' };
+
+    const appointment = builder.addIdentifier(identifier1).addIdentifier(identifier2).build();
+
+    expect(appointment.identifier).toHaveLength(2);
+    expect(appointment.identifier).toContainEqual(identifier1);
+    expect(appointment.identifier).toContainEqual(identifier2);
+  });
+
+  it('handles empty fields gracefully', () => {
+    const builder = new AppointmentBuilder();
+    const appointment = builder.build();
+
+    expect(appointment.identifier).toBeUndefined();
+    expect(appointment.status).toBeUndefined();
+    expect(appointment.description).toBeUndefined();
+  });
+
+  it('adds participants to the Appointment', () => {
+    const builder = new AppointmentBuilder();
+    const participant: IAppointmentParticipant = { actor: { reference: 'Practitioner/1' }, status: 'accepted' };
+
+    const appointment = builder.addParticipant(participant).build();
+
+    expect(appointment.participant).toHaveLength(1);
+    expect(appointment.participant?.[0].actor?.reference).toBe('Practitioner/1');
+    expect(appointment.participant?.[0].status).toBe('accepted');
+  });
+
+  it('adds requested periods to the Appointment', () => {
+    const builder = new AppointmentBuilder();
+    const period: IPeriod = { start: '2023-10-01T10:00:00Z', end: '2023-10-01T11:00:00Z' };
+
+    const appointment = builder.addRequestedPeriod(period).build();
+
+    expect(appointment.requestedPeriod).toHaveLength(1);
+    expect(appointment.requestedPeriod?.[0].start).toBe('2023-10-01T10:00:00Z');
+    expect(appointment.requestedPeriod?.[0].end).toBe('2023-10-01T11:00:00Z');
+  });
+
+  it('overwrites fields when set multiple times', () => {
+    const builder = new AppointmentBuilder();
+    const appointment = builder.setStatus('booked').setStatus('cancelled').build();
+
+    expect(appointment.status).toBe('cancelled');
+  });
+
+  it('throws an error when invalid JSON is passed to fromJSON', () => {
+    const builder = new AppointmentBuilder();
+
+    expect(() => builder.fromJSON('{invalidJson}')).toThrow();
+  });
+
+  it('parses valid JSON correctly with fromJSON', () => {
+    const builder = new AppointmentBuilder();
+    const json = '{"status":"booked","description":"Annual check-up"}';
+
+    const appointment = builder.fromJSON(json).build();
+
+    expect(appointment.status).toBe('booked');
+    expect(appointment.description).toBe('Annual check-up');
   });
 });

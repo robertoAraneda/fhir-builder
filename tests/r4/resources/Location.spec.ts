@@ -1,4 +1,6 @@
 import { Location } from '../../../src/r4';
+import { LocationBuilder } from '../../../src/r4';
+import { IIdentifier, ILocationHoursOfOperation, ILocationPosition } from 'fhirtypes/dist/r4';
 
 describe('Location Examples FHIR R4', () => {
   it('should create a Wing within a hospital', () => {
@@ -288,5 +290,97 @@ describe('Location Examples FHIR R4', () => {
     const { isValid, operationOutcome } = location.validate();
     expect(isValid).toBeTruthy();
     expect(operationOutcome.issue).toHaveLength(0);
+  });
+});
+
+describe('LocationBuilder', () => {
+  it('builds a Location with all required fields', () => {
+    const builder = new LocationBuilder();
+    const location = builder
+      .setName('Main Hospital')
+      .setStatus('active')
+      .setDescription('Primary healthcare facility')
+      .setMode('instance')
+      .build();
+
+    expect(location.name).toBe('Main Hospital');
+    expect(location.status).toBe('active');
+    expect(location.description).toBe('Primary healthcare facility');
+    expect(location.mode).toBe('instance');
+  });
+
+  it('adds multiple identifiers to the Location', () => {
+    const builder = new LocationBuilder();
+    const identifier1: IIdentifier = { system: 'http://example.com', value: '123' };
+    const identifier2: IIdentifier = { system: 'http://example.com', value: '456' };
+
+    const location = builder.addIdentifier(identifier1).addIdentifier(identifier2).build();
+
+    expect(location.identifier).toHaveLength(2);
+    expect(location.identifier).toContainEqual(identifier1);
+    expect(location.identifier).toContainEqual(identifier2);
+  });
+
+  it('handles empty fields gracefully', () => {
+    const builder = new LocationBuilder();
+    const location = builder.build();
+
+    expect(location.identifier).toBeUndefined();
+    expect(location.name).toBeUndefined();
+    expect(location.status).toBeUndefined();
+  });
+
+  it('adds aliases to the Location', () => {
+    const builder = new LocationBuilder();
+    const location = builder.addAlias('Alias1').addAlias('Alias2').build();
+
+    expect(location.alias).toHaveLength(2);
+    expect(location.alias).toContain('Alias1');
+    expect(location.alias).toContain('Alias2');
+  });
+
+  it('sets the position of the Location', () => {
+    const builder = new LocationBuilder();
+    const position: ILocationPosition = { latitude: 40.7128, longitude: -74.006 };
+
+    const location = builder.setPosition(position).build();
+
+    expect(location.position?.latitude).toBe(40.7128);
+    expect(location.position?.longitude).toBe(-74.006);
+  });
+
+  it('throws an error when invalid JSON is passed to fromJSON', () => {
+    const builder = new LocationBuilder();
+
+    expect(() => builder.fromJSON('{invalidJson}')).toThrow();
+  });
+
+  it('parses valid JSON correctly with fromJSON', () => {
+    const builder = new LocationBuilder();
+    const json = '{"name":"Main Hospital","status":"active"}';
+
+    const location = builder.fromJSON(json).build();
+
+    expect(location.name).toBe('Main Hospital');
+    expect(location.status).toBe('active');
+  });
+
+  it('overwrites fields when set multiple times', () => {
+    const builder = new LocationBuilder();
+    const location = builder.setName('Old Name').setName('New Name').build();
+
+    expect(location.name).toBe('New Name');
+  });
+
+  it('adds hours of operation to the Location', () => {
+    const builder = new LocationBuilder();
+    const hours: ILocationHoursOfOperation = { daysOfWeek: ['mon', 'tue'], openingTime: '08:00', closingTime: '17:00' };
+
+    const location = builder.addHoursOfOperation(hours).build();
+
+    expect(location.hoursOfOperation).toHaveLength(1);
+    expect(location.hoursOfOperation?.[0].daysOfWeek).toContain('mon');
+    expect(location.hoursOfOperation?.[0].openingTime).toBe('08:00');
+    expect(location.hoursOfOperation?.[0].closingTime).toBe('17:00');
   });
 });
