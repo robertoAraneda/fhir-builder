@@ -121,7 +121,7 @@ export class Encounter extends DomainResource implements IEncounter, IValidatabl
   participant?: IEncounterParticipant[];
 
   /**
-   * @description The appointment that scheduled this encounter.
+   * @description The appointment.json that scheduled this encounter.
    */
   appointment?: IReference[];
 

@@ -53,4 +53,7 @@ export const BackbonesValidator: Record<
   CarePlanActivity: BackboneValidators.CarePlanActivityValidator,
   CarePlanDetail: BackboneValidators.CarePlanDetailValidator,
   RelatedPersonCommunication: BackboneValidators.RelatedPersonCommunicationValidator,
+  LocationHoursOfOperation: BackboneValidators.LocationHoursOfOperationValidator,
+  LocationPosition: BackboneValidators.LocationPositionValidator,
+  AppointmentParticipant: BackboneValidators.AppointmentParticipantValidator,
 };

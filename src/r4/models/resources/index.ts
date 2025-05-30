@@ -1,4 +1,5 @@
 export { AllergyIntolerance } from './AllergyIntolerance';
+export { Appointment } from './Appointment';
 export { Bundle } from './Bundle';
 export { CarePlan } from './CarePlan';
 export { CareTeam } from './CareTeam';
@@ -7,6 +8,7 @@ export { Coverage } from './Coverage';
 export { Encounter } from './Encounter';
 export { EpisodeOfCare } from './EpisodeOfCare';
 export { HealthcareService } from './HealthcareService';
+export { Location } from './Location';
 export { Observation } from './Observation';
 export { Organization } from './Organization';
 export { Patient } from './Patient';

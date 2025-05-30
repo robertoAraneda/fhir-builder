@@ -307,7 +307,7 @@ export class HealthcareServiceBuilder extends DomainResourceBuilder implements I
   }
   /**
    * @description Sets the appointmentRequired value
-   * @description Indicates whether or not a prospective consumer will require an appointment for a particular service at a site to be provided by the Organization. Indicates if an appointment is required for access to this service.
+   * @description Indicates whether or not a prospective consumer will require an appointment.json for a particular service at a site to be provided by the Organization. Indicates if an appointment.json is required for access to this service.
    * @param value - the value to set
    * @returns {this}
    */
