@@ -1,4 +1,5 @@
 export { AllergyIntoleranceReaction } from './AllergyIntoleranceReaction';
+export { AppointmentParticipant } from './AppointmentParticipant';
 export { BundleEntry } from './BundleEntry';
 export { BundleLink } from './BundleLink';
 export { BundleRequest } from './BundleRequest';
@@ -23,6 +24,8 @@ export { EpisodeOfCareStatusHistory } from './EpisodeOfCareStatusHistory';
 export { HealthcareServiceAvailableTime } from './HealthcareServiceAvailableTime';
 export { HealthcareServiceEligibility } from './HealthcareServiceEligibility';
 export { HealthcareServiceNotAvailable } from './HealthcareServiceNotAvailable';
+export { LocationHoursOfOperation } from './LocationHoursOfOperation';
+export { LocationPosition } from './LocationPosition';
 export { ObservationComponent } from './ObservationComponent';
 export { ObservationReferenceRange } from './ObservationReferenceRange';
 export { OrganizationContact } from './OrganizationContact';

@@ -1,4 +1,5 @@
 export { AllergyIntoleranceReactionBuilder } from './AllergyIntoleranceReactionBuilder';
+export { AppointmentParticipantBuilder } from './AppointmentParticipantBuilder';
 export { BundleEntryBuilder } from './BundleEntryBuilder';
 export { BundleLinkBuilder } from './BundleLinkBuilder';
 export { BundleRequestBuilder } from './BundleRequestBuilder';
@@ -23,6 +24,8 @@ export { EpisodeOfCareStatusHistoryBuilder } from './EpisodeOfCareStatusHistoryB
 export { HealthcareServiceAvailableTimeBuilder } from './HealthcareServiceAvailableTimeBuilder';
 export { HealthcareServiceEligibilityBuilder } from './HealthcareServiceEligibilityBuilder';
 export { HealthcareServiceNotAvailableBuilder } from './HealthcareServiceNotAvailableBuilder';
+export { LocationHoursOfOperationBuilder } from './LocationHoursOfOperationBuilder';
+export { LocationPositionBuilder } from './LocationPositionBuilder';
 export { ObservationComponentBuilder } from './ObservationComponentBuilder';
 export { ObservationReferenceRangeBuilder } from './ObservationReferenceRangeBuilder';
 export { OrganizationContactBuilder } from './OrganizationContactBuilder';

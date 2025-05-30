@@ -321,7 +321,7 @@ describe('HealthcareServiceBuilder', () => {
     expect(healthcareService.referralMethod).toContain(referralMethod);
   });
 
-  it('should build a HealthcareService with appointment required', () => {
+  it('should build a HealthcareService with appointment.json required', () => {
     const appointmentRequired = true;
     const healthcareService = builder.setAppointmentRequired(appointmentRequired).build();
     expect(healthcareService.appointmentRequired).toBe(appointmentRequired);

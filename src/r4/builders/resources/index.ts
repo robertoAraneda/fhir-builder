@@ -1,4 +1,5 @@
 export { AllergyIntoleranceBuilder } from './AllergyIntoleranceBuilder';
+export { AppointmentBuilder } from './AppointmentBuilder';
 export { BundleBuilder } from './BundleBuilder';
 export { CarePlanBuilder } from './CarePlanBuilder';
 export { CareTeamBuilder } from './CareTeamBuilder';
@@ -7,6 +8,7 @@ export { CoverageBuilder } from './CoverageBuilder';
 export { EncounterBuilder } from './EncounterBuilder';
 export { EpisodeOfCareBuilder } from './EpisodeOfCareBuilder';
 export { HealthcareServiceBuilder } from './HealthcareServiceBuilder';
+export { LocationBuilder } from './LocationBuilder';
 export { ObservationBuilder } from './ObservationBuilder';
 export { OrganizationBuilder } from './OrganizationBuilder';
 export { PatientBuilder } from './PatientBuilder';

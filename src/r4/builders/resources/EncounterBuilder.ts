@@ -233,8 +233,8 @@ export class EncounterBuilder extends DomainResourceBuilder implements IEncounte
     return this;
   }
   /**
-   * @description Adds a value to the appointment array
-   * @description The appointment that scheduled this encounter.
+   * @description Adds a value to the appointment.json array
+   * @description The appointment.json that scheduled this encounter.
    * @param value - the value to add
    * @returns {this}
    */

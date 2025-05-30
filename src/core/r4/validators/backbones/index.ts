@@ -1,4 +1,5 @@
 export { AllergyIntoleranceReactionValidator } from './AllergyIntoleranceReactionValidator';
+export { AppointmentParticipantValidator } from './AppointmentParticipantValidator';
 export { BundleEntryValidator } from './BundleEntryValidator';
 export { BundleLinkValidator } from './BundleLinkValidator';
 export { BundleRequestValidator } from './BundleRequestValidator';
@@ -23,6 +24,8 @@ export { EpisodeOfCareStatusHistoryValidator } from './EpisodeOfCareStatusHistor
 export { HealthcareServiceAvailableTimeValidator } from './HealthcareServiceAvailableTimeValidator';
 export { HealthcareServiceEligibilityValidator } from './HealthcareServiceEligibilityValidator';
 export { HealthcareServiceNotAvailableValidator } from './HealthcareServiceNotAvailableValidator';
+export { LocationHoursOfOperationValidator } from './LocationHoursOfOperationValidator';
+export { LocationPositionValidator } from './LocationPositionValidator';
 export { ObservationComponentValidator } from './ObservationComponentValidator';
 export { ObservationReferenceRangeValidator } from './ObservationReferenceRangeValidator';
 export { OrganizationContactValidator } from './OrganizationContactValidator';
